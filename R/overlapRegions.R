@@ -201,8 +201,8 @@ overlapRegions<-function(A, B, colA=NULL, colB=NULL, type="any", min.bases=1, mi
       
     if(get.bases==TRUE) tab <- cbind(tab, ov.bases)
  
-    pct.basesA <- (ov.bases/(tab$endA-tab$startA))*100.0
-    pct.basesB <- (ov.bases/(tab$endB-tab$startB))*100.0
+    pct.basesA <- (ov.bases/(tab$endA-tab$startA+1))*100.0
+    pct.basesB <- (ov.bases/(tab$endB-tab$startB+1))*100.0
     
     if(get.pctA==TRUE) tab <- cbind(tab, pct.basesA)
     if(get.pctB==TRUE) tab <- cbind(tab, pct.basesB)
