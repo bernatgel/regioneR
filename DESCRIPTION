@@ -1,7 +1,7 @@
 Package: regioneR
 Type: Package
 Title: Association analysis of genomic regions based on permutation tests
-Version: 1.0.0
+Version: 1.1.0
 Date: 2015-03-18
 Author: Anna Diez-Villanueva <adiez@imppc.org>, Roberto Malinverni
         <rmalinverni@imppc.org> and Bernat Gel <bgel@imppc.org>
