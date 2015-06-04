@@ -6,6 +6,7 @@
 #' @method plot localZScoreResults
 #' 
 #' @param x        an object of class \code{localZScoreResults}.
+#' @param main      a character specifying the main title of the plot. Defaults to no title.
 #' @param ...       further arguments to be passed to or from methods.
 #' 
 #' @return A plot is created on the current graphics device.
@@ -27,14 +28,14 @@
 #' @export
 
 
-plot.localZScoreResults <- function(x, ...) {
+plot.localZScoreResults <- function(x, main="", ...) {
   toLabel <- function(n) {
     if(abs(n) < 1000) return(as.character(n))
     if(abs(n) < 1000000) return(paste0(as.character(round(n/10)/100), "Kb"))
     return(paste0(as.character(round(n/10000)/100), "Mb"))
   }
 
-  if(!hasArg(main)) main <- "Local z-score"
+  if(nchar(main)==0) main <- "Local z-score"
 
 
   old.scipen <- options("scipen")
