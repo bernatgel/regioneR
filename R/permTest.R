@@ -2,7 +2,7 @@
 #' 
 #' Performs a permutation test to see if there is an association between a region set and some other feature using
 #' an evaluation function.
-#' #' 
+#'  
 #' @usage permTest(A, ntimes=100, randomize.function, evaluate.function, alternative="auto", min.parallel=1000, force.parallel=NULL, randomize.function.name=NULL, evaluate.function.name=NULL, verbose=FALSE, ...)
 #' 
 #' @param A a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
@@ -67,7 +67,7 @@ permTest <- function(A, ntimes=100, randomize.function, evaluate.function, alter
   if(!hasArg(randomize.function)) stop("randomize.function is missing")
   if(!is.function(randomize.function)) stop("randomize.function must be a function")
   if(!hasArg(evaluate.function)) stop("evaluate.function is missing")
-  if(!is.function(evaluate.function)) stop("evaluate.function must be a function")
+  if(!(is.function(evaluate.function) | is.list(evaluate.function))) stop("evaluate.function must be a function")
   if(!is.numeric(min.parallel)) stop("min.parallel must be numeric")
   if(ntimes<100) print(paste0("Note: The minimum p-value with only ",ntimes," permutations is ",1/(ntimes+1),". You should consider increasing the number of permutations."))
   
@@ -80,20 +80,34 @@ permTest <- function(A, ntimes=100, randomize.function, evaluate.function, alter
     doParallel <- (length(A)*ntimes > min.parallel)
   }
   
-   
-  #get the function names
+    
+  #Evaluation Function: get the function name and convert to list if its not yet
+  if(!is.list(evaluate.function)) { #if it's a single function
+    if(is.null(evaluate.function.name)) {
+      evaluate.function.name <- as.character(match.call()["evaluate.function"])
+    }
+    ef <- list()
+    ef[[evaluate.function.name]] <-  evaluate.function
+    evaluate.function <- ef
+  } else { #if it's a list of functions
+    if(!is.null(evaluate.function.name)) { #if names were explicitely provided
+      names(evaluate.function) <- evaluate.function.name
+    } else { #try to leave the current names or create new ones if no names present
+      if(is.null(names(evaluate.function))) {
+        names(evaluate.function) <- paste0("Function", c(1:length(evaluate.function)))
+      }
+    }
+  }
+  
+  #Randomization Function: Get a name
   if(is.null(randomize.function.name)) {
     randomize.function.name <- match.call()["randomize.function"]
-  }   
-  if(is.null(evaluate.function.name)) {
-    evaluate.function.name <- match.call()["evaluate.function"]
-  }  
-  
-  
-  
-  #evaluate the A region set
-  original.evaluate <- evaluate.function(A,...)
-  
+  }
+      
+  #Start the permutation test
+  #compute the evaluation function(s) using the original region set A
+  original.evaluate <- sapply(c(1:length(evaluate.function)), function(i,...) {return(evaluate.function[[i]](A,...))}, ...)
+ 
   if(!is.numeric(original.evaluate)) {
     stop(paste0("The evaluation function must return a numeric value but it returned an object of class ", class(original.evaluate)))
   }
@@ -118,7 +132,10 @@ permTest <- function(A, ntimes=100, randomize.function, evaluate.function, alter
       setTxtProgressBar(pb, foo)
     }
     
-    return(evaluate.function(randomA,...))
+    #compute the evaluation function(s) using the RANSOMIZED region set randomA
+    rand.evaluate <- sapply(c(1:length(evaluate.function)), function(i, ...) {return(evaluate.function[[i]](randomA,...))}, ...)
+    
+    return(rand.evaluate)
   }
   
   #create the random sets and evaluate them  
@@ -135,59 +152,68 @@ permTest <- function(A, ntimes=100, randomize.function, evaluate.function, alter
           e <- ntimes
           done <- TRUE
         }
-        random.evaluate <- c(random.evaluate, unlist(mclapply(c(s:e), randomize_and_evaluate, ...)))
+        random.evaluate <- c(random.evaluate, do.call(rbind, mclapply(c(s:e), randomize_and_evaluate, ...)))
         setTxtProgressBar(pb, e)
       }    
     } else { #if not verbose, just do it
-      random.evaluate <- unlist(mclapply(c(1:ntimes), randomize_and_evaluate, ...))
+      random.evaluate <- do.call(rbind, mclapply(c(1:ntimes), randomize_and_evaluate, ...))
     }
   } else {
-    random.evaluate <- unlist(lapply(c(1:ntimes), randomize_and_evaluate, ...))
+    random.evaluate <- do.call(rbind, lapply(c(1:ntimes), randomize_and_evaluate, ...))
   }
   
-  
-  nas<-length(which(is.na(random.evaluate)))
-  if(nas>0) warning(paste0(nas," iterations returned NA's. Only ",ntimes-nas," iterations have been used to compute the p-value."))
-  
-  
-  if(alternative == "auto") {
-    if(original.evaluate < mean(random.evaluate,na.rm=TRUE)) {
-      alternative <- "less"
-    } else {
-      alternative <- "greater"
-    }
-  }
-  
-  #Perform the statistical test and return the values generated 
-  if (alternative == "less")    pval <- (sum(original.evaluate > random.evaluate, na.rm=TRUE) + 1) / (ntimes - nas + 1)
-  if (alternative == "greater")    pval <- (sum(original.evaluate < random.evaluate, na.rm=TRUE) + 1) / (ntimes - nas + 1)
-  
-  if(original.evaluate == 0 & all(random.evaluate == 0)){
-    warning(paste0("All permuted values and the original evaluation value are equal to 0. Z-score cannot be computed."))
-    pval <- 1
-    zscore <- NA
-  } else{
-    zscore <- round((original.evaluate - mean(random.evaluate, na.rm=TRUE)) / sd(random.evaluate, na.rm=TRUE), 4)
-  }
-  
+ 
+  #The simulation process has finished. Now build a permTestResults object for each evaluate.function
+  results <- list()
+  for(i in c(1:length(evaluate.function))) {
+    #Get the data for the i-th function
+    func.name <- names(evaluate.function)[i]
+    orig.ev <- original.evaluate[i]
+    rand.ev <- random.evaluate[,i]
     
-  #Create the return object
-  res<-list(pval=pval, ntimes=ntimes, alternative=alternative, observed=original.evaluate, permuted=random.evaluate, zscore=zscore,
-            evaluate.function=evaluate.function, evaluate.function.name=evaluate.function.name,
-            randomize.function=randomize.function, randomize.function.name=randomize.function.name)
-  
-  
-  if(!is.finite(zscore)){
-    warning(paste0("All permuted values are equal to ",random.evaluate[1],". Z-score is infinite."))
-  }      
-  
+    
+    #warn if any NA
+    num.nas <- length(which(is.na(rand.ev)))
+    if(num.nas > 0) warning(paste0(num.nas, " iterations returned NA's. Only ", ntimes-num.nas ," iterations have been used to compute the p-value."))
+    
+    #decide the alternative if alternative == "auto"
+    if(alternative == "auto") {
+      alt <- ifelse(orig.ev < mean(rand.ev, na.rm=TRUE), "less", "greater")
+    } else {
+      alt <- alternative
+    }
+    
+    #Compute the p-value
+    if (alt == "less") {
+      pval <- (sum(orig.ev > rand.ev, na.rm=TRUE) + 1) / (ntimes - num.nas + 1)
+    } else { #alt == "greater"
+      pval <- (sum(orig.ev < rand.ev, na.rm=TRUE) + 1) / (ntimes - num.nas + 1)
+    }
+    #if the original alternative was not the best one, suggest the user to change it
+    if(alternative=="greater" & orig.ev<mean(rand.ev,na.rm=TRUE)) message("Alternative is greater and the observed statistic is less than the permuted statistic mean. Maybe you want to use recomputePermTest to change the alternative hypothesis.")
+    if(alternative=="less" & orig.ev>mean(rand.ev,na.rm=TRUE)) message("Alternative is less and the observed statistic is greater than the permuted statistic mean. Maybe you want to use recomputePermTest to change the alternative hypothesis.")
+    
+    #Compute the z-score
+    if(orig.ev == 0 & all(rand.ev == 0)){ #If everything is 0, warning and "empty" results
+      warning(paste0("All permuted values and the original evaluation value are equal to 0. Z-score cannot be computed."))
+      pval <- 1
+      zscore <- NA
+    } else{
+      zscore <- round((orig.ev - mean(rand.ev, na.rm=TRUE)) / sd(rand.ev, na.rm=TRUE), 4)
+    }
+    if(!is.finite(zscore)){ #if all evaluations are equal, the sd is 0 and the z-score is infinite
+      warning(paste0("All permuted values are equal to ", rand.ev[1], ". Z-score is infinite."))
+    }  
+        
+    #Create the permTestResults object
+    res<-list(pval=pval, ntimes=ntimes, alternative=alt, observed=orig.ev, permuted=rand.ev, zscore=zscore,
+                evaluate.function=evaluate.function[[i]], evaluate.function.name=func.name,
+                randomize.function=randomize.function, randomize.function.name=randomize.function.name)
+    class(res) <- "permTestResults"  
+    results[[func.name]] <- res
+  }
 
-  
-  if(alternative=="greater" & original.evaluate<mean(random.evaluate,na.rm=TRUE)) warning("Alternative is greater and the observed statistic is less than the permuted statistic mean. Maybe you want to use recomputePermTest to change the alternative hypothesis.")
-  if(alternative=="less" & original.evaluate>mean(random.evaluate,na.rm=TRUE)) warning("Alternative is less and the observed statistic is greater than the permuted statistic mean. Maybe you want to use recomputePermTest to change the alternative hypothesis.")
-  
-  
-  class(res) <- "permTestResults"
-  return(res)
+
+  return(results)
 
 }

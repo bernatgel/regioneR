@@ -127,7 +127,7 @@ hybrid_randomizeRegions <- function(A, valid.regions, non.overlapping=FALSE, max
         #and place the remaining regions using the quadratic algorithm
           #if the number of regions to place is high (>1000), call hybrid_randomizeRegions recursively, else, call the quadratic algorithm
             #TODO: What if the regions do not fit into the genome? We should place a guard against taht situation limiting the number of recursive calls
-          if(length(pending)>10000) {
+          if(length(pending)>1000) {
             rr2 <- hybrid_randomizeRegions(A=pending, valid.regions=valid.regions, non.overlapping=TRUE, max.retries=max.retries)
           } else {
             rr2 <- private_randomizeRegions(A=pending, valid.regions=valid.regions, non.overlapping=TRUE, max.retries=max.retries)

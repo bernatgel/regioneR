@@ -8,6 +8,9 @@
 #' @param x          an object of class \code{permTestResults}.
 #' @param pvalthres  p-value threshold for significance. Default is 0.05.
 #' @param plotType   the type of plot to display. This must be one of \code{"Area"} or \code{"Tailed"}. Default is \code{"Area"}.
+#' @param main       a character specifying the title of the plot. Defaults to "".
+#' @param xlab       a character specifying the label of the x axis. Defaults to NULL, which produces a plot with the evaluation function name as the x axis label.
+#' @param ylab       a character specifying the label of the y axis. Defaults to "".
 #' @param ...        further arguments to be passed to or from methods.
 #' 
 #' @return A plot is created on the current graphics device.
