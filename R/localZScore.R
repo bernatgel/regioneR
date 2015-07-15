@@ -29,9 +29,20 @@
 #' lz <- localZScore(A=A, B=B, pt=pt)
 #' plot(lz)
 #' 
+#' 
+#' pt2 <- permTest(A=A, B=B, ntimes=10, randomize.function=randomizeRegions, evaluate.function=list(overlap=numOverlaps, distance=meanDistance), genome=genome, non.overlapping=FALSE)
+#' plot(pt2)
+#' 
+#' lz2 <- localZScore(A=A, B=B, pt2)
+#' plot(lz2)
+#' 
 #'  
 #' @export localZScore
   
+
+
+
+
 
 localZScore <- function(A, pt, window, step, ...) {
   
@@ -47,28 +58,43 @@ localZScore <- function(A, pt, window, step, ...) {
     step <- floor(window/10)
   }
   
-  mean.permuted <- mean(pt$permuted)
-  sd.permuted <- sd(pt$permuted)
-  
-  num.steps <- floor(window/step)
-  
-  shifts <- (1:num.steps)*step
-  shifts <- c(rev(-1*shifts), 0, shifts)
-  
-  shifted.z.score <- function(shift) {
-    shifted.A <- shift(A, shift)
+  #if pt is a permTestResults object, compute the localZCScore and return it
+  if(class(pt) == "permTestResults") {
+    mean.permuted <- mean(pt$permuted)
+    sd.permuted <- sd(pt$permuted)
     
-    shifted.evaluation <- pt$evaluate.function(shifted.A, ...)
+    num.steps <- floor(window/step)
     
-    shifted.z.score <- (shifted.evaluation - mean.permuted)/sd.permuted
+    shifts <- (1:num.steps)*step
+    shifts <- c(rev(-1*shifts), 0, shifts)
     
-    return(shifted.z.score)
+    shifted.z.score <- function(shift) {
+      shifted.A <- shift(A, shift)
+      shifted.evaluation <- tryCatch(pt$evaluate.function(shifted.A, ...),
+                                     error=function(e) {stop(paste0("There was an error when computing evaluation function of the shifted region set: \n", as.character(e),
+                                                             "Evaluation Function: ", pt$evaluate.function.name,
+                                                             "\n Shift: ", shift))}
+                                      )
+      shifted.z.score <- (shifted.evaluation - mean.permuted)/sd.permuted
+      return(shifted.z.score)
+    }
+    
+    shifted <- lapply(as.list(shifts), shifted.z.score)
+    
+    shifted.z.scores <- do.call(c, shifted)
+    
+    rZ <- list(shifted.z.scores=shifted.z.scores, shifts=shifts, window=window, step=step, original.z.score=pt$zscore)
+    class(rZ) <- "localZScoreResults"
+    return(rZ)
+    
+  } else { #else, if it's a list, run localZscore for each element in the list
+    if(class(pt) == "permTestResultsList") {
+      lz <- mclapply(pt, function(ptt) {return(localZScore(A=A, pt=ptt, window=window, step=step, ...))})
+      class(lz) <- "localZScoreResultsList"
+      return(lz)
+    } else {
+      stop(paste0("pt must be of class permTestResults or permTestResultsList and is a: ", class(pt)))
+    }
   }
-  
-  shifted.z.scores <- do.call(c, mclapply(as.list(shifts), shifted.z.score))
-  
-  rZ <- list(shifted.z.scores=shifted.z.scores, shifts=shifts, window=window, step=step, original.z.score=pt$zscore)
-  class(rZ) <- "localZScoreResults"
-  return(rZ)
 }
 
