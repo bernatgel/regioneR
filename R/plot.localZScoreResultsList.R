@@ -25,7 +25,7 @@
 #' lz <- localZScore(A=A, B=B, pt=pt)
 #' plot(lz)
 #' 
-#' #' pt2 <- permTest(A=A, B=B, ntimes=10, randomize.function=randomizeRegions, evaluate.function=list(overlap=numOverlaps, distance=meanDistance), genome=genome, non.overlapping=FALSE)
+#' pt2 <- permTest(A=A, B=B, ntimes=10, randomize.function=randomizeRegions, evaluate.function=list(overlap=numOverlaps, distance=meanDistance), genome=genome, non.overlapping=FALSE)
 #' plot(pt2)
 #' 
 #' lz2 <- localZScore(A=A, B=B, pt2)
