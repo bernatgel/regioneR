@@ -107,6 +107,7 @@ hybrid_randomizeRegions <- function(A, valid.regions, non.overlapping=FALSE, max
   if(non.overlapping==FALSE) { #simply pass to the actual function
     rr <- private_randomizeRegions(A=A, valid.regions=valid.regions, non.overlapping=non.overlapping, max.retries=max.retries)
   } else {
+    #To create a set of NON OVERLAPPING regions, first create a set with possible overlaps and the remove the overlapping ones
     #Create a set of regions allowing overlaps
       rr <- private_randomizeRegions(A=A, valid.regions=valid.regions, non.overlapping=FALSE, max.retries=max.retries)
             
