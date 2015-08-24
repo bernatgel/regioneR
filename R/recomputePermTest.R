@@ -21,11 +21,11 @@
 #' 
 #' plot(resPerm)
 #' 
-#' resPermRecomputed <- recomputePermTest(resPerm)
+# resPermRecomputed <- recomputePermTest(resPerm)
 #' 
-#' summary(resPermRecomputed)
+# summary(resPermRecomputed)
 #' 
-#' plot(resPermRecomputed)
+# plot(resPermRecomputed)
 #'  
 #' @export recomputePermTest
 

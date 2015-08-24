@@ -23,12 +23,6 @@ B <- createRandomRegions(nregions=10, length.mean=1000000)
 resPerm <- permTest(A=A, B=B, ntimes=5, alternative="less", genome="hg19", evaluate.function=meanDistance, randomize.function=randomizeRegions)
 
 plot(resPerm)
-
-resPermRecomputed <- recomputePermTest(resPerm)
-
-summary(resPermRecomputed)
-
-plot(resPermRecomputed)
 }
 \seealso{
 \code{\link{permTest}}
