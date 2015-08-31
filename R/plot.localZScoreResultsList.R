@@ -5,7 +5,7 @@
 #' 
 #' @method plot localZScoreResultsList
 #' 
-#' @param lz        an object of class \code{localZScoreResultsList}.
+#' @param x        an object of class \code{localZScoreResultsList}.
 #' @param main      a character specifying the main title of the plot. Defaults to no title.
 #' @param num.x.labels  a numeric specifying the number of ticks to label the x axis. The total number will be 2*num.x.labels + 1. Defaults to 5.
 #' @param ...       further arguments to be passed to or from methods.
@@ -35,17 +35,17 @@
 #' @export
 
 
-plot.localZScoreResultsList <- function(lz, ncol=NA, main="", num.x.labels=5, ...) {
+plot.localZScoreResultsList <- function(x, ncol=NA, main="", num.x.labels=5, ...) {
   
-  if(!is(lz, "localZScoreResultsList"))  stop("lz must be a localZScoreResultsList object")
+  if(!is(x, "localZScoreResultsList"))  stop("x must be a localZScoreResultsList object")
   
-  if(is.na(ncol)) ncol <- floor(sqrt(length(lz)))  
+  if(is.na(ncol)) ncol <- floor(sqrt(length(x)))  
   
-  nrow <- ceiling(length(lz)/ncol)
+  nrow <- ceiling(length(x)/ncol)
   
   old.par <- par(mfrow=c(nrow, ncol))
   
-  lapply(lz, plot)
+  lapply(x, plot)
   
   par(mfrow=old.par)
   

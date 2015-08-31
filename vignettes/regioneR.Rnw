@@ -33,6 +33,7 @@ BiocStyle::latex()
 library(knitr)
 library(regioneR)
 opts_chunk$set(concordance=FALSE)
+set.seed(21666641)
 @
 
 
@@ -84,9 +85,12 @@ Imagine we have obtained a set of genes, my special genes, and we want to show t
 First of all we need to have our RSs loaded into R. To do that we can use the \textit{toGRanges} function.
 
 <<>>=
-special <- toGRanges("http://gattaca.imppc.org/regioner/data/my.special.genes.bed")
-all.genes <- toGRanges("http://gattaca.imppc.org/regioner/data/all.genes.bed")
-altered <- toGRanges("http://gattaca.imppc.org/regioner/data/my.altered.regions.bed")
+# special <- toGRanges("http://gattaca.imppc.org/regioner/data/my.special.genes.bed")
+special <- toGRanges(system.file("extdata", "my.special.genes.bed", package="regioneR"))
+# all.genes <- toGRanges("http://gattaca.imppc.org/regioner/data/all.genes.bed")
+all.genes <- toGRanges(system.file("extdata", "all.genes.bed", package="regioneR"))
+#altered <- toGRanges("http://gattaca.imppc.org/regioner/data/my.altered.regions.bed")
+altered <- toGRanges(system.file("extdata", "my.altered.regions.bed", package="regioneR"))
 length(special)
 length(all.genes)
 length(altered)
@@ -276,7 +280,7 @@ Another randomization function available in regioneR is the circularRandomizeReg
 As an example, we can randomize the same the same RS as before, and observe how the randomized regions are in the same chromosome and at the same relative distance:
 
 <<>>=
-circularRandomizeRegions(A,genome="hg19")
+circularRandomizeRegions(A,genome="hg19", mask=NA)
 @
 
 
@@ -449,7 +453,7 @@ The latest versions of some genomes include a number of additional "chromosomes"
 The available chromosome types are dependant on the organism, and the \textit{listChrTypes} function can be used to see what organisms and chromosome subsets are available.
 
 <<>>=
-human.genome <- getGenomeAndMask("hg19")$genome
+human.genome <- getGenomeAndMask("hg19", mask=NA)$genome
 human.canonical <- filterChromosomes(human.genome, organism="hg")
 listChrTypes()
 human.autosomal <- filterChromosomes(human.genome, organism="hg", chr.type="autosomal")

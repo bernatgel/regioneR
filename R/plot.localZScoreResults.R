@@ -5,7 +5,7 @@
 #' 
 #' @method plot localZScoreResults
 #' 
-#' @param lz        an object of class \code{localZScoreResults}.
+#' @param x        an object of class \code{localZScoreResults}.
 #' @param main      a character specifying the main title of the plot. Defaults to no title.
 #' @param num.x.labels  a numeric specifying the number of ticks to label the x axis. The total number will be 2*num.x.labels + 1. Defaults to 5.
 #' @param ...       further arguments to be passed to or from methods.
@@ -25,11 +25,11 @@
 #' lz <- localZScore(A=A, B=B, pt=pt)
 #' plot(lz)
 #' 
-#' @keywords internal
+# @keywords internal
 #' @export
 
 
-plot.localZScoreResults <- function(lz, main="", num.x.labels=5, ...) {
+plot.localZScoreResults <- function(x, main="", num.x.labels=5, ...) {
   #Convert a number to a "human readable" label
   toLabel <- function(n) {
     if(abs(n) < 1000) return(as.character(n))
@@ -46,15 +46,15 @@ plot.localZScoreResults <- function(lz, main="", num.x.labels=5, ...) {
   if(num.x.labels < 1) {
     x.lab.pos <- 0
   } else {
-    x.lab.dist <- floor(lz$window/num.x.labels)
+    x.lab.dist <- floor(x$window/num.x.labels)
     x.lab.pos <- (1:num.x.labels)*x.lab.dist
     x.lab.pos <- c(rev(-1*x.lab.pos), 0, x.lab.pos)
   }
   x.labs <- sapply(x.lab.pos, toLabel)
   
-  y.max <- max(lz$shifted.z.scores, 2)
-  y.min <- min(lz$shifted.z.scores, -2)
-  plot(x=lz$shifts, y=lz$shifted.z.scores, type="l", ylim=c(y.min, y.max), ylab="Shifted z-scores", xlab="Shifts", main=main, xaxt="n", las=1, ...)
+  y.max <- max(x$shifted.z.scores, 2)
+  y.min <- min(x$shifted.z.scores, -2)
+  plot(x=x$shifts, y=x$shifted.z.scores, type="l", ylim=c(y.min, y.max), ylab="Shifted z-scores", xlab="Shifts", main=main, xaxt="n", las=1, ...)
   if(num.x.labels != 0) {
     axis(1, at=x.lab.pos, labels=x.labs, las=2, cex.axis=0.7, tck=-.01, ...)
   }
