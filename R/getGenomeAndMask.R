@@ -47,5 +47,9 @@ getGenomeAndMask <- memoise(function(genome, mask=NULL) {
   
   genome <- getGenome(genome)
   
+  #finally, adjust the seqlevels of mask and genome
+  seqlevels(mask)<-seqlevels(genome)
+  levels(seqnames(mask))<-seqlevels(genome)
+  
   return(list(mask=mask, genome=genome))
 })
