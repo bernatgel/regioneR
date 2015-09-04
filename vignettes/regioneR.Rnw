@@ -15,7 +15,7 @@
 
 \makeindex
 
-\title{regioneR: an R package for the management and statistical comparison of genomic regions}
+\title{regioneR: Association analysis of genomic regions based on permutation tests}
 \author{Bernat Gel\footnote{bgel@imppc.org}, Anna D{\'i}ez-Villanueva and Roberto Malinverni}
 
 %%%% %\SweaveOpts{prefix.string=./figures/regioneR} 
@@ -44,6 +44,13 @@ set.seed(21666641)
 \newpage
 
 
+
+%==============================================================================
+%
+%                        Introduction
+%
+%==============================================================================
+
 \section{Introduction}
 
 The important technological advances we have seen since the publication of the human genome such as microarrays and NGS technologies have allowed us to produce massive amounts of data, making data analysis and interpretation the bottleneck in genomic and epigenomic research. In many cases, this data can be converted to a set of regions in the genome: the positions of the genes in an expression microarray experiment, the regions with peaks in ChIP-seq data or the contact regions in Hi-C. Statistically assessing the spatial relations between these region sets and other region sets or even other genomic features is a fundamental part of this analysis.
@@ -55,6 +62,24 @@ In addition, regionerR includes a set of helper functions based on Bioconductor'
 
 
 
+
+
+%==============================================================================
+%
+%                        Quick Start
+%
+%==============================================================================
+
+\section{Quick Start}
+
+
+
+
+%==============================================================================
+%
+%                        Permutation Tests
+%
+%==============================================================================
 
 \section{Permutation Tests}
 The core functionality of regioneR is to statistically evaluate the association between different RS or between a RS and other genomic features using a permutation test approach. This functionality is supported by the \textit{permTest} function, a parallel and highly customizable function performing the permutation tests and producing the statistical evaluation of the results. 
@@ -338,6 +363,26 @@ permuteRegionsMetadata <- function(A, ...) {
 }
 @
 
+\subsection{A note on reproducibility}
+  In order to create reproducible code with functions that use random numbers such as the permutation testing in regioneR, it is necessary to use \textit{set.seed}. However, since regioneR uses \textit{parallel} to perform the test it is also necessary to set the \textit{mc.set.seed} parameter to FALSE to ensure reproducibility.
+  
+  <<>>=
+    A <- createRandomRegions(nregions=50, length.mean=5000000, length.sd=3000000)
+    B <- c(A[1:25], createRandomRegions(nregions=25, length.mean=500000, length.sd=30000))
+
+    #Without mc.set.seed=FALSE
+    set.seed(123)
+    overlapPermTest(A, B, ntimes=10, force.parallel=TRUE)
+    set.seed(123)
+    overlapPermTest(A, B, ntimes=10, force.parallel=TRUE)
+
+    #With mc.set.seed=FALSE
+    set.seed(123)
+    overlapPermTest(A, B, ntimes=10, mc.set.seed=FALSE, force.parallel=TRUE)
+    set.seed(123)
+    overlapPermTest(A, B, ntimes=10, mc.set.seed=FALSE, force.parallel=TRUE)
+
+@
 
 
 \section{Local Z-score}
@@ -461,6 +506,11 @@ human.123 <- filterChromosomes(human.genome, keep.chr=c("chr1", "chr2", "chr3"))
 @
 
 
+%==============================================================================
+%
+%                        Region Set Helper Functions 
+%
+%==============================================================================
 \section{Region Set Helper Functions}
 regioneR includes a set of helper functions based on the \Biocpkg{GenomicRanges} infrastructure to manage and manipulate RS: \textit{joinRegions}, \textit{commonRegions}, \textit{mergeRegions}, \textit{overlapRegions}, etc... All these functions share a standard and simple signature, with one or two RS in any of the accepted formats and almost all of them (except \textit{splitRegions} and \textit{overlapRegions}) return a \textit{GRanges} object. 
 
@@ -525,6 +575,137 @@ overlaps.int
 @
 \end{itemize}
 
+
+%==============================================================================
+%
+%                                 Usage Examples
+%
+%==============================================================================
+\section{Usage Examples}
+
+  In this section we will present a series of examples of how to use regioneR to answer real biological questions.
+  
+  \subsection{Example 1: CpG Islands and Gene Promoters. A basic example.}
+    
+    \textbf{\Large{Question: Are Cpg islands and promoters associated?}}
+    
+    \textbf{\large{Brief Problem Description:}}
+      Gene promoter regions are GC rich and there are many CpG islands that lie inside promoters. However, is there a statistically significant association between them? Do CpG islands overlap with promoters more than one would expect by chance?
+      
+    \textbf{\large{Datasets:}}
+      We will use the CpG islands described in Wu et al. 2010 (http://rafalab.dfci.harvard.edu/) and the promoters from UCSC defined as -2000 to +200 base pairs to the TSS according to the genome assembly hg19. The promoters file can be dowloaded from \url{http://gattaca.imppc.org/regioner/}.
+
+      <<eval=FALSE>>=
+        #NOT RUN
+        > set.seed(12345) 
+        > cpgHMM <- toGRanges("http://rafalab.jhsph.edu/CGI/model-based-cpg-islands-hg19.txt")
+        > promoters <- toGRanges("http://gattaca.imppc.org/regioner/data/UCSC.promoters.hg19.bed")
+      @
+    
+    \textbf{\large{Step-by-step analysis:}}
+      
+      The idea of the test is to randomly move the CpG islands along the genome and count how many of them overlap with a promoter. Since we want to test whether two sets of regions have an overlap higher than expected and we don't need a special randomization strategy, we can use the convenience function \textit{overlapPermTest}, that uses \textit{permTest} under the hood, but presets some parameters for us (in particular, it uses \textit{numOverlaps} as the evaluation function and \textit{randomizeRegions} as the randomization strategy).  
+    
+      To start, we will remove the promoters and CpG islands in non-canonical chromosomes, so we are restricted to the standard part of the genome and remove any redundance they might include. 
+      
+      <<eval=FALSE>>=
+        #NOT RUN
+        > cpgHMM <- filterChromosomes(cpgHMM, organism="hg", chr.type="canonical")
+        > promoters <- filterChromosomes(promoters, organism="hg", chr.type="canonical")
+      @
+        
+      In addition, to speed-up the example, we will use a subset of 2000 out of the 65699 CpG islands in the region set. While in general the whole region set should be used, in many cases a large enough subset should give an idea about association. Using the whole set is perfectly possible and will simply be slower.
+      
+      To ensure that we will count a CpG island only once even if it overlaps 2 or more promoters, we use the parameter \textit{count.once=TRUE}, that will be automatically passed to the \textit{numOverlaps} function. In general, any parameter needed by the randomization or evaluation function can be given here and will be used by the relevant function. 
+      
+       <<eval=FALSE>>=
+        #NOT RUN
+        > cpgHMM_2K <- sample(cpgHMM, 2000)
+
+        > pt <- overlapPermTest(cpgHMM_2K, promoters, ntimes=1000, genome="hg19", count.once=TRUE)
+        > pt
+          P-value: 0.000999000999000999
+          Z-score: 60.5237
+          Number of iterations: 1000
+          Alternative: greater
+          Evaluation of the original region set: 614
+          Evaluation function: numOverlaps
+          Randomization function: randomizeRegions
+        > mean(pt$permuted)
+        79.087
+      @
+
+    The p-value obtained (>0.001) shows us a strong association. 614 out of 2000 CpG islands overlap at least one promoter while a mean of only 79.087 islands overlapped a promoter in the randomized region sets. These results can be summarised in a single plot by plotting the \textit{perTestResults}.
+    
+    <<eval=FALSE>>=
+        #NOT RUN
+        > plot(pt)
+   @ 
+
+   \incfig[h!]{figures/Example1_fig1.pdf}{0.8\textwidth}{Association between CpG islands and gene promoters}
+{}
+
+    In the plot we can see in grey the distribution of the evaluation of the randomized regions, in green the evaluation of the original region set (in this case, the 614 CpG islands that overlap at least one promoter), and in red the significance limit. The the high z-score and the plot make evident the extreme significance of the association tested.
+    
+    %1-Wu H, Caffo B, Jaffe HA, Feinberg AP, Irizarry RA (2010) Redefining CpG Islands Using a Hierarchical Hidden Markov Model. Biostatistics 11(3): 499-514. 
+
+    
+    
+  \subsection{Example 2: Analysis of ChIP-seq peaks. Advanced usage and local Z-score.}
+  
+  \subsection{Example 3: Regions with Copy Number Alterations. Custom evaluation functions.}
+  
+  
+
+
+%==============================================================================
+%
+%                                     Benchmarks
+%
+%==============================================================================
+\section{Benchmarks and Performance}
+
+  The main focus of regioneR is not speed but flexibility. However, the most time consuming parts of the test, mainly the randomization functions, have been optimized and perform quite well (although still far from pure C implementations such as bedtools). In this section we present a comparison of the performance of the different available functions.
+  
+  \subsection{Randomization Functions}
+    The process of randomizing the position of the regions over the genome can be difficult and time consuming. The different functions available in regioneR vary a lot in their complexity and performance, ranging from the simplest and fastest resampleRegions, that randomly selects  a subset of regions from a finite universe of possible regions supplied by the user, to the slowest and most complex randomizeRegions, that creates truly random region among the genome, taking into account a mask of non selectable parts of the genome and even ensuring that there is no overlap between the randomized regions. 
+    
+    Here is a brief description of the algorithmic comlexity of each randomization function:
+    \begin{itemize}
+      \item{\textbf{\textit{resampleRegions:}}} This is the fastest of the built-in randomization functions. It uses \textit{sample} to select \textit{N} regions from a user provided universe. It is basically a linear algorithm with respect to the number of regions.
+      \item{\textbf{\textit{circularRandomizeRegions:}}} This is also a fast algorithm that maintains the distance between the regions in the region set but randomizes their position in the chromosome. There is a tradeoff between speed and the portion of regions overlapping the mask, since it will randomly "spin" the chromosome until it finds a randomized region set that has an overlap with the mask below the maximum allowed. Thus, it's cost is linear with the number of regions in the region set when the portion of the genome covered by the mask plus the RS is low but will increase rapidly if the mask is dense.
+      \item{\textbf{\textit{randomizeRegions:}}} This function completely randomizes the regions along the genome. Internally, it has three different algorithms, a fast linear one, that places the regions in the genome very fast but it's not guaranteed to succeed for all the regions, a linear but slower one, that places the regions in the genome taking into account the mask and is guaranteed to succeed for all regions if they fit in the available space, and a quadratic algorithm that randomly places the regions in the available space without overlaps between them. The final algorithm is a combination of the three, with a very good behaviour with sparse masks and region sets that can become slower when the percentage of the genome covered by the mask or the regions is hight and specially slow if no overlaps between the random regions are allowed.
+    \end{itemize}
+
+    In these two plots you can see the time required to randomize a region set of variable size in different conditions with these algorithms.
+    
+    \incfig[h!]{figures/speed_test_regioneR_small.pdf}{0.8\textwidth}{Randomization time against number of regions}
+{}
+
+    \incfig[h!]{figures/mask_test_regioneR_small.pdf}{0.8\textwidth}{Randomization time against mask density}
+{}
+
+
+%==============================================================================
+%
+%                        Technical Considerations
+%
+%==============================================================================
+\section{Technical Considerations}
+
+  %Here a couple of technical considerations about the implementation of regioneR. 
+  \subsection{Memoisation}
+    regioneR uses \textit{memoise} to speed up the genome and mask retrieval functions, since they can be quite slow. Thus, the first call to \textit{getGenomeAndMask} (which is called from all functions accepting a genome) will have an additional delay of almost 30s. After that call, the genome and mask retrieval is almost intantaneous, since the result has been cached. In some special cases, one might want to remove the cache and retrieve the genome and mask from the original source. To do so, we have included the function \textit{emptyCacheRegioneR} that will forget the cached versions of genomes and masks.
+
+%==============================================================================
+%
+%                        Session Info
+%
+%==============================================================================
+\section{Session Info}
+<<sessionInfo>>=
+sessionInfo()
+@
 
 \end{document}
 
