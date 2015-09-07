@@ -1,4 +1,9 @@
 %\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{regioneR vignette}
+%\VignetteKeywords{permutation, intervals, regions}
+%\VignettePackage{regioneR}
+
+
 
 \documentclass{article}
 
@@ -10,21 +15,20 @@
 %/software/FC14/general/R-3.0.2/lib64/R/library/
 %\RequirePackage{BiocStyle/sty/Bioconductor}
 
-
 \linespread{1.5}\selectfont
 
-\makeindex
-
-\title{regioneR: Association analysis of genomic regions based on permutation tests}
-\author{Bernat Gel\footnote{bgel@imppc.org}, Anna D{\'i}ez-Villanueva and Roberto Malinverni}
-
-%%%% %\SweaveOpts{prefix.string=./figures/regioneR} 
-
-%%%% %\VignetteIndexEntry{regioneR}
 
 <<style-knitr, eval=TRUE, echo=FALSE, results="asis">>=
 BiocStyle::latex()
 @
+
+\newcommand{\regioneR}{\Biocpkg{regioneR}}
+
+%%\makeindex
+
+\title{regioneR: Association analysis of genomic regions based on permutation tests}
+\author{Bernat Gel\footnote{bgel@imppc.org}, Anna D{\'i}ez-Villanueva and Roberto Malinverni}
+\date{Edited: September 7, 2015; Compiled: \today}
 
 
 \begin{document}
@@ -40,25 +44,25 @@ set.seed(21666641)
 %\input{regioneR-concordance}
 
 \maketitle
+\linespread{1.2}\selectfont
 \tableofcontents
 \newpage
 
 
 
-%==============================================================================
-%
-%                        Introduction
-%
-%==============================================================================
 
+%==============================================================================
+%
 \section{Introduction}
+%
+%==============================================================================
 
 The important technological advances we have seen since the publication of the human genome such as microarrays and NGS technologies have allowed us to produce massive amounts of data, making data analysis and interpretation the bottleneck in genomic and epigenomic research. In many cases, this data can be converted to a set of regions in the genome: the positions of the genes in an expression microarray experiment, the regions with peaks in ChIP-seq data or the contact regions in Hi-C. Statistically assessing the spatial relations between these region sets and other region sets or even other genomic features is a fundamental part of this analysis.
 
 
-regioneR has been created to address this problem and provides functions to statistically evaluate the associations between region sets using permutation tests. Its permutation test framework has been specifically designed to work with genomic regions and all functions are genome- and mask-aware. regioneR includes a number of predefined randomization and evaluation functions covering the most frequent use cases, but the user can also provide custom functions to extend its functionality. In addition to textual output, regioneR also can plot the permutation test results and so it's possible to go from a set of genomic regions to a publication ready figure in a few lines of code.
+\regioneR{} has been created to address this problem and provides functions to statistically evaluate the associations between region sets using permutation tests. Its permutation test framework has been specifically designed to work with genomic regions and all functions are genome- and mask-aware. regioneR includes a number of predefined randomization and evaluation functions covering the most frequent use cases, but the user can also provide custom functions to extend its functionality. In addition to textual output, regioneR also can plot the permutation test results and so it's possible to go from a set of genomic regions to a publication ready figure in a few lines of code.
 
-In addition, regionerR includes a set of helper functions based on Bioconductor's GenomicRanges infrastructure to manage and manipulate region sets with a simple and consistent interface. 
+In addition, \regioneR{} includes a set of helper functions based on Bioconductor's \Biocpkg{GenomicRanges} infrastructure to manage and manipulate region sets with a simple and consistent interface. 
 
 
 
@@ -66,22 +70,55 @@ In addition, regionerR includes a set of helper functions based on Bioconductor'
 
 %==============================================================================
 %
-%                        Quick Start
-%
-%==============================================================================
-
 \section{Quick Start}
+%
+%==============================================================================
 
 
+One of the most common uses of \regioneR{} is to answer the question: Do the regions in set A overlap with the regions in B more than expected? For example: Are my ChIP-seq peaks on the promoters of active genes? or Are the break points in repetitive regions? To answer question like these we can use the convenience \Rcode{overlapPermTest} function in regioneR, that evaluates the number of overlaps between two sets of regions. 
+
+To do that, we need to have the two region sets either as a \Rcode{GRanges}, a \Rcode{data.frame} or a bed-like file. An practical way to create a \Rcode{GRanges} is to use the \Rcode{toGRanges} function. In this case, as an example, we will create two sets of random regions with about 50\% overlap.
+
+<<>>=
+  A <- createRandomRegions(nregions=50, length.mean=5000000, length.sd=3000000)
+  B <- c(A[1:25], createRandomRegions(nregions=25, length.mean=500000, length.sd=30000))
+  numOverlaps(A, B, count.once=TRUE)
+  numOverlaps(randomizeRegions(A), B, count.once=TRUE)
+@
+
+Once we have the two region sets, we can test if A overlaps with B more than expected. To do that we will use \Rcode{overlapPermTest}.
+
+<<>>=
+  pt <- overlapPermTest(A=A, B=B, ntimes=50)
+  pt
+@
+
+We can see that the test was significant, with a p-value \textless0.05. Now, to plot it, we can simply plot the \Rcode{pt} object.
+
+<<fig.height=6,fig.width=8>>=
+  plot(pt)
+@
+
+We can see a visual representation of the results of the test. In grey the number of overlaps of the randomized regions with B, clustering around the black bar that represents the mean and in green the number of overlaps of the original region set A, which is much larger than expected. The red line denotes the significance limit.
+
+In addition, we can test if the association between the two region sets is highly dependant on their exact position. To do that, we can use the \Rcode{localZScore} function.
+
+<<fig.height=6,fig.width=8>>=
+  lz <- localZScore(pt=pt, A=A, B=B)
+  plot(lz)
+@
+
+Which in this case shows that moving the regions in A produces a drop in the z-scores and so, shows that the association is dependant on the exact position of the regions and is not a regional effect. More information about the \Rcode{localZScore} function can be found at section \ref{sec:localzscore}: Local Z-score.
+
+In this small example we have used \Rcode{overlapPermTest} to test the number of overlaps between two region sets. Using the more general \Rcode{permTest} function, we can test other types of association using different evaluation functions (the distance, the evaluation of a function over the genomes or custom user-defined functions) and applying different types of randomizations. In addition, this example assumes that the data refers to the human genome and uses a default mask with regions not available for the randomization. In the next sections, all these options are explained in detail.
 
 
 %==============================================================================
 %
-%                        Permutation Tests
-%
-%==============================================================================
-
 \section{Permutation Tests}
+%
+%==============================================================================
+
 The core functionality of regioneR is to statistically evaluate the association between different RS or between a RS and other genomic features using a permutation test approach. This functionality is supported by the \textit{permTest} function, a parallel and highly customizable function performing the permutation tests and producing the statistical evaluation of the results. 
 
 With \textit{permTest} and the right biological data it is possible to answer different types of biological questions such as:
@@ -134,9 +171,9 @@ But is this number, 114 out of 200, big or small? Does it mean that genes are as
 
 Here is where the randomization strategy plays its role. We need a randomization strategy that creates a new set of regions that is random with respect to our evaluation function but takes into account the specificities of our original region set. For example, if our original RS comes from an NGS experiment, all of its regions would lie in mappable parts of the genome and wouldn't make any sense to randomize a region into a centromere or any other non-mappable part of the genome. 
 
-To help with that, many randomization functions provided by regioneR accept a mask, indicating where a random region cannot be placed. In any case, selecting the best randomization strategy is a key part of a permutation test and can have a great impact in the final results. 
+To help with that, many randomization functions provided by \regioneR{} accept a mask, indicating where a random region cannot be placed. In any case, selecting the best randomization strategy is a key part of a permutation test and can have a great impact in the final results. 
 
-The least restricted function included in regioneR is \textit{randomizeRegions}, that given a RS, a genome and an optional mask, returns a new RS with the same number of regions and of the same width as the original ones but randomly placed along the non-masked parts of the genome. This is also the slowest of the randomization functions available. 
+The least restricted function included in \regioneR{} is \textit{randomizeRegions}, that given a RS, a genome and an optional mask, returns a new RS with the same number of regions and of the same width as the original ones but randomly placed along the non-masked parts of the genome. This is also the slowest of the randomization functions available. 
 
 In our example, since the special genes are a subset of the bigger set of all genes it is much better to use \textit{resampleRegions}, that given a universe of regions, randomly selects a subset of them to create the randomized region sets.
 
@@ -163,8 +200,8 @@ If we do this many times we will build a distribution of the evaluation obtained
 
 
 
-\subsection{How to perform a permutation test with regioneR}
-The main function to perform a permutation test with regioneR is \Rfunction{permTest}, a function taking a a region set (RS) in any of the accepted formats (see section 4 - Region Sets), a randomization function and an evaluation function and returning a \Rclass{permTestResults} object.
+\subsection{How to perform a permutation test with \regioneR{}}
+The main function to perform a permutation test with \regioneR{} is \Rfunction{permTest}, a function taking a a region set (RS) in any of the accepted formats (see section 4 - Region Sets), a randomization function and an evaluation function and returning a \Rclass{permTestResults} object.
 
 The function performs the whole permutation test analysis described above, evaluating the original RS, creating a number of randomizations and evaluating them and nally computing the p-value and z-score. It takes advantage of the parallel package to randomize and evaluate in parallel where possible.
 
@@ -222,7 +259,7 @@ plot(pt.reg)
 
 
 \subsection{A note on the number of permutations}
-Choosing the right number of permutations is not a simple task. A large number of permutations will produce more accurate results and a nicer-looking plot but a permutation test can be computationally expensive and depending on the number of regions in the RS and the randomization strategy selected it might take up to several hours to perform a permutation test with a few thousand permutations. On the other hand, the lowest p-value is limited by the number of permutations and performing a permutation test with a low permutation number can produce less accurate results. A good strategy could be to try first with a low number of permutations and continue only if the results look promising or at least unclear, since if after some tens of permutations the original evaluation is really close to the mean of the randomizations, the probability it will end up being significant is really small. With a low number of permutations, regioneR will generate a note stating the lowest p-value achievable and ecouraging to 
+Choosing the right number of permutations is not a simple task. A large number of permutations will produce more accurate results and a nicer-looking plot but a permutation test can be computationally expensive and depending on the number of regions in the RS and the randomization strategy selected it might take up to several hours to perform a permutation test with a few thousand permutations. On the other hand, the lowest p-value is limited by the number of permutations and performing a permutation test with a low permutation number can produce less accurate results. A good strategy could be to try first with a low number of permutations and continue only if the results look promising or at least unclear, since if after some tens of permutations the original evaluation is really close to the mean of the randomizations, the probability it will end up being significant is really small. With a low number of permutations, \regioneR{} will generate a note stating the lowest p-value achievable and ecouraging to 
 increase the permutation number.
 
 As an example, the two permutation tests above, if run with 5000 permutations would produce a plot like these.
@@ -266,7 +303,7 @@ plot(pt.5000.reg)
 Choosing a good randomization strategy is crucial when performing a permutation test. One should choose a randomization strategy that ramdomizes the regions with respect to the association being evaluated while maintaining as much as possible the intrinsic structure and characteristics of the regions. For example, in general it will not make sense to randomize a region into a centromere or into any unavailable region such an unmappable region with NGS data. 
 
 
-In regioneR, a randomization function is any function that takes a RS as an argument and returns a RS with the randomized regions. Different randomization functions are included in the package, but it is also possible to create custom randomization functions for more specific needs (see section 4 - Region Sets).
+In \regioneR{}, a randomization function is any function that takes a RS as an argument and returns a RS with the randomized regions. Different randomization functions are included in the package, but it is also possible to create custom randomization functions for more specific needs (see section 4 - Region Sets).
 
 \subsubsection{randomizeRegions}
 This is the most general randomization strategy. It randomly places all regions along the genome independently. The function takes every region in the original RS and randomizes the chromosome and position, while maintaining its size and any associated metadata. The optional mask argument might be used to specify parts of the genome where a region cannot be placed (e.g. centromeres). 
@@ -300,7 +337,7 @@ randomizeRegions(A, genome="hg19", per.chromosome=TRUE)
 
 
 \subsubsection{circularRandomizeRegions}
-Another randomization function available in regioneR is the circularRandomizeRegion. In this case, instead of randomizing all regions independently, the randomization process maintains the order and distance of the regions, while changing their position in the chromosome. Conceptually, each chromosome is "circularized" and given a random spin while keeping the regions steady. If a mask is specified, in this case, given the greater constrains in the randomization process, it is not possible to ensure that no region will overlap the mask. Instead of that the user can specify the maximum proportion of the regions overlapping the mask. If apter spinning the chromosome too much overlap is detected, a new random spin will be applied. This process will be repeated until a suitable solution if found or max.retries spins have been applied. If after the spinning, a region lies between the end and the start of the chromosome, it will be splitted into two regions. Therefore, the number of regions is not guarateed to be the same as teh original RS. \Rfunction{circularRandomizeRegions} can be significantly faster than \Rfunction{randomizeRegions}.
+Another randomization function available in \regioneR{} is the circularRandomizeRegion. In this case, instead of randomizing all regions independently, the randomization process maintains the order and distance of the regions, while changing their position in the chromosome. Conceptually, each chromosome is "circularized" and given a random spin while keeping the regions steady. If a mask is specified, in this case, given the greater constrains in the randomization process, it is not possible to ensure that no region will overlap the mask. Instead of that the user can specify the maximum proportion of the regions overlapping the mask. If apter spinning the chromosome too much overlap is detected, a new random spin will be applied. This process will be repeated until a suitable solution if found or max.retries spins have been applied. If after the spinning, a region lies between the end and the start of the chromosome, it will be splitted into two regions. Therefore, the number of regions is not guarateed to be the same as teh original RS. \Rfunction{circularRandomizeRegions} can be significantly faster than \Rfunction{randomizeRegions}.
 
 As an example, we can randomize the same the same RS as before, and observe how the randomized regions are in the same chromosome and at the same relative distance:
 
@@ -315,7 +352,7 @@ The last available randomization function is resampleRegions. In this case, the 
 
 
 \subsection{Evaluation Functions}
-The evaluation functions are the functions that define what is being tested in the permutation test. Some evaluation functions are provided in regioneR covering the most common uses but it is possible (and easy) to create your own custom evaluation functions (see section 2.6.1). In general, an evaluation function is simply a function taking a RS and returning a single numeric value.
+The evaluation functions are the functions that define what is being tested in the permutation test. Some evaluation functions are provided in \regioneR{} covering the most common uses but it is possible (and easy) to create your own custom evaluation functions (see section 2.6.1). In general, an evaluation function is simply a function taking a RS and returning a single numeric value.
 
 
 \subsubsection{numOverlaps}
@@ -364,7 +401,7 @@ permuteRegionsMetadata <- function(A, ...) {
 @
 
 \subsection{A note on reproducibility}
-  In order to create reproducible code with functions that use random numbers such as the permutation testing in regioneR, it is necessary to use \textit{set.seed}. However, since regioneR uses \textit{parallel} to perform the test it is also necessary to set the \textit{mc.set.seed} parameter to FALSE to ensure reproducibility.
+  In order to create reproducible code with functions that use random numbers such as the permutation testing in \regioneR{}, it is necessary to use \textit{set.seed}. However, since regioneR uses \textit{parallel} to perform the test it is also necessary to set the \textit{mc.set.seed} parameter to FALSE to ensure reproducibility.
   
   <<>>=
     A <- createRandomRegions(nregions=50, length.mean=5000000, length.sd=3000000)
@@ -386,6 +423,7 @@ permuteRegionsMetadata <- function(A, ...) {
 
 
 \section{Local Z-score}
+\label{sec:localzscore}
 The minimum p-value achievable by permutation depends on the number of permutations used. On the other hand, the z-score is a measure of the strength of the association that is independent of the number of permutations. It is defined as the distance between the expected value and the observed one, measured in standard deviations.
 
 When performing an association analysis it is possible to detect associations that, while statistically significant, are not biologically relevant. For example, with ChIP-seq data, it is uaual to detect a significant overlap between broad chromatin marks covering gene-rich regions and transcription factors. This association, while true, is indirect and based on the fact that both regions tend to cluster around genes.
@@ -427,9 +465,9 @@ In this case we can see how as soon as we displace the regions a bit away from t
 
 
 \section{Region Sets}
-In regioneR, a genomic region is a part of a genome and is defined by three parameters: chromosome, start and end, where start is less than or equal to end and both are inside the limits of the chromosome. This definition includes from single bases (start equal to end) to whole chromosomes. In addition, genomic regions can have associated data or annotations which will usually depend on the nature of the data. A region set, then, is defined as a group of one or more genomic regions and is referred to as RS along this document.
+In \regioneR{}, a genomic region is a part of a genome and is defined by three parameters: chromosome, start and end, where start is less than or equal to end and both are inside the limits of the chromosome. This definition includes from single bases (start equal to end) to whole chromosomes. In addition, genomic regions can have associated data or annotations which will usually depend on the nature of the data. A region set, then, is defined as a group of one or more genomic regions and is referred to as RS along this document.
 
-Internally, regioneR uses \Rclass{GRanges} to represent a RS, and all functions returning an RS return a \Rclass{GRanges} object. However, regioneR accepts different data formats as input thanks to its \Rfunction{toGRanges} function. In particular, it accepts:
+Internally, \regioneR{} uses \Rclass{GRanges} to represent a RS, and all functions returning an RS return a \Rclass{GRanges} object. However, \regioneR{} accepts different data formats as input thanks to its \Rfunction{toGRanges} function. In particular, it accepts:
 
 \begin{itemize}
 \item \textbf{GRanges:} A \textit{GRanges} object from the \textit{GenomicRanges} Bioconductor package.
@@ -437,7 +475,7 @@ Internally, regioneR uses \Rclass{GRanges} to represent a RS, and all functions 
 \item \textbf{A file:} a file name or connection to a file in any of the formats accepted by \textit{rtracklayer}'s import function (bed, gff, wigg, ...)
 \end{itemize}
 
-Two utility functions are provided in regioneR to manage the transformation to and from \textit{GRanges}: \textit{toGRanges} and \textit{toDataframe}.
+Two utility functions are provided in \regioneR{} to manage the transformation to and from \textit{GRanges}: \textit{toGRanges} and \textit{toDataframe}.
 
 \begin{itemize}
 \item \textbf{\textit{toGRanges}} accepts a RS in any of the supported formats and creates a \textit{GRanges} object from it
@@ -473,12 +511,12 @@ toDataframe(B)
 
 \section{Genomes and Masks}
 
-Most functions in regioneR are prepared to work with genomes and masks. The genome represents the complete set of chromosomes available with their length and the mask the set of genomic regions "not available" to work with, for example centromeres, highly repetitive regions, etc... The perfect mask is application specific and might have an important impact on the final results. 
+Most functions in \regioneR{} are prepared to work with genomes and masks. The genome represents the complete set of chromosomes available with their length and the mask the set of genomic regions "not available" to work with, for example centromeres, highly repetitive regions, etc... The perfect mask is application specific and might have an important impact on the final results. 
 
-regioneR provides a function to get genomes and masks, \Rfunction{getGenomeAndMask}, but usually the user won't need to use it directly. In regioneR, all functions accepting a genome and a mask as arguments use this function internally and so, accept any genome and mask specification accepted by these function.
+\regioneR{} provides a function to get genomes and masks, \Rfunction{getGenomeAndMask}, but usually the user won't need to use it directly. In regioneR, all functions accepting a genome and a mask as arguments use this function internally and so, accept any genome and mask specification accepted by these function.
 
 \subsection{Genomes}
-In regioneR a genome is simply a list of chromosomes and their length. Therefore, it is possible to specify a genome by giving a \textit{data.frame} with 2 columns (\textit{chr} and \textit{length}) or 3 columns (\textit{chr}, \textit{start} and \textit{end}) or a \textit{GRanges} object with one region per chromosome. However, when working with a standard chromosome available as a \Rclass{BSgenome}, it is possible and much more convenient to rely on the automatic loading of the genome (given that is installed in the system). By specifying the \Rclass{BSgenome} name of the genome -e.g. hg19, mm9, dm2 ...- regioneR will fetch the correct genome information. 
+In \regioneR{} a genome is simply a list of chromosomes and their length. Therefore, it is possible to specify a genome by giving a \textit{data.frame} with 2 columns (\textit{chr} and \textit{length}) or 3 columns (\textit{chr}, \textit{start} and \textit{end}) or a \textit{GRanges} object with one region per chromosome. However, when working with a standard chromosome available as a \Rclass{BSgenome}, it is possible and much more convenient to rely on the automatic loading of the genome (given that is installed in the system). By specifying the \Rclass{BSgenome} name of the genome -e.g. hg19, mm9, dm2 ...- regioneR will fetch the correct genome information. 
 
 
 \subsection{Masks}
@@ -493,7 +531,7 @@ The function returns a \textit{list} with a genome and a mask elements, both of 
 
 
 \subsection{Filtering Chromosomes}
-The latest versions of some genomes include a number of additional "chromosomes" representing different alternative assemblies and patches for specific complex regions. While these additional chromosomes are useful in some cases, in others they interfere with the analysis, and so it's best to remove them from the genome. To do that and to generally filter any subset of chromosomes, regioneR includes the \textit{filterChomosomes} function. It take a RS and returns a filtered version of it containing only the regions in the specified chromosomes. To use it one need to specify the RS, the organism and the type of chromosome to keep (autosomal, canonical, ...). In addition it is possible to specify a custom list of chromosome names to keep.
+The latest versions of some genomes include a number of additional "chromosomes" representing different alternative assemblies and patches for specific complex regions. While these additional chromosomes are useful in some cases, in others they interfere with the analysis, and so it's best to remove them from the genome. To do that and to generally filter any subset of chromosomes, \regioneR{} includes the \textit{filterChomosomes} function. It take a RS and returns a filtered version of it containing only the regions in the specified chromosomes. To use it one need to specify the RS, the organism and the type of chromosome to keep (autosomal, canonical, ...). In addition it is possible to specify a custom list of chromosome names to keep.
 
 The available chromosome types are dependant on the organism, and the \textit{listChrTypes} function can be used to see what organisms and chromosome subsets are available.
 
@@ -512,7 +550,7 @@ human.123 <- filterChromosomes(human.genome, keep.chr=c("chr1", "chr2", "chr3"))
 %
 %==============================================================================
 \section{Region Set Helper Functions}
-regioneR includes a set of helper functions based on the \Biocpkg{GenomicRanges} infrastructure to manage and manipulate RS: \textit{joinRegions}, \textit{commonRegions}, \textit{mergeRegions}, \textit{overlapRegions}, etc... All these functions share a standard and simple signature, with one or two RS in any of the accepted formats and almost all of them (except \textit{splitRegions} and \textit{overlapRegions}) return a \textit{GRanges} object. 
+\regioneR{} includes a set of helper functions based on the \Biocpkg{GenomicRanges} infrastructure to manage and manipulate RS: \textit{joinRegions}, \textit{commonRegions}, \textit{mergeRegions}, \textit{overlapRegions}, etc... All these functions share a standard and simple signature, with one or two RS in any of the accepted formats and almost all of them (except \textit{splitRegions} and \textit{overlapRegions}) return a \textit{GRanges} object. 
 
 
 
@@ -535,7 +573,7 @@ regioneR includes a set of helper functions based on the \Biocpkg{GenomicRanges}
 \subsection{Other Functions: functions not returning a \textit{GRanges} object}
 
 \begin{itemize}
-\item{\textbf{\textit{overlapRegions:}}} \textit{overlapRegions} is one of most powerful and useful RS management functions in regioneR. It has a number of parameters and types of returned values. For a thorough description, refer to the regioneR user guide.
+\item{\textbf{\textit{overlapRegions:}}} \textit{overlapRegions} is one of most powerful and useful RS management functions in \regioneR{}. It has a number of parameters and types of returned values. For a thorough description, refer to the regioneR user guide.
 
 Given two RS A and B, \textit{overlapRegions} identifies the regions in A overlapping a region in B, filters them and returns them. It is possible to filter by the relation between the regions (e.g. "the region from A must be included in the one from B") or by the amount of overlap (e.g. "at least 10 bases", "at least half the region in A"). The returned value might be a complete table with information, for every overlap, of the region in A, the region in B and their relation, a boolean vector indicating for every region in A whether it overlaps any region in B following the filtering criteria or simply the number of valid overlaps between the two RS. In addition, it is possible to specify if the additional data columns associated with the RS have to be kept or might just be ignored.
 
@@ -583,7 +621,7 @@ overlaps.int
 %==============================================================================
 \section{Usage Examples}
 
-  In this section we will present a series of examples of how to use regioneR to answer real biological questions.
+  In this section we will present a series of examples of how to use \regioneR{} to answer real biological questions.
   
   \subsection{Example 1: CpG Islands and Gene Promoters. A basic example.}
     
@@ -665,10 +703,10 @@ overlaps.int
 %==============================================================================
 \section{Benchmarks and Performance}
 
-  The main focus of regioneR is not speed but flexibility. However, the most time consuming parts of the test, mainly the randomization functions, have been optimized and perform quite well (although still far from pure C implementations such as bedtools). In this section we present a comparison of the performance of the different available functions.
+  The main focus of \regioneR{} is not speed but flexibility. However, the most time consuming parts of the test, mainly the randomization functions, have been optimized and perform quite well (although still far from pure C implementations such as bedtools). In this section we present a comparison of the performance of the different available functions.
   
   \subsection{Randomization Functions}
-    The process of randomizing the position of the regions over the genome can be difficult and time consuming. The different functions available in regioneR vary a lot in their complexity and performance, ranging from the simplest and fastest resampleRegions, that randomly selects  a subset of regions from a finite universe of possible regions supplied by the user, to the slowest and most complex randomizeRegions, that creates truly random region among the genome, taking into account a mask of non selectable parts of the genome and even ensuring that there is no overlap between the randomized regions. 
+    The process of randomizing the position of the regions over the genome can be difficult and time consuming. The different functions available in \regioneR{} vary a lot in their complexity and performance, ranging from the simplest and fastest resampleRegions, that randomly selects  a subset of regions from a finite universe of possible regions supplied by the user, to the slowest and most complex randomizeRegions, that creates truly random region among the genome, taking into account a mask of non selectable parts of the genome and even ensuring that there is no overlap between the randomized regions. 
     
     Here is a brief description of the algorithmic comlexity of each randomization function:
     \begin{itemize}
@@ -695,7 +733,7 @@ overlaps.int
 
   %Here a couple of technical considerations about the implementation of regioneR. 
   \subsection{Memoisation}
-    regioneR uses \textit{memoise} to speed up the genome and mask retrieval functions, since they can be quite slow. Thus, the first call to \textit{getGenomeAndMask} (which is called from all functions accepting a genome) will have an additional delay of almost 30s. After that call, the genome and mask retrieval is almost intantaneous, since the result has been cached. In some special cases, one might want to remove the cache and retrieve the genome and mask from the original source. To do so, we have included the function \textit{emptyCacheRegioneR} that will forget the cached versions of genomes and masks.
+    \regioneR{} uses \textit{memoise} to speed up the genome and mask retrieval functions, since they can be quite slow. Thus, the first call to \textit{getGenomeAndMask} (which is called from all functions accepting a genome) will have an additional delay of almost 30s. After that call, the genome and mask retrieval is almost intantaneous, since the result has been cached. In some special cases, one might want to remove the cache and retrieve the genome and mask from the original source. To do so, we have included the function \textit{emptyCacheRegioneR} that will forget the cached versions of genomes and masks.
 
 %==============================================================================
 %
