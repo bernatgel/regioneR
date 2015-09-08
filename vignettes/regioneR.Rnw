@@ -740,7 +740,7 @@ overlaps.int
         pt_Rad21_5k_vs_Prom
   
         plot(pt_Rad21_5k_vs_Ctcf, main="Rad21_5K vs CTCF")
-        plot(pt.obj.Rad21_5K.Prom, main="Rad21_5K vs Promoters")
+        plot(pt_Rad21_5k_vs_Prom, main="Rad21_5K vs Promoters")
     @
     
     \incfig[h!]{figures/Example2_fig1.pdf}{0.8\textwidth}{Association of Rad21 peaks  with CTCF and gene promoters.}
