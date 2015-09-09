@@ -28,7 +28,7 @@ BiocStyle::latex()
 
 \title{regioneR: Association analysis of genomic regions based on permutation tests}
 \author{Bernat Gel\footnote{bgel@imppc.org}, Anna D{\'i}ez-Villanueva and Roberto Malinverni}
-\date{Edited: September 7, 2015; Compiled: \today}
+\date{Edited: September 9, 2015; Compiled: \today}
 
 
 \begin{document}
@@ -46,7 +46,7 @@ set.seed(21666641)
 \maketitle
 \linespread{1.2}\selectfont
 \tableofcontents
-\newpage
+\clearpage
 
 
 
@@ -685,9 +685,11 @@ overlaps.int
 
     In the plot we can see in grey the distribution of the evaluation of the randomized regions, in green the evaluation of the original region set (in this case, the 614 CpG islands that overlap at least one promoter), and in red the significance limit. The the high z-score and the plot make evident the extreme significance of the association tested.
     
-    %1-Wu H, Caffo B, Jaffe HA, Feinberg AP, Irizarry RA (2010) Redefining CpG Islands Using a Hierarchical Hidden Markov Model. Biostatistics 11(3): 499-514. 
-
+    \textbf{\large{References:}}
     
+    Wu H, Caffo B, Jaffe HA, Feinberg AP, Irizarry RA (2010) Redefining CpG Islands Using a Hierarchical Hidden Markov Model. Biostatistics 11(3): 499-514. 
+
+\clearpage
     
   \subsection{Example 2: Analysis of ChIP-seq peaks. Advanced usage and local Z-score.}
   
@@ -731,9 +733,15 @@ overlaps.int
         
     <<eval=FALSE>>=
         #NOT RUN
-        pt_Rad21_5k_vs_Ctcf <- permTest(A=HepG2_Rad21_5K, B=HepG2_Ctcf, ntimes=1000, randomize.function=circularRandomizeRegions, evaluate.function=numOverlaps, count.once=TRUE, genome="hg19", mc.set.seed=FALSE, mc.cores=4)
+        pt_Rad21_5k_vs_Ctcf <- permTest(A=HepG2_Rad21_5K, B=HepG2_Ctcf, ntimes=1000,
+                                        randomize.function=circularRandomizeRegions,
+                                        evaluate.function=numOverlaps, count.once=TRUE,
+                                        genome="hg19", mc.set.seed=FALSE, mc.cores=4)
 
-        pt_Rad21_5k_vs_Prom <- permTest(A=HepG2_Rad21_5K, B=promoters, ntimes=1000, randomize.function=circularRandomizeRegions, evaluate.function=numOverlaps, count.once=TRUE, genome="hg19", mc.set.seed=FALSE, mc.cores=4)
+        pt_Rad21_5k_vs_Prom <- permTest(A=HepG2_Rad21_5K, B=promoters, ntimes=1000,
+                                        randomize.function=circularRandomizeRegions,
+                                        evaluate.function=numOverlaps, count.once=TRUE,
+                                        genome="hg19", mc.set.seed=FALSE, mc.cores=4)
 
         pt_Rad21_5k_vs_Ctcf
 
@@ -752,9 +760,13 @@ overlaps.int
     
     <<eval=FALSE>>=
         #NOT RUN
-        lz_Rad21_vs_Ctcf_1 <- localZScore(A=HepG2_Rad21_5K, B=HepG2_Ctcf, pt=pt_Rad21_5k_vs_Ctcf, window=1000, step=50, count.once=TRUE)
+        lz_Rad21_vs_Ctcf_1 <- localZScore(A=HepG2_Rad21_5K, B=HepG2_Ctcf, 
+                                          pt=pt_Rad21_5k_vs_Ctcf, 
+                                          window=1000, step=50, count.once=TRUE)
 
-        lz_Rad21_vs_Prom_1 <- localZScore(A=HepG2_Rad21_5K, B=promoters, pt=pt_Rad21_5k_vs_Prom, window=1000, step=50, count.once=TRUE)
+        lz_Rad21_vs_Prom_1 <- localZScore(A=HepG2_Rad21_5K, B=promoters,
+                                          pt=pt_Rad21_5k_vs_Prom,
+                                          window=1000, step=50, count.once=TRUE)
         
         plot(lz_Rad21_vs_Ctcf_1, main="Rad21_5k vs CTCF (1Kbp)")
         plot(lz_Rad21_vs_Prom_1, main="Rad21_5k vs promoters  (1Kbp)")
@@ -764,15 +776,19 @@ overlaps.int
     \incfig[h!]{figures/Example2_fig2.pdf}{0.8\textwidth}{Local Z-score analysis of the association of Rad21 peaks with CTCF and gene promoters with a 1Kbp window.}
 {}
 
-    Analysing how the z-score changes when the Rad21 regions are moved around their original position, we can see a very different profile. In the case of the association with CTCF, a narrow peak is evident. This means that if the original regions, the Rad21 peaks were displaced 300bp to either side, the z-score of the association would drop to almost zero. A clear narrow peak like this one indicates that the association is highly dependant on the exact position of the peaks, what makes sense in this case given the physical interaction of Rad21 and CTCF. In the case of the promoters, however, we can see that there is no drop in the z-score when the regions are moved. This suggests that the association we are seeing is more regional and it does not depend so strictly on the exact position of the regions. 
+    Analysing how the z-score changes when the Rad21 regions are moved around their original position, we can see a very different profile. In the case of the association with CTCF, a narrow peak is evident. This means that if the original regions, the Rad21 peaks were displaced 300bp to either side, the z-score of the association would drop to almost zero. A clear narrow peak like this one indicates that the association is highly dependant on the exact position of the peaks, what makes sense in this case given the already described colocalization of CTCF and Rad21. In the case of the promoters, however, we can see that there is no drop in the z-score when the regions are moved. This suggests that the association we are seeing is more regional and it does not depend so strictly on the exact position of the regions. 
     
   Increasing the window value to 10000bp and the step to 200bp, we can see a broader view of the z-score change and we can see how there's a drop of z-score, but at a much higher distance, which indicates either wider regions or some kind of regional association.
   
     <<eval=FALSE>>=
         #NOT RUN
-        lz_Rad21_vs_Ctcf_2 <- localZScore(A=HepG2_Rad21_5K, B=HepG2_Ctcf, pt=pt_Rad21_5k_vs_Ctcf, window=10000, step=500, count.once=TRUE)
+        lz_Rad21_vs_Ctcf_2 <- localZScore(A=HepG2_Rad21_5K, B=HepG2_Ctcf,
+                                          pt=pt_Rad21_5k_vs_Ctcf,
+                                          window=10000, step=500, count.once=TRUE)
 
-        lz_Rad21_vs_Prom_2 <- localZScore(A=HepG2_Rad21_5K, B=promoters, pt=pt_Rad21_5k_vs_Prom, window=10000, step=500, count.once=TRUE)     
+        lz_Rad21_vs_Prom_2 <- localZScore(A=HepG2_Rad21_5K, B=promoters,
+                                          pt=pt_Rad21_5k_vs_Prom,
+                                          window=10000, step=500, count.once=TRUE)     
         
         plot(lz_Rad21_vs_Ctcf_2, main="Rad21_5k vs CTCF (10Kbp)")
         plot(lz_Rad21_vs_Prom_2, main="Rad21_5k vs promoters  (10Kbp)")
@@ -781,25 +797,30 @@ overlaps.int
       \incfig[h!]{figures/Example2_fig3.pdf}{0.8\textwidth}{Local Z-score analysis of the association of Rad21 peaks with CTCF and gene promoters with a 10Kbp window.}
 {}
 
-    \textbf{Note:} In many cases, it is possible to use a subset of the regions to get a first glimpse of the association before testing with the whole set of regions. However, the size of the subset is important. In the figure \ref{fig:subset_size} there are the results of testing the association of Rad21 with CTCF and the gene promoters with three different subset sizes: 200, 5000 and all the Rad21 reagions. It is clear that the 5000 subset is capable of detecting the association with both sets of regions but the 200 subset detects the very strong association with CTCF but fails to clearly detect the association with the promoters. 
-    
-    \incfig[h!]{figures/Example2_fig4.pdf}{0.8\textwidth}{The effect of the subset size in the association testing.}
+    \textbf{Note:} In many cases, it is possible to use a subset of the regions to get a first glimpse of the association before testing with the whole set of regions. However, the size of the subset is important. In the figure there are the results of testing the association of Rad21 with CTCF and the gene promoters with three different subset sizes: 200, 5000 and all the Rad21 reagions. It is clear that the 5000 subset is capable of detecting the association with both sets of regions but the 200 subset detects the very strong association with CTCF but fails to clearly detect the association with the promoters. 
+    %\ref{fig:subset_size}
+    \incfig[h!]{figures/Example2_fig4.pdf}{\textwidth}{The effect of the subset size in the association testing.}
 {}
 
 
+  \textbf{\large{References:}}
+  
+  Ong CT, Corces VG. Enhancer function: new insights into the regulation of tissue-specific gene expression. Nat Rev Genet. 2011 Apr;12(4):283-93.
+ 
+  Ong CT, Corces VG. CTCF: an architectural protein bridging genome topology and function. Nat Rev Genet. 2014 Apr;15(4):234-46.
 
 
-  \subsection{Example 3: Regions with Copy Number Alterations. Custom evaluation functions.}
+%  \subsection{Example 3: Regions with Copy Number Alterations. Custom evaluation functions.}
   
   
 
-
+\clearpage
 %==============================================================================
 %
-%                                     Benchmarks
-%
-%==============================================================================
 \section{Benchmarks and Performance}
+%
+%==============================================================================
+
 
   The main focus of \regioneR{} is not speed but flexibility. However, the most time consuming parts of the test, mainly the randomization functions, have been optimized and perform quite well (although still far from pure C implementations such as bedtools). In this section we present a comparison of the performance of the different available functions.
   
