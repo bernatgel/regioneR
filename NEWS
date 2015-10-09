@@ -1,0 +1,20 @@
+CHANGES IN VERSION 1.1.8
+-----------------------
+
+NEW FEATURES
+
+    o Added new functionality to permTest to use multiple evaluation functions
+      with a single randomization procedure. This gives a significant speedup 
+      when comparing a single region set with multiple other features
+
+    o Created a new function createFunctionsList() that given a function 
+      and a list of values, creates a list of curried functions
+      (e.g with one parameter preassigned to each of the given values)
+      
+PERFORMANCE IMPROVEMENTS
+
+    o Complete rewrite of randomizeRegions() resulting in a 10 to 100 fold speedup
+
+BUG FIXES
+
+    o Multiple minor bug fixes
