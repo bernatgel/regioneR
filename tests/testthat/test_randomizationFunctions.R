@@ -8,7 +8,7 @@ smallB <- toGRanges(data.frame(chr=rep(c("chr2", "chr1"), 10), start=100*(1:20),
 
 bigRegionsA <- toGRanges(data.frame(chr=rep(c("chr1", "chr2"), 10), start=100*(1:20), end=1200000*(1:20)))
 
-gam <- getGenomeAndMask("hg19")
+gam <- getGenomeAndMask("hg19") #only used to fill the memoise cache
 
 #Randomize Regions
 test_that("the class of randomized regions is correct (randomizeRegions)", {
@@ -22,6 +22,14 @@ test_that("the number of randomized regions is correct (randomizeRegions)", {
   expect_equal(length(randomizeRegions(smallA, non.overlapping=TRUE)), length(smallA))
 
 })
+
+test_that("the width of the randomized regions is correct (randomizeRegions)", {
+  expect_equal(sum(width(randomizeRegions(smallA))), sum(width(smallA)))
+  expect_equal(sum(width(randomizeRegions(smallA, per.chromosome=TRUE))), sum(width(smallA)))
+  expect_equal(sum(width(randomizeRegions(smallA, non.overlapping=TRUE))), sum(width(smallA)))
+  
+})
+
 
 test_that("the randomized regions do not overlap the mask (randomizeRegions)", {
   expect_equal(numOverlaps(randomizeRegions(bigRegionsA, genome=gam$genome, mask=gam$mask), gam$mask), 0)

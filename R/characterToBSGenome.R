@@ -6,8 +6,8 @@
 #' @note
 #' This function is memoised (cached) using the \code{memoise} package. To empty the cache, use \code{forget(charecterToBSGenome)}
 #' 
-#  @usage characterToBSGenome(genome.name) <- Real Documentation, but problems with Codoc checks
-#' @usage characterToBSGenome(...)
+#'  @usage characterToBSGenome(genome.name) 
+# @usage characterToBSGenome(...)
 #' 
 #' @param ... a genome.name parameter is needed, a character string uniquely identifying a \code{\link{BSgenome}} (e.g. "hg19", "mm10" are ok, but "hg" is not)
 #' 

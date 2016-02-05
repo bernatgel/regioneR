@@ -9,8 +9,8 @@
 #' This function is memoised (cached) using the \code{\link{memoise}} package. To empty the cache, use \code{\link{forget}(getGenomeAndMask)}
 #' 
 #' 
-# @usage getGenomeAndMask(genome, mask=NULL) <- Real Documentation. Problems with codoc
-#' @usage getGenomeAndMask(...)
+#' @usage getGenomeAndMask(genome, mask=NULL) 
+# @usage getGenomeAndMask(...)
 #' 
 #' @param ...  a genome parameter is required, the genome object or genome identifier. A mask parameter is optional: the mask of the genome. If mask is \code{\link{NULL}}, it will try to get a mask from the genome. If mask is \code{\link{NA}} it will return an empty mask.
 #' 

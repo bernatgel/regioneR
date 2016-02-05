@@ -23,7 +23,7 @@
 #' 
 # @usage getGenome(genome) <- Real Documentation. Problems with codoc
 #' 
-#' @usage getGenome(...)
+#' @usage getGenome(genome)
 #' 
 #' @param ... a genome parameter is required. The genome object or genome identifier.
 #' 

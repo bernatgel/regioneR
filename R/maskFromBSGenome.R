@@ -6,8 +6,8 @@
 #' @note
 #' This function is memoised (cached) using the \code{\link{memoise}} package. To empty the cache, use \code{\link{forget}(maskFromBSGenome)}
 #' 
-# @usage maskFromBSGenome(bsgenome) <- The real documentation. Problems with Codoc
-#' @usage maskFromBSGenome(...) 
+#' @usage maskFromBSGenome(bsgenome)
+# @usage maskFromBSGenome(...) 
 #' 
 #' @param ... a bsgenome parameter is required: a \code{\link{BSgenome}} object
 #' 

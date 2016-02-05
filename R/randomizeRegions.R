@@ -223,7 +223,7 @@ randomizeFastWithNoOverlappingControl <- function(A, genome,  mask, max.retries=
   }
   
   
-  reg.widths <- width(A)
+  reg.widths <- width(A) - 1
   #Create a set of valid random of regions. For some regions it might succeed, and for others it will be NA
   rand.reg.list <- lapply(reg.widths, getValidReg)
   
@@ -282,7 +282,7 @@ private_randomizeRegions <- function(A, genome, mask, allow.overlaps=TRUE, max.r
     new.chr <- new.start <- new.end <- c()
     for(i in 1:length(A)) {
       
-      len <- width(A)[i]
+      len <- width(A)[i] - 1
       #CHECK: a -1 is not necessary when using the dataframe fr valid.regions
       len.valid <- valid.regions[,3]-valid.regions[,2] - len -1 #The region cannot start in the last len positions of the valid region. It would not fit
       #len.valid <- width(valid.regions) - len - 1 #The region cannot start in the last len positions of the valid region. It would not fit
