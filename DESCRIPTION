@@ -1,7 +1,7 @@
 Package: regioneR
 Type: Package
 Title: Association analysis of genomic regions based on permutation tests
-Version: 1.2.1
+Version: 1.2.2
 Date: 2015-09-04
 Author: Anna Diez-Villanueva <adiez@imppc.org>, Roberto Malinverni
     <rmalinverni@carrerasresearch.org> and Bernat Gel <bgel@imppc.org>
@@ -10,19 +10,19 @@ Description: regioneR offers a statistical framework based on
     customizable permutation tests to assess the association
     between genomic region sets and other genomic features.
 License: Artistic-2.0
-Depends: 
+Depends:
     memoise,
     GenomicRanges,
     BSgenome,
     rtracklayer,
     parallel
-Imports: 
+Imports:
     memoise,
     GenomicRanges,
     BSgenome,
     rtracklayer,
     parallel
-Suggests: 
+Suggests:
     BiocStyle,
     knitr,
     BSgenome.Hsapiens.UCSC.hg19.masked,
@@ -30,3 +30,4 @@ Suggests:
 VignetteBuilder: knitr
 biocViews: Genetics, ChIPSeq, DNASeq, MethylSeq, CopyNumberVariation
 NeedsCompilation: no
+RoxygenNote: 5.0.1

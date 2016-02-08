@@ -12,7 +12,8 @@
 #' @usage getGenomeAndMask(genome, mask=NULL) 
 # @usage getGenomeAndMask(...)
 #' 
-#' @param ...  a genome parameter is required, the genome object or genome identifier. A mask parameter is optional: the mask of the genome. If mask is \code{\link{NULL}}, it will try to get a mask from the genome. If mask is \code{\link{NA}} it will return an empty mask.
+#' @param genome The genome object or genome identifier.
+#' @param mask The mask of the genome. If mask is \code{\link{NULL}}, it will try to get a mask from the genome. If mask is \code{\link{NA}} it will return an empty mask. If a data.frame ot GRanges is provided, it will be used as the mask.
 #' 
 #' @return
 #' A list with two elements: genome and mask. Genome and mask are GRanges objects. 

@@ -25,7 +25,7 @@
 #' numOverlaps(A, B)
 #' numOverlaps(A, B, count.once=TRUE)
 #'  
-#'  @export numOverlaps
+#' @export numOverlaps
   
 
 

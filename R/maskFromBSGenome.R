@@ -9,7 +9,7 @@
 #' @usage maskFromBSGenome(bsgenome)
 # @usage maskFromBSGenome(...) 
 #' 
-#' @param ... a bsgenome parameter is required: a \code{\link{BSgenome}} object
+#' @param bsgenome A \code{\link{BSgenome}} object
 #' 
 #' @return
 #' A \code{\link{GRanges}} object with the active mask in the \code{\link{BSgenome}}

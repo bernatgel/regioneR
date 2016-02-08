@@ -11,7 +11,7 @@
 #' @usage getMask(genome)
 # @usage getMask(...)
 #' 
-#' @param ... a genome parameter is required, the genome from where the mask will be extracted. It can be either a \code{\link{BSgenome}} object or a character string uniquely identifying a \code{\link{BSgenome}} object installed (e.g. "hg19", "mm10", ...)
+#' @param genome The genome from where the mask will be extracted. It can be either a \code{\link{BSgenome}} object or a character string uniquely identifying a \code{\link{BSgenome}} object installed (e.g. "hg19", "mm10", ...)
 #' 
 #' @return
 #' A \code{\link{GRanges}} object with the genomic regions to be masked out

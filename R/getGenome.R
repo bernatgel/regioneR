@@ -25,7 +25,7 @@
 #' 
 #' @usage getGenome(genome)
 #' 
-#' @param ... a genome parameter is required. The genome object or genome identifier.
+#' @param genome The genome object or genome identifier.
 #' 
 #' @return
 #' A \code{\link{GRanges}} representing the genome with one region per chromosome.
