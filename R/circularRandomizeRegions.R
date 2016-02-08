@@ -63,7 +63,7 @@ circularRandomizeRegions <- function(A, genome="hg19", mask=NULL, max.mask.overl
         }
         spin <- floor(runif(1)*chr.len)
         spin.A <- spinChromosome(chr.A, spin, chr.len)
-        num.ov <- numOverlaps(A=spin.A, B=gam$mask)
+        num.ov <- numOverlaps(A=spin.A, B=gam$mask, count.once=TRUE)
         num.retries <- num.retries + 1
       }
       if(num.retries >= max.retries) {
