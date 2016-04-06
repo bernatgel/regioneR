@@ -21,7 +21,10 @@ Imports:
     GenomicRanges,
     BSgenome,
     rtracklayer,
-    parallel
+    parallel,
+    graphics,
+    stats,
+    utils
 Suggests:
     BiocStyle,
     knitr,

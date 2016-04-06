@@ -43,3 +43,7 @@ import(GenomicRanges)
 import(memoise)
 import(parallel)
 importFrom(rtracklayer,import)
+import(utils)
+import(stats)
+import(graphics)
+
