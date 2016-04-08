@@ -34,6 +34,8 @@
 #' @import memoise
 #' @importFrom rtracklayer import
 #' @import parallel
+#' @import GenomeInfoDb
+#' @import IRanges
 #' 
 #' 
 

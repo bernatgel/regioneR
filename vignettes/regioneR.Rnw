@@ -342,7 +342,7 @@ Another randomization function available in \regioneR{} is the circularRandomize
 As an example, we can randomize the same the same RS as before, and observe how the randomized regions are in the same chromosome and at the same relative distance:
 
 <<>>=
-circularRandomizeRegions(A,genome="hg19", mask=NA)
+circularRandomizeRegions(A, genome="hg19", mask=NA)
 @
 
 

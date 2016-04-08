@@ -31,7 +31,7 @@
 #'  
 #'  meanInRegions(A, x)
 #'  
-#'  @export meanInRegions
+#' @export meanInRegions
   
 
 

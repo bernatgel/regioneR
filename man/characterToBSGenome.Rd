@@ -17,8 +17,6 @@ Given a character string with the "name" of a genome, it returns a \code{\link{B
 }
 \note{
 This function is memoised (cached) using the \code{memoise} package. To empty the cache, use \code{forget(charecterToBSGenome)}
-
- @usage characterToBSGenome(genome.name)
 }
 \examples{
 g <- characterToBSGenome("hg19")

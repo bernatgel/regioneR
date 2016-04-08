@@ -36,7 +36,6 @@ Returns the mean of a value defined by a region set over another set of regions.
  
  meanInRegions(A, x)
  
- @export meanInRegions
 }
 \seealso{
 \code{\link{permTest}}

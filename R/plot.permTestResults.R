@@ -33,6 +33,10 @@
 #' plot(pt2)
 #' plot(pt2, plotType="Tailed")
 #' 
+#' @import graphics
+#' @importFrom stats sd
+#' @importFrom stats median
+#'
 #' @export 
 
 

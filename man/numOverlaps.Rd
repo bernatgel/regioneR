@@ -30,7 +30,6 @@ B <- c(A, createRandomRegions(nregions=10, length.mean=10000, length.sd=20000, g
 numOverlaps(A, B)
 numOverlaps(A, B, count.once=TRUE)
  
- @export numOverlaps
 }
 \seealso{
 \code{\link{overlapPermTest}}, \code{\link{permTest}}

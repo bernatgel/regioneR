@@ -47,9 +47,11 @@ circularRandomizeRegions <- function(A, genome="hg19", mask=NULL, max.mask.overl
   
   
   
-  getRandomChr <- function(chr) {
+  getRandomChr <- function(chr, gam) {
+	
     chr.A <- A[A$chr==chr,]
     chr.len <- end(gam$genome[seqnames(gam$genome)==as.character(chr)])
+	
     spin <- floor(runif(1)*chr.len)
     spin.A <- spinChromosome(chr.A, spin, chr.len)
     if(!is.null(max.mask.overlap)) {
@@ -59,7 +61,7 @@ circularRandomizeRegions <- function(A, genome="hg19", mask=NULL, max.mask.overl
       num.retries <- 0
       while(num.ov/nrow(spin.A) > max.mask.overlap & num.retries < max.retries) {
         if(verbose==TRUE) {
-          print(paste0("Chromosome ", chr, ". Too much overlap with the mask: Num. Regions: ", nrow(chr.A), "  Num. Overlaps: ", num.ov, "  Pct. Overlap: ", (num.ov/nrow(spin.A))*100, ". Retrying..."))
+          message(paste0("Chromosome ", chr, ". Too much overlap with the mask: Num. Regions: ", nrow(chr.A), "  Num. Overlaps: ", num.ov, "  Pct. Overlap: ", (num.ov/nrow(spin.A))*100, ". Retrying..."))
         }
         spin <- floor(runif(1)*chr.len)
         spin.A <- spinChromosome(chr.A, spin, chr.len)
@@ -73,7 +75,7 @@ circularRandomizeRegions <- function(A, genome="hg19", mask=NULL, max.mask.overl
     return(spin.A) 
   }
   
-  rand.A <- lapply(unique(A$chr), getRandomChr)
+  rand.A <- lapply(unique(A$chr), getRandomChr, gam=gam)
   rand.A <- do.call(rbind, rand.A)
   return(toGRanges(rand.A))
   
@@ -83,17 +85,21 @@ circularRandomizeRegions <- function(A, genome="hg19", mask=NULL, max.mask.overl
 
 
 spinChromosome <- function(A, spin, chr.len) {
+
+ 
   
   A$start <- (A$start + spin) %% chr.len
   A$end <- (A$end + spin) %% chr.len
   
   part.out <- A$end < A$start
-  C <- A[part.out,]
-  A[part.out, "end"] <- chr.len
-  C$start <- rep(1, nrow(C)) 
+  if(any(part.out)) {
+    C <- A[part.out,]
+    A[part.out, "end"] <- chr.len
+    C$start <- rep(1, nrow(C)) 
   
-  A <- rbind(A, C)
-  
+    A <- rbind(A, C)
+  }
+
   return(A)
 }
 

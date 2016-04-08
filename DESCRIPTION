@@ -24,7 +24,9 @@ Imports:
     parallel,
     graphics,
     stats,
-    utils
+    utils,
+    GenomeInfoDb,
+    IRanges
 Suggests:
     BiocStyle,
     knitr,
