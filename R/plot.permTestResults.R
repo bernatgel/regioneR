@@ -34,8 +34,7 @@
 #' plot(pt2, plotType="Tailed")
 #' 
 #' @import graphics
-#' @importFrom stats sd
-#' @importFrom stats median
+#' @importFrom stats dnorm qnorm rnorm runif
 #'
 #' @export 
 

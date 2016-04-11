@@ -52,7 +52,7 @@
 #' @references 
 #' Davison, A. C. and Hinkley, D. V. (1997) Bootstrap methods and their application, Cambridge University Press, United Kingdom, 156-160
 #'
-#' @import utils
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #'
 #' @export permTest
 
