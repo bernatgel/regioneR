@@ -197,9 +197,9 @@ permTest <- function(A, ntimes=100, randomize.function, evaluate.function, alter
             
       #Compute the p-value
       if (alt == "less") {
-        pval <- (sum(orig.ev > rand.ev, na.rm=TRUE) + 1) / (num.valid.values + 1)
+        pval <- (sum(orig.ev >= rand.ev, na.rm=TRUE) + 1) / (num.valid.values + 1)
       } else { #alt == "greater"
-        pval <- (sum(orig.ev < rand.ev, na.rm=TRUE) + 1) / (num.valid.values + 1)
+        pval <- (sum(orig.ev <= rand.ev, na.rm=TRUE) + 1) / (num.valid.values + 1)
       }
       #if the original alternative was not the best one, suggest the user to change it
       if(alternative=="greater" & orig.ev<mean(rand.ev,na.rm=TRUE)) message("Alternative is greater and the observed statistic is less than the permuted statistic mean. Maybe you want to use recomputePermTest to change the alternative hypothesis.")
