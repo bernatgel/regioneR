@@ -37,11 +37,11 @@ recomputePermTest<-function(ptr){
   
   ptr2<-ptr
   if(ptr$alternative == "less"){
-    ptr2$pval <- (sum(ptr$observed < ptr$permuted) + 1) / (ptr$ntimes + 1)
+    ptr2$pval <- (sum(ptr$observed <= ptr$permuted) + 1) / (ptr$ntimes + 1)
     ptr2$alternative<-"greater"
   } 
   if(ptr$alternative == "greater"){
-    ptr2$pval <- (sum(ptr$observed > ptr$permuted) + 1) / (ptr$ntimes + 1)
+    ptr2$pval <- (sum(ptr$observed >= ptr$permuted) + 1) / (ptr$ntimes + 1)
     ptr2$alternative<-"less"
   } 
   return(ptr2) 
