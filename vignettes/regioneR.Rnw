@@ -631,12 +631,12 @@ overlaps.int
       Gene promoter regions are GC rich and there are many CpG islands that lie inside promoters. However, is there a statistically significant association between them? Do CpG islands overlap with promoters more than one would expect by chance?
       
     \textbf{\large{Datasets:}}
-      We will use the CpG islands described in Wu et al. 2010 (http://rafalab.dfci.harvard.edu/) and the promoters from UCSC defined as -2000 to +200 base pairs to the TSS according to the genome assembly hg19. The promoters file can be dowloaded from \url{http://gattaca.imppc.org/regioner/}.
+      We will use the CpG islands described in Wu et al. 2010 and the promoters from UCSC defined as -2000 to +200 base pairs to the TSS according to the genome assembly hg19. The promoters file can be dowloaded from \url{http://gattaca.imppc.org/regioner/}.
 
       <<eval=FALSE>>=
         #NOT RUN
         set.seed(12345) 
-        cpgHMM <- toGRanges("http://rafalab.jhsph.edu/CGI/model-based-cpg-islands-hg19.txt")
+        cpgHMM <- toGRanges("http://www.haowulab.org/software/makeCGI/model-based-cpg-islands-hg19.txt")
         promoters <- toGRanges("http://gattaca.imppc.org/regioner/data/UCSC.promoters.hg19.bed")
       @
     
