@@ -34,4 +34,3 @@ numOverlaps(A, B, count.once=TRUE)
 \seealso{
 \code{\link{overlapPermTest}}, \code{\link{permTest}}
 }
-

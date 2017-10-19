@@ -23,4 +23,3 @@ chrsByOrg[["hg"]][["autosomal"]]
 \seealso{
 \code{\link{getGenome}}, \code{\link{filterChromosomes}}
 }
-

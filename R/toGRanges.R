@@ -12,6 +12,10 @@
 #' If A is a data frame, the function will assume the first three columns are chromosome, start and end and create a \code{\link{GRanges}} object. Any additional 
 #' column will be considered metadata and stored as such in the \code{\link{GRanges}} object. 
 #' 
+#' If A is not a data.frame and there are more parameters, it will try to build a data.frame with all 
+#' parameters and use that data.frame to build the GRanges. This allows the user to call it like
+#'  \code{toGRanges("chr1", 10, 20)}.
+#' 
 #' @usage toGRanges(A, ...)
 #' 
 #' @param A  a \code{\link{data.frame}} containing a region set, a \code{\link{GRanges}} object, a BED file or any type of file supported by \code{rtracklayer}
@@ -121,6 +125,12 @@ toGRanges <- function(A, ...) {
   }
   
   gr <- NULL
+  
+  #if there are more than one parameters, try to build a data.frame from them
+  if(length(list(...))>0) {
+    tryCatch(A <- do.call(data.frame, c(list(A), list(...))),
+             error=function(e){}, warning=function(e){})
+  }
   
   #if it's a dataframe, assume the three first columns are: chr, start and end
   if(is(A, "data.frame")) {

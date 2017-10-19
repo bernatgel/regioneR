@@ -31,4 +31,3 @@ plot(resPerm)
 \seealso{
 \code{\link{permTest}}
 }
-

@@ -32,4 +32,3 @@ subtract <- subtractRegions(A, B)
 plotRegions(list(A, B, subtract), chromosome=1, regions.labels=c("A", "B", "subtract"), regions.colors=3:1)
 
 }
-

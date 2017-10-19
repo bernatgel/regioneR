@@ -45,4 +45,3 @@ createRandomRegions(nregions=10, genome=genome, mask=mask, non.overlapping=TRUE)
 \seealso{
 \code{\link{getGenome}}, \code{\link{getMask}}, \code{\link{getGenomeAndMask}}, \code{\link{characterToBSGenome}}, \code{\link{maskFromBSGenome}}, \code{\link{randomizeRegions}}, \code{\link{resampleRegions}}
 }
-

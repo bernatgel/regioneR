@@ -64,4 +64,3 @@ overlapRegions(A, B)
 \seealso{
 \code{\link{plotRegions}}, \code{\link{toDataframe}}, \code{\link{toGRanges}}, \code{\link{subtractRegions}}, \code{\link{splitRegions}}, \code{\link{extendRegions}}, \code{\link{commonRegions}}, \code{\link{mergeRegions}}, \code{\link{joinRegions}}
 }
-

@@ -35,4 +35,3 @@ plotRegions(list(A, B, merges), chromosome="chr1", regions.labels=c("A", "B", "m
 \seealso{
 \code{\link{plotRegions}}, \code{\link{toDataframe}}, \code{\link{toGRanges}}, \code{\link{subtractRegions}}, \code{\link{splitRegions}}, \code{\link{extendRegions}}, \code{\link{joinRegions}}, \code{\link{commonRegions}}, \code{\link{overlapRegions}}
 }
-

@@ -36,4 +36,3 @@ plot(lz)
 \seealso{
 \code{\link{localZScore}}
 }
-

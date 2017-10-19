@@ -33,4 +33,3 @@ plotRegions(list(A, B, uniques), chromosome="chr1", regions.labels=c("A", "B", "
 \seealso{
 \code{\link{toGRanges}}, \code{\link{subtractRegions}}, \code{\link{commonRegions}}, \code{\link{mergeRegions}}
 }
-

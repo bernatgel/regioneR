@@ -24,4 +24,3 @@ g <- characterToBSGenome("hg19")
 \seealso{
 \code{\link{getGenomeAndMask}}, \code{\link{maskFromBSGenome}}
 }
-

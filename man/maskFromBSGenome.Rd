@@ -27,4 +27,3 @@ maskFromBSGenome(g)
 \seealso{
 \code{\link{getGenomeAndMask}}, \code{\link{characterToBSGenome}}, \code{\link{emptyCacheRegioneR}}
 }
-

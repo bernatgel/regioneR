@@ -39,7 +39,7 @@
 #' @export 
 
 
-plot.permTestResults<-function(x, pvalthres=0.05, plotType="Tailed", main="", xlab=NULL, ylab="", ...){
+plot.permTestResults<-function(x, pvalthres=0.05, plotType="Tailed", main="", xlab=NULL, ylab="", ylim=NULL, xlim=NULL, ...){
   
   old.scipen <- options()$scipen
   
@@ -51,7 +51,7 @@ plot.permTestResults<-function(x, pvalthres=0.05, plotType="Tailed", main="", xl
   
   
   if(is.null(xlab)) xlab <- paste0(x$evaluate.function.name)
-  if(nchar(main)>0) main <- paste0(main, "\n")  
+  if(nchar(main)>0) main <- paste0(main, "\n")
   
   alternative<-x$alternative
   xcoords<-x$permuted
@@ -70,12 +70,15 @@ plot.permTestResults<-function(x, pvalthres=0.05, plotType="Tailed", main="", xl
     if (alternative=="greater") aux<-qnorm((1-pvalthres),mean=mean(xcoords,na.rm=TRUE),sd=sd(xcoords,na.rm=TRUE))
     if (alternative=="less") aux<-qnorm(pvalthres,mean=mean(xcoords,na.rm=TRUE),sd=sd(xcoords,na.rm=TRUE))
     
-    xmin<-min(mobs,min(xcoords,na.rm=TRUE),min(aux,na.rm=TRUE),na.rm=TRUE)
-    xmax<-max(mobs,max(xcoords,na.rm=TRUE),max(aux,na.rm=TRUE),na.rm=TRUE)
+    xmin<-min(mobs, min(xcoords,na.rm=TRUE), min(aux,na.rm=TRUE), na.rm=TRUE)
+    xmax<-max(mobs, max(xcoords,na.rm=TRUE), max(aux,na.rm=TRUE), na.rm=TRUE)
     
-    hist(xcoords, prob = TRUE, ylim = c(0,ymax), breaks = 30, xlim = c(xmin,xmax),
+    if(is.null(ylim)) ylim <- c(0,ymax)
+    if(is.null(xlim)) xlim <- c(xmin,xmax)
+    
+    hist(xcoords, prob = TRUE, ylim = ylim, breaks = 30, xlim = xlim,
          las = 1, col = "lightgray", border = "lightgray", xlab=xlab, ylab=ylab, main=paste(main, "p-value: ",
-                                                                                            pval, "\n Z-score: ", zscore, "\n n perm: ", nperm, "\n randomization: ", paste0(x$randomize.function.name)),
+         pval, "\n Z-score: ", zscore, "\n n perm: ", nperm, "\n randomization: ", paste0(x$randomize.function.name)),
          cex.main=0.8, ...)
     
     if(plotType=="Area"){
@@ -123,7 +126,11 @@ plot.permTestResults<-function(x, pvalthres=0.05, plotType="Tailed", main="", xl
     xhist<-hist(xcoords,breaks=30,plot=FALSE)$density
     ymax<-max(xhist,na.rm=TRUE)
     
-    hist(xcoords, prob = TRUE, ylim = c(0,ymax), breaks = 30, xlim = c(min(mobs,min(xcoords,na.rm=TRUE),na.rm=TRUE), max(mobs,max(xcoords,na.rm=TRUE),na.rm=TRUE)), las = 1, col = "lightgray", border = "lightgray", xlab=xlab, ylab=ylab, main=paste(main, "p-value: ", pval, "\n Z-score: ", zscore, "\n n perm: ", nperm, "\n randomization: ", paste0(x$randomize.function.name)), cex.main=0.8, ...)
+    if(is.null(ylim)) ylim <- c(0,ymax)
+    if(is.null(xlim)) xlim <- c(min(mobs,min(xcoords,na.rm=TRUE),na.rm=TRUE), max(mobs,max(xcoords,na.rm=TRUE),na.rm=TRUE))
+    
+    
+    hist(xcoords, prob = TRUE, ylim = ylim, breaks = 30, xlim = xlim, las = 1, col = "lightgray", border = "lightgray", xlab=xlab, ylab=ylab, main=paste(main, "p-value: ", pval, "\n Z-score: ", zscore, "\n n perm: ", nperm, "\n randomization: ", paste0(x$randomize.function.name)), cex.main=0.8, ...)
     
     lines(c(mperm,mperm),c(0,ymax*0.8),col="black",lwd=3)
     text(mperm,ymax*0.9,expression(Ev[perm]),cex=0.8)

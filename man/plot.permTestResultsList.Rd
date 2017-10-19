@@ -50,4 +50,3 @@ plot(pt2, plotType="Tailed")
 \seealso{
 \code{\link{permTest}}
 }
-

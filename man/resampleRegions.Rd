@@ -32,4 +32,3 @@ resampleRegions(A, universe, per.chromosome=TRUE)
 \seealso{
 \code{\link{toDataframe}}, \code{\link{toGRanges}}, \code{\link{randomizeRegions}}, \code{\link{createRandomRegions}}
 }
-

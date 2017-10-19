@@ -13,4 +13,3 @@ the summary is printed
 Summary of permTestResultsList objects
 }
 \keyword{internal}
-

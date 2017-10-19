@@ -25,4 +25,3 @@ g <- filterChromosomes(g, chr.type="autosomal", organism="hg19")
 \seealso{
 \code{\link{filterChromosomes}}, \code{\link{getChromosomesByOrganism}}
 }
-

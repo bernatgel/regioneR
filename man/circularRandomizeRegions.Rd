@@ -46,4 +46,3 @@ circularRandomizeRegions(A, genome=genome, mask=mask, per.chromosome=TRUE, non.o
 \seealso{
 \code{\link{randomizeRegions}}, \code{\link{toDataframe}}, \code{\link{toGRanges}}, \code{\link{getGenome}}, \code{\link{getMask}}, \code{\link{getGenomeAndMask}}, \code{\link{characterToBSGenome}}, \code{\link{maskFromBSGenome}}, \code{\link{resampleRegions}}, \code{\link{createRandomRegions}}
 }
-

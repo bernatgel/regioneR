@@ -31,4 +31,3 @@ toDataframe(A2)
 \seealso{
 \code{\link{toGRanges}}
 }
-

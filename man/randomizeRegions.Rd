@@ -45,4 +45,3 @@ randomizeRegions(A, genome=genome, mask=mask, per.chromosome=TRUE, allow.overlap
 \seealso{
 \code{\link{toDataframe}}, \code{\link{toGRanges}}, \code{\link{getGenome}}, \code{\link{getMask}}, \code{\link{getGenomeAndMask}}, \code{\link{characterToBSGenome}}, \code{\link{maskFromBSGenome}}, \code{\link{resampleRegions}}, \code{\link{createRandomRegions}}, \code{\link{circularRandomizeRegions}}
 }
-

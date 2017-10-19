@@ -34,4 +34,3 @@ g <- filterChromosomes(g, keep.chr=c("chr1", "chr2", "chr3"))
 \seealso{
 \code{\link{getGenomeAndMask}}, \code{\link{listChrTypes}} \code{\link{getChromosomesByOrganism}}
 }
-

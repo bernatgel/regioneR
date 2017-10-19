@@ -33,4 +33,3 @@ overlapGraphicalSummary(A, B, regions.labels=c("A","B"), regions.colors=c(4,5,6)
 \seealso{
 \code{\link{overlapPermTest}}, \code{\link{overlapRegions}}
 }
-

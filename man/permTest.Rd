@@ -71,4 +71,3 @@ Davison, A. C. and Hinkley, D. V. (1997) Bootstrap methods and their application
 \seealso{
 \code{\link{overlapPermTest}}
 }
-

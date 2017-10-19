@@ -16,4 +16,3 @@ Empties the caches used by the memoised function in the regioneR package.
 emptyCacheRegioneR()
 
 }
-

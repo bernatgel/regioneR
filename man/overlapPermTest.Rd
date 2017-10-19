@@ -43,4 +43,3 @@ plot(pt, plotType="Tailed")
 \seealso{
 \code{\link{overlapGraphicalSummary}}, \code{\link{overlapRegions}}, \code{\link{toDataframe}}, \code{\link{toGRanges}}, \code{\link{permTest}}
 }
-

@@ -24,7 +24,11 @@ If A is a file name or connection to a file in any of the formats supported by \
 it will be imported using \code{rtracklayer}.
  
 If A is a data frame, the function will assume the first three columns are chromosome, start and end and create a \code{\link{GRanges}} object. Any additional 
-column will be considered metadata and stored as such in the \code{\link{GRanges}} object.
+column will be considered metadata and stored as such in the \code{\link{GRanges}} object. 
+
+If A is not a data.frame and there are more parameters, it will try to build a data.frame with all 
+parameters and use that data.frame to build the GRanges. This allows the user to call it like
+ \code{toGRanges("chr1", 10, 20)}.
 }
 \examples{
 A <- data.frame(chr=1, start=c(1, 15, 24), end=c(10, 20, 30),  x=c(1,2,3), y=c("a", "b", "c"))
@@ -35,4 +39,3 @@ toGRanges(A)
 \seealso{
 \code{\link{toDataframe}}
 }
-

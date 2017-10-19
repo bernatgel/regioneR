@@ -36,4 +36,3 @@ plotRegions(list(A,B), chromosome=1, regions.labels=c("A","B"), regions.colors=3
 
 
 }
-

@@ -40,4 +40,3 @@ Returns the mean of a value defined by a region set over another set of regions.
 \seealso{
 \code{\link{permTest}}
 }
-

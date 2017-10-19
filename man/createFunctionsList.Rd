@@ -48,4 +48,3 @@ B <- createRandomRegions(nregions=20, length.mean=10000000, length.sd=0, mask=NA
 \seealso{
 \code{\link{permTest}}, \code{\link{overlapPermTest}}
 }
-

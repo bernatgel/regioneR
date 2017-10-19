@@ -29,4 +29,3 @@ hg19.mask
 \seealso{
 \code{\link{getGenome}}, \code{\link{getGenomeAndMask}}, \code{\link{characterToBSGenome}}, \code{\link{maskFromBSGenome}}, \code{\link{emptyCacheRegioneR}}
 }
-

@@ -47,4 +47,3 @@ plot(lz2)
 \seealso{
 \code{\link{overlapPermTest}}, \code{\link{permTest}}
 }
-

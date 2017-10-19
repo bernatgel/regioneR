@@ -30,4 +30,3 @@ B <- data.frame("chr1", 25, 35)
 meanDistance(A, B)
 
 }
-

@@ -45,4 +45,3 @@ getGenome(data.frame(c("chrA", "chrB"), c(15000000, 10000000)))
 \seealso{
 \code{\link{getMask}}, \code{\link{getGenomeAndMask}}, \code{\link{characterToBSGenome}}, \code{\link{maskFromBSGenome}}, \code{\link{emptyCacheRegioneR}}
 }
-
