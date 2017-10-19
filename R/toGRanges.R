@@ -128,7 +128,7 @@ toGRanges <- function(A, ...) {
   
   #if there are more than one parameters, try to build a data.frame from them
   if(length(list(...))>0) {
-    tryCatch(A <- do.call(data.frame, c(list(A), list(...))),
+    tryCatch(A <- do.call(data.frame, c(list(A), list(...), list(stringsAsFactors=FALSE))),
              error=function(e){}, warning=function(e){})
   }
   
