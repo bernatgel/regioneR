@@ -1,3 +1,17 @@
+CHANGES IN VERSION 1.9.2
+-----------------------
+
+NEW FEATURES
+
+    o Simplified the interface of toGRanges for simpler use when manually 
+      creating GRanges. Now toGRanges("chr1", 10, 20) is valid.
+
+BUG FIXES
+
+    o Multiple minor bug fixes
+    
+    
+
 CHANGES IN VERSION 1.1.8
 -----------------------
 
