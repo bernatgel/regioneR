@@ -212,7 +212,7 @@ For example to check whether my regions overlap with repeats more than expected,
 <<eval=FALSE>>=
 # NOT RUN
 pt <- permTest(A=my.regions, B=repeats, randomize.function=randomizeRegions,
-evaluate.function=overlapRegions)
+evaluate.function=numOverlaps)
 @
 
 or if we want to check if my special genes have higher methylation levels we could use a test like this:
