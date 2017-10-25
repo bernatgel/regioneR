@@ -51,7 +51,7 @@ randomizeRegions <- function(A, genome="hg19",  mask=NULL, allow.overlaps=TRUE, 
   A <- toGRanges(A)
   
   #The randomization of an empty region set, is an empty region set
-  if(length(A)<1) {
+  if(length(A)==0) {
     return(A)
   }
   
@@ -123,7 +123,7 @@ randomizeRegions <- function(A, genome="hg19",  mask=NULL, allow.overlaps=TRUE, 
     
     random.regions <- c(random.regions, random.regs, ignore.mcols=TRUE)
     pending <- pend
-    
+   
     if(length(pending)==0) {
       return(random.regions)
     } else { #Update and continue
@@ -132,11 +132,12 @@ randomizeRegions <- function(A, genome="hg19",  mask=NULL, allow.overlaps=TRUE, 
       }
       ntimes <- ntimes + 1
       if(length(pending)>orig.pending.len*0.7) { #if we placed less than a third of the regions, move to the slower algorithms
-        ntimes <- 99 
+        ntimes <- 99 #break
       }
     }
   }
   
+ 
   # --------------------------------------------------------------------------------
   
   # 2 - SLOWER ALGORITHM
@@ -146,11 +147,13 @@ randomizeRegions <- function(A, genome="hg19",  mask=NULL, allow.overlaps=TRUE, 
   #It's time to call the slower algorithms to place the remaining regions.
   
   if(allow.overlaps==TRUE) { #simply pass to the actual function
-    random.regions <- c(random.regs, private_randomizeRegions(A=pending, genome=genome, mask=mask, allow.overlaps=TRUE,...), ignore.mcols=TRUE)    
+    random.regions <- c(random.regions, private_randomizeRegions(A=pending, genome=genome, mask=mask, allow.overlaps=TRUE,...), ignore.mcols=TRUE)    
+
     return(random.regions)
   } else {
+    
     #add the already placed regions to the mask (so there's no overlap)
-    mask <- c(mask, copySeqLevels(to=random.regs, from=genome), ignore.mcols=TRUE)
+    mask <- c(mask, copySeqLevels(to=random.regions, from=genome), ignore.mcols=TRUE)
     
     #Create a set of POSSIBLY OVERLAPPING regions first and then remove the overlapping ones
     
@@ -163,16 +166,16 @@ randomizeRegions <- function(A, genome="hg19",  mask=NULL, allow.overlaps=TRUE, 
       #Create a set of regions allowing overlaps
       ran.regs <- private_randomizeRegions(A=pending, genome=genome, mask=mask, allow.overlaps=TRUE, ...)
       rr <- removeOverlapping(rs=ran.regs)
-      random.regs <- c(random.regs, rr$rs, ignore.mcols=TRUE) #add the newly placed regions to the final GRanges
+      random.regions <- c(random.regions, rr$rs, ignore.mcols=TRUE) #add the newly placed regions to the final GRanges
       pending <- rr$overlapping
       ntimes <- ntimes + 1
     }
     if(length(pending)==0) { #if all regions have been placed, return
-      return(random.regs)
+      return(random.regions)
     } else {
       #Launch the quadratic algorithm
       ran.regs <- private_randomizeRegions(A=pending, genome=genome, mask=mask, allow.overlaps=FALSE, ...)
-      return(c(random.regs, ran.regs, ignore.mcols=TRUE))
+      return(c(random.regions, ran.regs, ignore.mcols=TRUE))
     }
   }
   warning("We should not reach this point (end of randomizeRegions), this is a bug")
