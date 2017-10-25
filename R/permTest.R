@@ -53,7 +53,11 @@
 #' Davison, A. C. and Hinkley, D. V. (1997) Bootstrap methods and their application, Cambridge University Press, United Kingdom, 156-160
 #'
 #' @importFrom utils txtProgressBar setTxtProgressBar
-#'
+#' @importFrom methods hasArg is
+#' @importFrom utils read.csv read.delim
+#' @importFrom S4Vectors subjectHits queryHits
+#' 
+#' 
 #' @export permTest
 
 

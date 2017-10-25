@@ -11,6 +11,8 @@
 #' @param main       a character specifying the title of the plot. Defaults to "".
 #' @param xlab       a character specifying the label of the x axis. Defaults to NULL, which produces a plot with the evaluation function name as the x axis label.
 #' @param ylab       a character specifying the label of the y axis. Defaults to "".
+#' @param ylim       defines the y limits of the plot. Passed to the underlying \code{plot} call.
+#' @param xlim       defines the x limits of the plot. Passed to the underlying \code{plot} call.
 #' @param ...        further arguments to be passed to or from methods.
 #' 
 #' @return A plot is created on the current graphics device.

@@ -20,6 +20,10 @@
 
 \item{ylab}{a character specifying the label of the y axis. Defaults to "".}
 
+\item{ylim}{defines the y limits of the plot. Passed to the underlying \code{plot} call.}
+
+\item{xlim}{defines the x limits of the plot. Passed to the underlying \code{plot} call.}
+
 \item{...}{further arguments to be passed to or from methods.}
 }
 \value{
