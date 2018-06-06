@@ -50,6 +50,10 @@ randomizeRegions <- function(A, genome="hg19",  mask=NULL, allow.overlaps=TRUE, 
   
   A <- toGRanges(A)
   
+  if(any(end(A) < start(A))) {
+    stop("There are regions with negative width. Start must always be smaller than end.")
+  }
+  
   #The randomization of an empty region set, is an empty region set
   if(length(A)==0) {
     return(A)
