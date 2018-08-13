@@ -1,3 +1,13 @@
+CHANGES IN VERSION 1.13.1
+-----------------------
+
+NEW FEATURES
+
+    o Revamped toGRanges now accepts genome region descriptions as used by  
+    UCSC and IGV ("chr9:23000-25000"). It also may take a genome parameter
+    and set the genome information of the GRanges accordingly.
+
+
 CHANGES IN VERSION 1.9.2
 -----------------------
 
