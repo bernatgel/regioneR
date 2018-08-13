@@ -474,6 +474,9 @@ Internally, \regioneR{} uses \Rclass{GRanges} to represent a RS, and all functio
 \item \textbf{Data Frames:} A \textit{data.frame} or any other class inheriting from it with a "BED-like" structure with the first three columns representing chromosome, start and end. There are a few restrictions regarding the naming of the columns in the data frame which are detailed in the \textit{toGRanges} function help page.
 \item \textbf{A file:} a file name or connection to a file in any of the formats accepted by \textit{rtracklayer}'s import function (bed, gff, wigg, ...)
 \end{itemize}
+\item \textbf{Character strings:} one or more character strings in the form used by UCSC or IGV (e.g. "chr9:23000-25000"). It will correctly deal with commas used as thousands separators 
+(e.g. "chr9:23,000-25,000") or as start/end separators (e.g. "chr9:23000,25000)
+and any combination of these styles in the same character vector.
 
 Two utility functions are provided in \regioneR{} to manage the transformation to and from \textit{GRanges}: \textit{toGRanges} and \textit{toDataframe}.
 
