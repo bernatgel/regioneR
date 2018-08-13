@@ -40,10 +40,9 @@ characterToBSGenome <- memoise(function(genome.name) {
   
   if(is.null(bsg)) { #Try to get the unmasked BSgenome with the getBSgenome if the masked was not available
     bsg <- getBSgenome(genome.name, masked=FALSE)
-    warning(paste0("The masked version of '", genome.name, "' is not installed. Using the unmasked version. This means that no automatic masking will be available."))
+    message(paste0("The masked version of '", genome.name, "' is not installed. Using the unmasked version. This means that no automatic masking will be available."))
   }
   
   return(bsg)
 })
-
 
