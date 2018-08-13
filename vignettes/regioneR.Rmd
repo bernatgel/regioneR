@@ -1,8 +1,8 @@
 ---
 title: "regioneR: Association analysis of genomic regions based on permutation tests"
-author: "Bernat Gel (bgel@igtp.cat), Anna Díez-Villanueva and Roberto Malinverni"
+author: "Bernat Gel (bgel@igtp.cat), Anna Díez-Villanueva and Roberto Malinverni (rmalinverni@carrerasresearch.org)"
 date: "`r doc_date()`"
-package: "`r pkg_ver('karyoploteR')`"
+package: "`r pkg_ver('regioneR')`"
 output: 
   BiocStyle::html_document:
     toc: true

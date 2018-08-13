@@ -4,7 +4,7 @@ Title: Association analysis of genomic regions based on permutation tests
 Version: 1.13.1
 Date: 2016-04-06
 Author: Anna Diez-Villanueva <adiez@imppc.org>, Roberto Malinverni
-    <rmalinverni@carrerasresearch.org> and Bernat Gel <bgel@imppc.org>
+    <rmalinverni@carrerasresearch.org> and Bernat Gel <bgel@igtp.cat>
 Maintainer: Bernat Gel <bgel@imppc.org>
 Description: regioneR offers a statistical framework based on
     customizable permutation tests to assess the association
@@ -35,6 +35,7 @@ Suggests:
     BSgenome.Hsapiens.UCSC.hg19.masked,
     testthat
 VignetteBuilder: knitr
+Encoding: UTF-8
 biocViews: Genetics, ChIPSeq, DNASeq, MethylSeq, CopyNumberVariation
 NeedsCompilation: no
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
