@@ -1,6 +1,6 @@
 ---
 title: "regioneR: Association analysis of genomic regions based on permutation tests"
-author: "Bernat Gel (bgel@igtp.cat), Anna Díez-Villanueva and Roberto Malinverni (rmalinverni@carrerasresearch.org)"
+author: "Bernat Gel (bgel@igtp.cat), Anna Diez-Villanueva (adiez@iconcologia.net) and Roberto Malinverni (rmalinverni@carrerasresearch.org)"
 date: "`r doc_date()`"
 package: "`r pkg_ver('regioneR')`"
 output: 
@@ -44,23 +44,23 @@ One of the most common uses of `r BiocStyle::Biocpkg("regioneR")`  is to answer 
 To do that, we need to have the two region sets either as a `GRanges`, a `data.frame` or a bed-like file. An practical way to create a `GRanges` is to use the `toGRanges` function. In this case, as an example, we will create two sets of random regions with about 50% overlap.
 
 ```{r}
-A <- createRandomRegions(nregions=50, length.mean=5000000, length.sd=3000000)
-B <- c(A[1:25], createRandomRegions(nregions=25, length.mean=500000, length.sd=30000))
-numOverlaps(A, B, count.once=TRUE)
-numOverlaps(randomizeRegions(A), B, count.once=TRUE)
+  A <- createRandomRegions(nregions=50, length.mean=5000000, length.sd=3000000)
+  B <- c(A[1:25], createRandomRegions(nregions=25, length.mean=500000, length.sd=30000))
+  numOverlaps(A, B, count.once=TRUE)
+  numOverlaps(randomizeRegions(A), B, count.once=TRUE)
 ```
 
 Once we have the two region sets, we can test if A overlaps with B more than expected. To do that we will use `overlapPermTest`.
 
 ```{r}
-pt <- overlapPermTest(A=A, B=B, ntimes=50)
-pt
+  pt <- overlapPermTest(A=A, B=B, ntimes=50)
+  pt
 ```
 
 We can see that the test was significant, with a p-value < 0.05. Now, to plot it, we can simply plot the `pt` object.
 
 ```{r, fig.height=6,fig.width=8}
-plot(pt)
+  plot(pt)
 ```
 
 We can see a visual representation of the results of the test. In grey the number of overlaps of the randomized regions with B, clustering around the black bar that represents the mean and in green the number of overlaps of the original region set A, which is much larger than expected. The red line denotes the significance limit.
@@ -68,8 +68,8 @@ We can see a visual representation of the results of the test. In grey the numbe
 In addition, we can test if the association between the two region sets is highly dependant on their exact position. To do that, we can use the `localZScore` function.
 
 ```{r, fig.height=6,fig.width=8}
-lz <- localZScore(pt=pt, A=A, B=B)
-plot(lz)
+  lz <- localZScore(pt=pt, A=A, B=B)
+  plot(lz)
 ```
 
 Which in this case shows that moving the regions in A produces a drop in the z-scores and so, shows that the association is dependant on the exact position of the regions and is not a regional effect. More information about the `localZScore` function can be found at section [Local Z-score].
@@ -79,8 +79,6 @@ In this small example we have used `overlapPermTest` to test the number of overl
 
 
 # Permutation tests
-
-
 
 The core functionality of regioneR is to statistically evaluate the association between different RS or between a RS and other genomic features using a permutation test approach. This functionality is supported by the `permTest` function, a parallel and highly customizable function performing the permutation tests and producing the statistical evaluation of the results. 
 
@@ -96,13 +94,11 @@ With `permTest` and the right biological data it is possible to answer different
 * Do my ChIP regions associate with repressed genes?
 
 
-**NOTE:** It is important to take into account, however, that regioneR's permutation tests can only test the association between a set of regions and some other feature but not identify which regions contribute the most to that association. Therefore, for questions of the type Identify the region in my RS that associate with something, regioneR is not a suitable choice, and more specific analysis tools should be used. 
-
-
-
+**NOTE:** It is important to take into account, however, that regioneR's permutation tests can only test the association between a set of regions and some other feature but not identify which regions contribute the most to that association. Therefore, for questions of the type "Identify the region in my RS that associate with something"", regioneR is not a suitable choice, and more specific analysis tools should be used. 
 
 
 ## How does a permutation test work?
+
 There are 3 main elements needed to perform a permutation test: our RS, a randomization strategy and an evaluation function. Let's see how it all works with an example:
 
 Imagine we have obtained a set of genes, my special genes, and we want to show they tend to lie in certain parts of the genome, in our case a set of regions we know are altered, for example, they present a copy number gain.
@@ -110,24 +106,21 @@ Imagine we have obtained a set of genes, my special genes, and we want to show t
 First of all we need to have our RSs loaded into R. To do that we can use the `toGRanges` function.
 
 ```{r}
-# special <- toGRanges("http://gattaca.imppc.org/regioner/data/my.special.genes.bed")
-special <- toGRanges(system.file("extdata", "my.special.genes.bed", package="regioneR"))
-# all.genes <- toGRanges("http://gattaca.imppc.org/regioner/data/all.genes.bed")
-all.genes <- toGRanges(system.file("extdata", "all.genes.bed", package="regioneR"))
-#altered <- toGRanges("http://gattaca.imppc.org/regioner/data/my.altered.regions.bed")
-altered <- toGRanges(system.file("extdata", "my.altered.regions.bed", package="regioneR"))
-length(special)
-length(all.genes)
-length(altered)
-```
+  special <- toGRanges(system.file("extdata", "my.special.genes.bed", package="regioneR"))
+  all.genes <- toGRanges(system.file("extdata", "all.genes.bed", package="regioneR"))
+  altered <- toGRanges(system.file("extdata", "my.altered.regions.bed", package="regioneR"))
 
+  length(special)
+  length(all.genes)
+  length(altered)
+```
 
 Next thing we need is an evaluation function. In our example we want to test the overlap of our RS with the altered regions, so we will use the `numOverlaps` function, which, given two RS returns the number of overlaps between them.
 
 Using `numOverlaps` we can count the number of overlaps between the two RS, in our case we can compute the number of special genes overlapping an altered region.
 
 ```{r}
-numOverlaps(special, altered)
+  numOverlaps(special, altered)
 ```
 
 But is this number, 114 out of 200, big or small? Does it mean that genes are associated with the altered regions? or might be just by chance? 
@@ -141,29 +134,27 @@ The least restricted function included in `r BiocStyle::Biocpkg("regioneR")`  is
 In our example, since the special genes are a subset of the bigger set of all genes it is much better to use `resampleRegions`, that given a universe of regions, randomly selects a subset of them to create the randomized region sets.
 
 ```{r}
-random.RS <- resampleRegions(special, universe=all.genes)
-random.RS
+  random.RS <- resampleRegions(special, universe=all.genes)
+  random.RS
 ```
 
 Now, we can use the evaluation function to test the level of association of the randomized RS with the altered regions. And we can repeat that and get different evaluations.
 
 ```{r}
-random.RS <- resampleRegions(special, universe=all.genes)
-numOverlaps(random.RS, altered)
-random.RS <- resampleRegions(special, universe=all.genes)
-numOverlaps(random.RS, altered)
-random.RS <- resampleRegions(special, universe=all.genes)
-numOverlaps(random.RS, altered)
-random.RS <- resampleRegions(special, universe=all.genes)
-numOverlaps(random.RS, altered)
+  random.RS <- resampleRegions(special, universe=all.genes)
+  numOverlaps(random.RS, altered)
+  random.RS <- resampleRegions(special, universe=all.genes)
+  numOverlaps(random.RS, altered)
+  random.RS <- resampleRegions(special, universe=all.genes)
+  numOverlaps(random.RS, altered)
+  random.RS <- resampleRegions(special, universe=all.genes)
+  numOverlaps(random.RS, altered)
 ```
 
 If we do this many times we will build a distribution of the evaluation obtained from random RS and so, we can compare our initial evaluation with those obtained randomly and determine whether it is plausible that our original evaluation was obtained by chance or not. Actually, just counting the number of times the evaluation of the random RS is higher (or lower) than our original evaluation, we can compute the probability of seeing our original evaluation by chance, and that value is exactly the p-value of the permutation test. In addition, we compute the z-score which is the distance between the evaluation of the original RS and the mean of the random evaluations divided by the standard deviation of the random evaluations. The z-score, although not directly comparable, can help in assessing "the strength" of the evaluation.
 
-
-
-
 ## How to perform a permutation test with `r BiocStyle::Biocpkg("regioneR")` 
+
 The main function to perform a permutation test with `r BiocStyle::Biocpkg("regioneR")`  is `permTest`, a function taking a a region set (RS) in any of the accepted formats (see section 4 - Region Sets), a randomization function and an evaluation function and returning a `permTestResults` object.
 
 The function performs the whole permutation test analysis described above, evaluating the original RS, creating a number of randomizations and evaluating them and nally computing the p-value and z-score. It takes advantage of the parallel package to randomize and evaluate in parallel where possible.
@@ -173,24 +164,24 @@ In addition to the 3 required parameters, `permTest` accepts other fixed paramet
 For example to check whether my regions overlap with repeats more than expected, we could use:
 
 ```{r, eval=FALSE}
-# NOT RUN
-pt <- permTest(A=my.regions, B=repeats, randomize.function=randomizeRegions,
-evaluate.function=numOverlaps)
+  # NOT RUN
+  pt <- permTest(A=my.regions, B=repeats, randomize.function=randomizeRegions,
+  evaluate.function=numOverlaps)
 ```
 
 or if we want to check if my special genes have higher methylation levels we could use a test like this:
 
 ```{r, eval=FALSE}
-# NOT RUN
-pt <- permTest(A=my.genes, randomize.function=resampleRegions, universe=all.genes,
-evaluate.function=meanInRegions, x=methylation.levels.450K)
+  # NOT RUN
+  pt <- permTest(A=my.genes, randomize.function=resampleRegions, universe=all.genes,
+  evaluate.function=meanInRegions, x=methylation.levels.450K)
 ```
 
 Following our example before with my special genes and the altered regions we could call `permTest` like this: 
 
 ```{r}
-pt <- permTest(A=special, ntimes=50, randomize.function=resampleRegions, universe=all.genes,
-evaluate.function=numOverlaps, B=altered, verbose=FALSE)
+  pt <- permTest(A=special, ntimes=50, randomize.function=resampleRegions, universe=all.genes,
+  evaluate.function=numOverlaps, B=altered, verbose=FALSE)
 ```
 
 **NOTE:** Since `permTest` uses the ellipsis operator (...) to forward the required additional parameters to the evaluation and randomization functions it is strongly recommended to always use named parameters (e.g. A=RS1 instead of only RS1). Failing to do that can result in hard to debug errors.
@@ -198,26 +189,26 @@ evaluate.function=numOverlaps, B=altered, verbose=FALSE)
 In any case we would get a `permTestResults` object with the results of the analysis. To view this result we can just print it or use summary. In this case we can see that the association is statistically significant and so we can conclude that the special genes are associated with my altered regions.
 
 ```{r}
-pt
-summary(pt)
+  pt
+  summary(pt)
 ```
 
 And we can get a graphic representing the results of the permutation test using `plot`. It depicts a gray histogram representing the evaluation of the randomized RS with a fitted normal, a black bar representing the mean of the randomized evaluations and a green bar representing the evaluation of the original RS. In addition, a red bar (and red shading) represents the significance limit (by default 0.05). Thus, if the green bar is in the red shaded region it means that the original evaluation is extremely unlikely and so the p-value will be significant. 
 
 ```{r, fig.height=6,fig.width=8}
-plot(pt)
+  plot(pt)
 ```
 
 To compare, imagine we have a second subset of genes, my regular genes, that are not associated with the altered regions. We can run the same test with them and we will get a negative result. In this case we get a non-significant p-value and we can see in the plot that the original evaluation is close to the mean of the randomized ones.
 
 ```{r, fig.height=6,fig.width=8}
-regular <- toGRanges("http://gattaca.imppc.org/regioner/data/my.regular.genes.bed")
-length(regular)
-numOverlaps(regular, altered)
-pt.reg <- permTest(A=regular, ntimes=50, randomize.function=resampleRegions, universe=all.genes,
-evaluate.function=numOverlaps, B=altered, verbose=FALSE)
-pt.reg
-plot(pt.reg)
+  regular <- toGRanges("http://gattaca.imppc.org/regioner/data/my.regular.genes.bed")
+  length(regular)
+  numOverlaps(regular, altered)
+  pt.reg <- permTest(A=regular, ntimes=50, randomize.function=resampleRegions, universe=all.genes,
+  evaluate.function=numOverlaps, B=altered, verbose=FALSE)
+  pt.reg
+  plot(pt.reg)
 ```
 
 
@@ -237,10 +228,10 @@ plot(pt.5000)
 ![This is the plot of a significant permutation test with 5000 permutations.](figures/special_genes_5000perm.png)
 
 ```{r, eval=FALSE}
-#NOT RUN - See Figure 2
-pt.5000.reg <- permTest(A=regular, ntimes=5000, randomize.function=resampleRegions,
-universe=all.genes, evaluate.function=numOverlaps, B=altered, verbose=TRUE)
-plot(pt.5000.reg)
+  #NOT RUN - See Figure 2
+  pt.5000.reg <- permTest(A=regular, ntimes=5000, randomize.function=resampleRegions,
+  universe=all.genes, evaluate.function=numOverlaps, B=altered, verbose=TRUE)
+  plot(pt.5000.reg)
 ```
 
 ![This is the plot of a non significant permutation test with 5000 permutations.](figures/regular_genes_5000perm.png)
@@ -265,20 +256,19 @@ In addition there are two addition parameters:
 As an example, we can create a RS A with 3 regions in chromosome 1.
 
 ```{r}
-A <- toGRanges(data.frame(chr=c("chr1", "chr1", "chr1"), start=c(20000, 50000, 100000),
-end=c(22000, 70000, 400000)))
+  A <- toGRanges(data.frame(chr=c("chr1", "chr1", "chr1"), start=c(20000, 50000, 100000), end=c(22000, 70000, 400000)))
 ```
 
 We can randomize it along the whole genome:
 
 ```{r}
-randomizeRegions(A, genome="hg19")
+  randomizeRegions(A, genome="hg19")
 ```
 
 In contrast, if we set per.chromosome to TRUE, all randomized regions will be in chr1.
 
 ```{r}
-randomizeRegions(A, genome="hg19", per.chromosome=TRUE)
+  randomizeRegions(A, genome="hg19", per.chromosome=TRUE)
 ```
 
 
