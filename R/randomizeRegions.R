@@ -38,6 +38,7 @@
 #' 
 #' @export randomizeRegions
 #' 
+#' @importFrom IRanges IRanges
 
 
 
@@ -114,7 +115,7 @@ randomizeRegions <- function(A, genome="hg19",  mask=NULL, allow.overlaps=TRUE, 
     rand.reg.list <- randomizeFastWithNoOverlappingControl(pending, genome=genome, mask=mask, ...)
     
     tt <- do.call(rbind, rand.reg.list[!is.na(rand.reg.list)])
-    random.regs <- GRanges(seqnames=as.character(tt[,1]), ranges=IRanges(start=as.numeric(tt[,2]), end=as.numeric(tt[,3])))
+    random.regs <- GRanges(seqnames=as.character(tt[,1]), ranges=IRanges::IRanges(start=as.numeric(tt[,2]), end=as.numeric(tt[,3])))
     random.regs <- copySeqLevels(to=random.regs, from=genome)
     pend <- pending[is.na(rand.reg.list)] #if there is any NA in rand.reg.list, these are pending regions for which we have not a valid random place
     

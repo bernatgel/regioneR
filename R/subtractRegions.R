@@ -38,7 +38,7 @@ subtractRegions <- function(A, B) {
   
   if(length(A)==0 | length(B)==0) { return(A) }
   
-  C <- setdiff(A, B) #Use the functionality available in GRanges
+  C <- GenomicRanges::setdiff(A, B) #Use the functionality available in GRanges
   
   return(C) 
     

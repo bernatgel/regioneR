@@ -22,16 +22,19 @@
 #' maskFromBSGenome(g)
 #' 
 #' @export maskFromBSGenome
+#' 
+#' @importFrom Biostrings masks collapse
+#' @importFrom S4Vectors Rle
 
-maskFromBSGenome <- memoise(function(bsgenome) {
+maskFromBSGenome <- memoise::memoise(function(bsgenome) {
   
   
-  if(!hasArg(bsgenome)) stop("parameter bsgenome is required")
-  if(!is(bsgenome, "BSgenome")) stop("bsgenome must be a BSGenome object")
+  if(!methods::hasArg(bsgenome)) stop("parameter bsgenome is required")
+  if(!methods::is(bsgenome, "BSgenome")) stop("bsgenome must be a BSGenome object")
   
-  if(!is(bsgenome, "MaskedBSgenome")) {
+  if(!methods::is(bsgenome, "MaskedBSgenome")) {
     warning("bsgenome is not a MaskedBSgenome. Returning an empty mask.")
-    return(GRanges())
+    return(GenomicRanges::GRanges())
   }
   
   
@@ -39,21 +42,21 @@ maskFromBSGenome <- memoise(function(bsgenome) {
   # we are doing it by iterating over the chromosomes
   
   #get the chromosome names using the getGenomes function, so we get exactly the same chromosomes
-  chrs <- as.character(seqnames(getGenome(bsgenome)))
+  chrs <- as.character(GenomicRanges::seqnames(getGenome(bsgenome)))
   
   
   chr.masks <- sapply(chrs, function(chr) {
-                                      mm <- masks(bsgenome[[chr]])
+                                      mm <- Biostrings::masks(bsgenome[[chr]])
                                       if(is.null(mm)) {
                                         return(NULL)
                                       } else {
-                                        mm <- collapse(mm)[[1]]
+                                        mm <- Biostrings::collapse(mm)[[1]]
                                         return(mm)
                                       }})
   
   if(do.call(all, lapply(chr.masks, is.null))) { #If the mask is null for all chromosomes, rise a warning and return an empty GRanges
     warning("No mask is active for this BSgenome. Returning an empty mask.")
-    return(GRanges())
+    return(GenomicRanges::GRanges())
   }
   
   
@@ -61,14 +64,14 @@ maskFromBSGenome <- memoise(function(bsgenome) {
                                   if(is.null(chr.masks[[chr]])) {
                                     return(NULL)
                                   } else {
-                                    return(GRanges(seqnames=Rle(rep(chr, length(chr.masks[[chr]]))), ranges=chr.masks[[chr]]))
+                                    return(GenomicRanges::GRanges(seqnames=S4Vectors::Rle(rep(chr, length(chr.masks[[chr]]))), ranges=chr.masks[[chr]]))
                                   }
                                 })
   
   
   
   #Combine the mask for each chromosome into a single mask
-  mask <- GRanges()
+  mask <- GenomicRanges::GRanges()
   for(chr in chrs) {
     if(!is.null(chr.masks[[chr]])) {
       suppressWarnings(mask <- c(mask, chr.masks[[chr]]))

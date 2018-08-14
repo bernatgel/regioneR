@@ -38,6 +38,8 @@
 #' 
 #'  
 #' @export localZScore
+#' 
+#' @importFrom GenomicRanges shift
   
 
 
@@ -61,7 +63,7 @@ localZScore <- function(A, pt, window, step, ...) {
   #if pt is a permTestResults object, compute the localZCScore and return it
   if(class(pt) == "permTestResults") {
     mean.permuted <- mean(pt$permuted)
-    sd.permuted <- sd(pt$permuted)
+    sd.permuted <- stats::sd(pt$permuted)
     
     num.steps <- floor(window/step)
     
@@ -69,7 +71,7 @@ localZScore <- function(A, pt, window, step, ...) {
     shifts <- c(rev(-1*shifts), 0, shifts)
     
     shifted.z.score <- function(shift) {
-      shifted.A <- shift(A, shift)
+      shifted.A <- GenomicRanges::shift(A, shift)
       shifted.evaluation <- tryCatch(pt$evaluate.function(shifted.A, ...),
                                      error=function(e) {stop(paste0("There was an error when computing evaluation function of the shifted region set: \n", as.character(e),
                                                              "Evaluation Function: ", pt$evaluate.function.name,

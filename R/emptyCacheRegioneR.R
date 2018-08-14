@@ -1,7 +1,7 @@
 #' Empty Cache regioneR
 #'  
 #' @description 
-#' Empties the caches used by the memoised function in the regioneR package. 
+#' Empties the caches used by the memoised functions in the regioneR package. 
 #' 
 #' @usage 
 #' emptyCacheRegioneR()
@@ -12,13 +12,15 @@
 #' emptyCacheRegioneR()
 #' 
 #' @export emptyCacheRegioneR
+#' 
+#' @importFrom memoise forget
 
 
 emptyCacheRegioneR <- function() {
-  forget(getGenome)
-  forget(getMask)
-  forget(getGenomeAndMask)
-  forget(maskFromBSGenome)
-  forget(characterToBSGenome)
+  memoise::forget(getGenome)
+  memoise::forget(getMask)
+  memoise::forget(getGenomeAndMask)
+  memoise::forget(maskFromBSGenome)
+  memoise::forget(characterToBSGenome)
   
 }

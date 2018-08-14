@@ -65,7 +65,7 @@ plot.permTestResults<-function(x, pvalthres=0.05, plotType="Tailed", main="", xl
   zscore<-round(x$zscore,3)
   
   if(is.finite(zscore)){
-    y<-dnorm(xcoords,mean=mean(xcoords,na.rm=TRUE),sd=sd(xcoords,na.rm=TRUE))
+    y<-dnorm(xcoords,mean=mean(xcoords,na.rm=TRUE),sd=stats::sd(xcoords,na.rm=TRUE))
     xhist<-hist(xcoords,breaks=30,plot=FALSE)$density
     ymax<-max(max(y,na.rm=TRUE),max(xhist,na.rm=TRUE))
     

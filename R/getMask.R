@@ -26,7 +26,7 @@
 #' @export getMask
 
 
-getMask <- memoise(function(genome) {
+getMask <- memoise::memoise(function(genome) {
  
   mask <- NULL
   #if specified as a character, get it from the BS packages

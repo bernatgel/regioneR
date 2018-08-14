@@ -29,6 +29,8 @@
 #' plotRegions(list(A, B, merges), chromosome="chr1", regions.labels=c("A", "B", "merges"), regions.colors=3:1)
 #' 
 #' @export mergeRegions
+#' 
+
 
 
 mergeRegions <- function(A, B) {
@@ -41,6 +43,6 @@ mergeRegions <- function(A, B) {
   
   C <- c(A,B, ignore.mcols=TRUE)  
   
-  return(reduce(C))
+  return(GenomicRanges::reduce(C))
   
 }

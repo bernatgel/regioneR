@@ -10,7 +10,7 @@ emptyCacheRegioneR()
 The cache is emptied
 }
 \description{
-Empties the caches used by the memoised function in the regioneR package.
+Empties the caches used by the memoised functions in the regioneR package.
 }
 \examples{
 emptyCacheRegioneR()

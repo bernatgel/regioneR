@@ -2,8 +2,8 @@ Package: regioneR
 Type: Package
 Title: Association analysis of genomic regions based on permutation tests
 Version: 1.13.1
-Date: 2016-04-06
-Author: Anna Diez-Villanueva <adiez@imppc.org>, Roberto Malinverni
+Date: 2018-08-14
+Author: Anna Diez-Villanueva <adiez@iconcologia.net>, Roberto Malinverni
     <rmalinverni@carrerasresearch.org> and Bernat Gel <bgel@igtp.cat>
 Maintainer: Bernat Gel <bgel@imppc.org>
 Description: regioneR offers a statistical framework based on
@@ -11,15 +11,13 @@ Description: regioneR offers a statistical framework based on
     between genomic region sets and other genomic features.
 License: Artistic-2.0
 Depends:
-    memoise,
-    GenomicRanges,
-    BSgenome,
-    rtracklayer,
-    parallel
+    GenomicRanges
 Imports:
     memoise,
     GenomicRanges,
+    IRanges,
     BSgenome,
+    Biostrings,
     rtracklayer,
     parallel,
     graphics,
@@ -27,7 +25,6 @@ Imports:
     utils,
     methods,
     GenomeInfoDb,
-    IRanges,
     S4Vectors
 Suggests:
     BiocStyle,

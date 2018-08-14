@@ -46,9 +46,10 @@
 #'  
 #' @export getGenome
 #' 
+#' @importFrom memoise memoise
 
 
-getGenome <- memoise(function(genome) {
+getGenome <- memoise::memoise(function(genome) {
 
     if(!hasArg(genome)) {stop("No genome was specified. genome is a required parameter")}
   
@@ -62,18 +63,14 @@ getGenome <- memoise(function(genome) {
     }
     
     if(is(genome, "BSgenome")) { #it may be a BS genome because it was originally or because it has been transformed from a chracter
-      ss <- seqinfo(genome)
-      genome <- data.frame(chr=as.character(ss@seqnames), start=1, end=as.numeric(ss@seqlengths), stringsAsFactors=FALSE)
-      
-      return(toGRanges(genome))
+      ss <- GenomeInfoDb::seqinfo(genome)
+      return(toGRanges(as.character(ss@seqnames), 1, as.numeric(ss@seqlengths)))
     }
      
       
     #if the genome is a data frame (not GRanges) and has no starts but only lengths, add them
     if(is(genome, "data.frame") && dim(genome)[2]==2) { 
-      genome <- data.frame(chr=genome[,1], chr.start=rep(1,length(genome[,1])), chr.end=as.numeric(genome[,2]), stringsAsFactors=FALSE)
-     
-      return(toGRanges(genome))
+      return(toGRanges(genome[,1], 1, as.numeric(genome[,2])))
     }
   
     if(is(genome, "data.frame") && dim(genome)[2]==3) {

@@ -27,12 +27,12 @@
 #' The \code{genome} parameter can be used to set the genome information of
 #' the created GRanges. It can be either a \code{\link{BSgenome}} object or a 
 #' character string defining a genome (e.g. "hg19", "mm10"...) as accepted 
-#' by the \code{\link{BSgenome::getBSgenome}} function. If a valid genome is
+#' by the \code{BSgenome::getBSgenome} function. If a valid genome is
 #' given and the corresponding BSgenome package is installed, the genome
 #' information will be attached to the GRanges. If the chromosome naming style
 #' from the GRanges and the genome object are different, it will try to change 
 #' the GRanges styles to match those of the genome using 
-#' \code{\link{GenomeInfoDb::seqlevelsStyle}}.
+#' \code{GenomeInfoDb::seqlevelsStyle}.
 #' 
 #' 
 #' 
@@ -82,54 +82,36 @@
 #' 
 #' #if the genome is given it is used to annotate the resulting GRanges
 #' gr11 <- toGRanges(c("chr9:34229289-34982376", "chr10:1000-2000"), genome="hg19")
-#' gr12 <- toGRanges(c("chr9:34229289-34982376", "chr10:1000-2000"), genome=BSgenome.Hsapiens.UCSC.hg19)
 #' 
 #' 
 #' #and the genome is added to the GRanges even if A is a GRanges
-#' gr13 <- toGRanges(gr6, genome="hg19")
+#' gr12 <- toGRanges(gr6, genome="hg19")
 #' 
 #' #And it will change the chromosome naming of the GRanges to match that of the
 #' #genome if it is possible (using GenomeInfoDb::seqlevelsStyle)
 #' gr2
-#' gr14 <- toGRanges(gr2, genome="hg19")
+#' gr13 <- toGRanges(gr2, genome="hg19")
 #' 
 #' 
 #' 
 #' @export toGRanges
 #' 
-#' @import GenomicRanges
+#' @importFrom GenomicRanges GRanges elementMetadata
 #' @import BSgenome
-#' @import memoise
 #' @importFrom rtracklayer import
+#' @importFrom utils read.delim read.csv head
 #' @import parallel
 #' @import GenomeInfoDb
-#' @import IRanges
 #' 
 #' 
-
-
-setGenomeToGRanges <- function(gr, genome) {
-  if(!is.null(genome)) {
-    if(is.character(genome)) genome <- characterToBSGenome(genome)
-    if(!methods::is(genome, "BSgenome")) {
-      warning("Invalid 'genome' argument. Ignoring.")
-      genome <- NULL
-    }
-  }
-  if(!is.null(genome)) {
-    GenomeInfoDb::seqlevelsStyle(gr) <- GenomeInfoDb::seqlevelsStyle(genome)
-    GenomeInfoDb::seqlevels(gr) <- GenomeInfoDb::seqlevels(genome)
-    GenomeInfoDb::seqinfo(gr) <- GenomeInfoDb::seqinfo(genome)
-  }
-  return(gr)
-}
+#' 
 
 
 toGRanges <- function(A, ..., genome=NULL) {
     
   if(!hasArg(A)) stop("A is missing")
   
-  if(is(A, "GRanges")) {
+  if(methods::is(A, "GRanges")) {
     return(setGenomeToGRanges(A, genome))
   }
   
@@ -164,6 +146,16 @@ toGRanges <- function(A, ..., genome=NULL) {
   
   #if it's a dataframe, assume the three first columns are: chr, start and end
   if(methods::is(A, "data.frame")) {
+    if(length(A)==0) stop("In GRanges: A cannot be a data.frame with 0 columns.")
+      
+    if(length(A)==1) { #If the data.frame has inly one column, treat it as a character vector
+      return(toGRanges(A[,1]), genome=genome)
+    }
+    
+    #If the data.frame has only two columns, repeat the second column to create "one-base-wide" regions
+    if(length(A)==2) {
+      A <- cbind(A, A[,2], stringsAsFactors=FALSE)
+    }
     
     chrs <- as.character(A[,1]) #Transform the first column into a character. It does not work with factors.
     #and transform the second and third into numerics
@@ -172,9 +164,7 @@ toGRanges <- function(A, ..., genome=NULL) {
     start <- as.numeric(A[,2])
     end <- as.numeric(A[,3])
     
-    
-    
-    gr <- GRanges(seqnames=chrs, ranges=IRanges(start=start, end=end))
+    gr <- GenomicRanges::GRanges(seqnames=chrs, ranges=IRanges::IRanges(start=start, end=end))
     #We cannot assign the metadata in a single line because when only one metadata column was requested, 
     #it was automatically transformed into a vector and it lost its name. 
     if(ncol(A)>3) { #if there's metadata or strand information
@@ -183,7 +173,7 @@ toGRanges <- function(A, ..., genome=NULL) {
       if(length(metadata.columns>0)) {
         original.metadata <- as.data.frame(A[,metadata.columns])   
         names(original.metadata) <- names(A)[metadata.columns]
-        elementMetadata(gr) <- original.metadata
+        GenomicRanges::elementMetadata(gr) <- original.metadata
       }
     }
   } else { #It's not a data.frame
@@ -194,9 +184,9 @@ toGRanges <- function(A, ..., genome=NULL) {
       expr = {rtracklayer::import(con=A, ...)},
       error = function(err) {
         return(tryCatch(
-          expr = {toGRanges(read.delim(A, ...))},
+          expr = {toGRanges(utils::read.delim(A, ...))},
           error = function(err) {
-            return(toGRanges(read.csv(A, ...)))
+            return(toGRanges(utils::read.csv(A, ...)))
           }
         ))
       }
@@ -207,3 +197,20 @@ toGRanges <- function(A, ..., genome=NULL) {
 }  
   
   
+
+setGenomeToGRanges <- function(gr, genome) {
+  if(!is.null(genome)) {
+    if(is.character(genome)) genome <- characterToBSGenome(genome)
+    if(!methods::is(genome, "BSgenome")) {
+      warning("Invalid 'genome' argument. Ignoring.")
+      genome <- NULL
+    }
+  }
+  if(!is.null(genome)) {
+    GenomeInfoDb::seqlevelsStyle(gr) <- GenomeInfoDb::seqlevelsStyle(genome)
+    GenomeInfoDb::seqlevels(gr) <- GenomeInfoDb::seqlevels(genome)
+    GenomeInfoDb::seqinfo(gr) <- GenomeInfoDb::seqinfo(genome)
+  }
+  return(gr)
+}
+

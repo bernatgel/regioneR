@@ -86,8 +86,6 @@ circularRandomizeRegions <- function(A, genome="hg19", mask=NULL, max.mask.overl
 
 spinChromosome <- function(A, spin, chr.len) {
 
- 
-  
   A$start <- (A$start + spin) %% chr.len
   A$end <- (A$end + spin) %% chr.len
   

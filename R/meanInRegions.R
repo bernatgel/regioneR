@@ -32,6 +32,8 @@
 #'  meanInRegions(A, x)
 #'  
 #' @export meanInRegions
+#' 
+#' @importFrom GenomicRanges mcols
   
 
 
@@ -44,7 +46,7 @@ meanInRegions <- function(A, x, col.name=NULL, ...) {
   A <- toGRanges(A)
   x <- toGRanges(x)
   
-  if(length(mcols(x))<1) {
+  if(length(GenomicRanges::mcols(x))<1) {
     stop("x does not have a values column")
   }
   
@@ -59,13 +61,13 @@ meanInRegions <- function(A, x, col.name=NULL, ...) {
     value.col <- 1
   }
   
-  if(!is.numeric(mcols(x)[,value.col])) {
+  if(!is.numeric(GenomicRanges::mcols(x)[,value.col])) {
     stop("the values column in x is not numeric")
   } 
 
-  value.col.name <- names(mcols(x))[value.col]
+  value.col.name <- names(GenomicRanges::mcols(x))[value.col]
       
-  over <- overlapRegions(A=A, B=x, colB=value.col, get.bases=TRUE) #TODO: If a strand column is present, col.B should be value.col + 4? REDO!
+  over <- overlapRegions(A=A, B=x, colB=value.col, get.bases=TRUE) 
 
   if(length(over)==0) {
     warning("NA returned. There is no overlap between x and A.")

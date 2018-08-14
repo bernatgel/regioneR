@@ -31,6 +31,9 @@
 #' plotRegions(list(A, join1, join2, join3), chromosome="chr1", regions.labels=c("A", "join1", "join2", "join3"), regions.colors=4:1)
 #' 
 #' @export joinRegions
+#' 
+#' @importFrom GenomicRanges reduce
+
 
 
 #The implementation relies completely in the reduce function from IRanges
@@ -41,6 +44,6 @@ joinRegions <- function(A, min.dist=1) {
 
   A <- toGRanges(A)
   
-  return(reduce(A, min.gapwidth=min.dist))
+  return(GenomicRanges::reduce(A, min.gapwidth=min.dist))
   
 }

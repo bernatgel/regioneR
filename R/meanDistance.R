@@ -24,6 +24,8 @@
 #' meanDistance(A, B)
 #' 
 #' @export meanDistance
+#' 
+#' @importFrom GenomicRanges distanceToNearest
 
 
 meanDistance <- function(A, B, ...) {
@@ -34,7 +36,7 @@ meanDistance <- function(A, B, ...) {
   A <- toGRanges(A)
   B <- toGRanges(B)
   
-  d <- distanceToNearest(A, B)
+  d <- GenomicRanges::distanceToNearest(A, B)
     
   return(mean(as.matrix(d@elementMetadata@listData$distance)[,1], na.rm=TRUE)) #--> BioC 2.13 
   #return(mean(d@listData$distance, na.rm=TRUE)) #--> BioC 2.11

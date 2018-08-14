@@ -27,7 +27,7 @@
 #' 
 #' @export getGenomeAndMask
 
-getGenomeAndMask <- memoise(function(genome, mask=NULL) {
+getGenomeAndMask <- memoise::memoise(function(genome, mask=NULL) {
 
   
   #if genome is a character, get it from the BS packages

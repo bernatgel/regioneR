@@ -48,6 +48,8 @@
 #' overlapRegions(A, B)
 #' 
 #' @export overlapRegions
+#' 
+#' @importFrom GenomicRanges countOverlaps findOverlaps
 
 
 
@@ -91,7 +93,7 @@ overlapRegions<-function(A, B, colA=NULL, colB=NULL, type="any", min.bases=1, mi
     granges.supported.types <- c("any", "within", "equal")
     if(type %in% granges.supported.types) { #using one of the overalp types supported by GRanges
       #Then, use GRanges "directly"  
-      ov <- countOverlaps(A, B, type=type, minoverlap=min.bases)
+      ov <- GenomicRanges::countOverlaps(A, B, type=type, minoverlap=min.bases)
       if(only.count) {
         return(sum(ov))
       }
@@ -114,7 +116,7 @@ overlapRegions<-function(A, B, colA=NULL, colB=NULL, type="any", min.bases=1, mi
       ty <- "any"
     }
   
-    over.AB<-findOverlaps(A, B, type=ty, minoverlap=min.bases)
+    over.AB<-GenomicRanges::findOverlaps(A, B, type=ty, minoverlap=min.bases)
   
   
     tab.A<-A[queryHits(over.AB)]
@@ -143,29 +145,29 @@ overlapRegions<-function(A, B, colA=NULL, colB=NULL, type="any", min.bases=1, mi
   
   if(!is.null(colA)) {
     if(length(colA)==1 && colA=="all") {
-      dd <- as.data.frame(mcols(tab.A))
+      dd <- as.data.frame(GenomicRanges::mcols(tab.A))
       col.with.name <- 1
     } else {
-      dd <- as.data.frame(mcols(tab.A))[,colA]
+      dd <- as.data.frame(GenomicRanges::mcols(tab.A))[,colA]
       col.with.name <- colA
     }
     tab <- cbind(tab, dd)
-    if(length(mcols(tab.A))==1) { #If the length is only one, the column name is "lost in conversion"
-      names(tab)[length(tab)] <- names(mcols(tab.A))[col.with.name]  #So, recover it
+    if(length(GenomicRanges::mcols(tab.A))==1) { #If the length is only one, the column name is "lost in conversion"
+      names(tab)[length(tab)] <- names(GenomicRanges::mcols(tab.A))[col.with.name]  #So, recover it
     }
   }
   
   if(!is.null(colB)) {
     if(length(colB)==1 && colB=="all") {
-      dd <- as.data.frame(mcols(tab.B))
+      dd <- as.data.frame(GenomicRanges::mcols(tab.B))
       col.with.name <- 1
     } else {
-      dd <- as.data.frame(mcols(tab.B))[,colB]
+      dd <- as.data.frame(GenomicRanges::mcols(tab.B))[,colB]
       col.with.name <- colB
     }
     tab <- cbind(tab, dd)
-    if(length(mcols(tab.B))==1) { #If the length is only one, the column name is "lost in conversion"
-      names(tab)[length(tab)] <- names(mcols(tab.B))[col.with.name]  #So, recover it
+    if(length(GenomicRanges::mcols(tab.B))==1) { #If the length is only one, the column name is "lost in conversion"
+      names(tab)[length(tab)] <- names(GenomicRanges::mcols(tab.B))[col.with.name]  #So, recover it
     }
   }
   
@@ -225,7 +227,7 @@ overlapRegions<-function(A, B, colA=NULL, colB=NULL, type="any", min.bases=1, mi
     #for every region in A: check if it's in tab
     #To do it, build an id for each region in A and tab using chr, start and end and compare the ids
     #Could be done with a call to overlap with type "equal" but I think it would be slower. TODO: Check
-    A.ids <- paste(seqnames(A), start(A), end(A), sep="#")
+    A.ids <- paste(GenomicRanges::seqnames(A), GenomicRanges::start(A), GenomicRanges::end(A), sep="#")
     tab.ids <- paste(tab[,1], tab[,2], tab[,3], sep="#")
     return(A.ids %in% tab.ids)    
   }

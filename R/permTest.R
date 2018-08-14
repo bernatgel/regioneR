@@ -54,11 +54,12 @@
 #'
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @importFrom methods hasArg is
-#' @importFrom utils read.csv read.delim
 #' @importFrom S4Vectors subjectHits queryHits
 #' 
 #' 
 #' @export permTest
+#' 
+#' @importFrom stats sd
 
 
 #min.parallel is specifies the minimum amount of work (number of regions in A per ntimes) to activate parallelization.
@@ -214,7 +215,7 @@ permTest <- function(A, ntimes=100, randomize.function, evaluate.function, alter
         pval <- 1
         zscore <- NA
       } else{
-        zscore <- round((orig.ev - mean(rand.ev, na.rm=TRUE)) / sd(rand.ev, na.rm=TRUE), 4)
+        zscore <- round((orig.ev - mean(rand.ev, na.rm=TRUE)) / stats::sd(rand.ev, na.rm=TRUE), 4)
       }
     } else {
       pval <- NA

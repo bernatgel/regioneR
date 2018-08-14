@@ -31,6 +31,8 @@
 #' 
 #' 
 #' @export extendRegions
+#' 
+#' @importFrom GenomicRanges start end
 
 
 #It does'nt check for inclusion in the genome. Start may end up being less than 0 and end greater than chromosome length.
@@ -42,8 +44,8 @@ extendRegions <- function(A, extend.start=0, extend.end=0) {
 
   A <- toGRanges(A)
   
-  start(A) <- start(A) - extend.start
-  end(A) <- end(A) + extend.end
+  GenomicRanges::start(A) <- GenomicRanges::start(A) - extend.start
+  GenomicRanges::end(A) <- GenomicRanges::end(A) + extend.end
   
   return(A)
   
