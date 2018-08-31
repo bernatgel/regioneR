@@ -1,3 +1,11 @@
+CHANGES IN VERSION 1.13.2
+-----------------------
+
+BUG FIXES
+
+    o createRandomRegions ignored the non.overlapping argument. It does work now.
+
+
 CHANGES IN VERSION 1.13.1
 -----------------------
 

@@ -49,7 +49,7 @@ createRandomRegions <- function(nregions=100, length.mean=250, length.sd=20, gen
   lengths[lengths<1] <- 1
   regs <- data.frame(chr=seqlevels(gg)[1], start=1, end=lengths, stringsAsFactors=FALSE)
   
-  return(randomizeRegions(A=regs, genome=genome, mask=mask, non.overlapping=non.overlapping))
+  return(randomizeRegions(A=regs, genome=genome, mask=mask, allow.overlaps = !non.overlapping))
     
 }
 
