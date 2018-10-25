@@ -50,6 +50,7 @@ filterChromosomes <-function(A,  organism="hg", chr.type="canonical", keep.chr=N
     }
   }
   
+  valid.chr <- valid.chr[valid.chr %in% seqlevels(A)]
   A <- keepSeqlevels(A, valid.chr, pruning.mode="coarse")
   return(A)
   
