@@ -47,7 +47,7 @@ plot.permTestResultsList<-function(x, ncol=NA, pvalthres=0.05, plotType="Tailed"
   
   old.par <- par(mfrow=c(nrow, ncol))
   
-  lapply(x, plot)
+  lapply(x, plot, ...)
 
   par(mfrow=old.par)
   
