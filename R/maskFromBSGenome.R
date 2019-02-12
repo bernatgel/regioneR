@@ -38,7 +38,8 @@ maskFromBSGenome <- memoise::memoise(function(bsgenome) {
   }
   
   
-  #WARNING: This is ugly. Since I have not found a way to extract the positions of the masks from a BSGenome object in a simple way,
+  #WARNING: This is ugly. Since I have not found a way to extract the positions 
+  #of the masks from a BSGenome object in a simple way,
   # we are doing it by iterating over the chromosomes
   
   #get the chromosome names using the getGenomes function, so we get exactly the same chromosomes
@@ -68,10 +69,8 @@ maskFromBSGenome <- memoise::memoise(function(bsgenome) {
                                   }
                                 })
   
-  
-  
   #Combine the mask for each chromosome into a single mask
-  mask <- GenomicRanges::GRanges()
+  mask <- GenomicRanges::GRanges(seqinfo = seqinfo(bsgenome))
   for(chr in chrs) {
     if(!is.null(chr.masks[[chr]])) {
       suppressWarnings(mask <- c(mask, chr.masks[[chr]]))

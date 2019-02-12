@@ -64,7 +64,7 @@ getGenome <- memoise::memoise(function(genome) {
     
     if(is(genome, "BSgenome")) { #it may be a BS genome because it was originally or because it has been transformed from a chracter
       ss <- GenomeInfoDb::seqinfo(genome)
-      return(toGRanges(as.character(ss@seqnames), 1, as.numeric(ss@seqlengths)))
+      return(toGRanges(as.character(ss@seqnames), 1, as.numeric(ss@seqlengths), genome = genome))
     }
      
       
