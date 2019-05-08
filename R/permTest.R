@@ -159,7 +159,7 @@ permTest <- function(A, ntimes=100, randomize.function, evaluate.function, alter
           e <- ntimes
           done <- TRUE
         }
-        random.evaluate <- c(random.evaluate, do.call(rbind, mclapply(c(s:e), randomize_and_evaluate, ...)))
+        random.evaluate <- rbind(random.evaluate, do.call(rbind, mclapply(c(s:e), randomize_and_evaluate, ...)))
         setTxtProgressBar(pb, e)
       }    
     } else { #if not verbose, just do it
