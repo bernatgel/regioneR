@@ -85,6 +85,7 @@ permTest <- function(A, ntimes=100, randomize.function, evaluate.function, alter
     doParallel <- force.parallel
   } else {
     doParallel <- (length(A)*ntimes > min.parallel)
+    if(verbose) message("Auto-setting parallel computing to: ", doParallel)
   }
   
     
@@ -101,7 +102,7 @@ permTest <- function(A, ntimes=100, randomize.function, evaluate.function, alter
       names(evaluate.function) <- evaluate.function.name
     } else { #try to leave the current names or create new ones if no names present
       if(is.null(names(evaluate.function))) {
-        names(evaluate.function) <- paste0("Function", c(1:length(evaluate.function)))
+        names(evaluate.function) <- paste0("Function", seq_len(length(evaluate.function)))
       }
     }
   }
@@ -113,7 +114,7 @@ permTest <- function(A, ntimes=100, randomize.function, evaluate.function, alter
       
   #Start the permutation test
   #compute the evaluation function(s) using the original region set A
-  original.evaluate <- sapply(c(1:length(evaluate.function)), function(i,...) {return(evaluate.function[[i]](A,...))}, ...)
+  original.evaluate <- sapply(seq_len(length(evaluate.function)), function(i,...) {return(evaluate.function[[i]](A,...))}, ...)
  
   if(!is.numeric(original.evaluate)) {
     stop(paste0("The evaluation function must return a numeric value but it returned an object of class ", class(original.evaluate)))
@@ -140,7 +141,7 @@ permTest <- function(A, ntimes=100, randomize.function, evaluate.function, alter
     }
     
     #compute the evaluation function(s) using the RANSOMIZED region set randomA
-    rand.evaluate <- sapply(c(1:length(evaluate.function)), function(i, ...) {return(evaluate.function[[i]](randomA,...))}, ...)
+    rand.evaluate <- sapply(seq_len(length(evaluate.function)), function(i, ...) {return(evaluate.function[[i]](randomA,...))}, ...)
     
     return(rand.evaluate)
   }
@@ -163,16 +164,16 @@ permTest <- function(A, ntimes=100, randomize.function, evaluate.function, alter
         setTxtProgressBar(pb, e)
       }    
     } else { #if not verbose, just do it
-      random.evaluate <- do.call(rbind, mclapply(c(1:ntimes), randomize_and_evaluate, ...))
+      random.evaluate <- do.call(rbind, mclapply(seq_len(ntimes), randomize_and_evaluate, ...))
     }
   } else {
-    random.evaluate <- do.call(rbind, lapply(c(1:ntimes), randomize_and_evaluate, ...))
+    random.evaluate <- do.call(rbind, lapply(seq_len(ntimes), randomize_and_evaluate, ...))
   }
   
  
   #The simulation process has finished. Now build a permTestResults object for each evaluate.function
   results <- list()
-  for(i in c(1:length(evaluate.function))) {
+  for(i in seq_len(length(evaluate.function))) {
     #Get the data for the i-th function
     func.name <- names(evaluate.function)[i]
     orig.ev <- original.evaluate[i]
