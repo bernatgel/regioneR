@@ -186,7 +186,10 @@ toGRanges <- function(A, ..., genome=NULL) {
         return(tryCatch(
           expr = {toGRanges(utils::read.delim(A, ...))},
           error = function(err) {
-            return(toGRanges(utils::read.csv(A, ...)))
+            return(tryCatch(
+              expr = {toGRanges(utils::read.csv(A, ...))},
+              error = function(e) {stop("Error in toGRanges when trying to read the file \"", A, "\": ", e)}
+            ))
           }
         ))
       }
