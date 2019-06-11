@@ -7,7 +7,7 @@
 toGRanges(A, ..., genome=NULL)
 }
 \arguments{
-\item{A}{a \code{\link{data.frame}} containing a region set, a \code{\link{GRanges}} object, a BED file or any type of file supported by \code{rtracklayer}. If there are more than 1 argument, it will build a dataframe out ouf them and process it as usual. If there's only a single argument and it's a character, if it's not an existing file name it will be treated as the definition of a genomic region in the UCSC/IGV format (i.e. "chr9:34229289-34982376") and parsed.}
+\item{A}{a \code{\link{data.frame}} containing a region set, a \code{\link{GRanges}} object, a BED file, any type of file supported by \code{rtracklayer::import} or a \code{"SimpleRleList"} returned by \code{GenomicRanges::coverage}. If there are more than 1 argument, it will build a dataframe out ouf them and process it as usual. If there's only a single argument and it's a character, if it's not an existing file name it will be treated as the definition of a genomic region in the UCSC/IGV format (i.e. "chr9:34229289-34982376") and parsed.}
 
 \item{...}{further arguments to be passed to other methods.}
 
@@ -39,6 +39,10 @@ chromosome, start and end and create a GRanges. The parser can deal with
 commas separating thousands (e.g. "chr2:1,000-2,000") and with the comma 
 used as a start/end separator (e.g. "chr2:1000,2000"). These different 
 variants can be mixed in the same character vector.
+
+If A is a "SimpleRleList" it will be interpreted as the result from 
+GenomicRanges::coverage and the function will return a GRanges with a
+single metadata column named "coverage".
 
 The \code{genome} parameter can be used to set the genome information of
 the created GRanges. It can be either a \code{\link{BSgenome}} object or a 
@@ -94,6 +98,13 @@ gr12 <- toGRanges(gr6, genome="hg19")
 #genome if it is possible (using GenomeInfoDb::seqlevelsStyle)
 gr2
 gr13 <- toGRanges(gr2, genome="hg19")
+
+#in addition, it can convert other objects into GRanges such as the 
+#result of GenomicRanges::coverage
+
+gr14 <- toGRanges(c("1:1-20", "1:5-25", "1:18-40"))
+cover <- GenomicRanges::coverage(gr14)
+gr15 <- toGRanges(cover)
 
 
 
