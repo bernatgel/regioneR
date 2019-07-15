@@ -21,5 +21,21 @@ hasHeader <- function(l, sep) {
   nums <- suppressWarnings(as.numeric(strsplit(x = l[1], split = sep)[[1]]))
   return(all(is.na(nums)))
 }
+
+#Supports only single line comments
+firstNonCommentLine <- function(file.name, comment.char="#") {
+  pattern <- paste0("^", comment.char)
+  step <- 100
+  total <- step
+  previous.num.lines <- 0
+  ll <- readLines(file.name, n = total)
+  while(all(grepl(pattern, ll)) && length(ll)>previous.num.lines) {
+    previous.num.lines <- length(ll)
+    total <- total + step
+    ll <- readLines(file.name, n = total)
+  }
+  if(all(grepl(pattern, ll))) return(NULL)
+  return(which(!grepl(pattern, ll))[1])
+}
   
   
