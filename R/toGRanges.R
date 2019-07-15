@@ -40,11 +40,12 @@
 #' 
 #' 
 #' 
-#' @usage toGRanges(A, ..., genome=NULL)
+#' @usage toGRanges(A, ..., genome=NULL, comment.char="#")
 #' 
 #' @param A  a \code{\link{data.frame}} containing a region set, a \code{\link{GRanges}} object, a BED file, any type of file supported by \code{rtracklayer::import} or a \code{"SimpleRleList"} returned by \code{GenomicRanges::coverage}. If there are more than 1 argument, it will build a dataframe out ouf them and process it as usual. If there's only a single argument and it's a character, if it's not an existing file name it will be treated as the definition of a genomic region in the UCSC/IGV format (i.e. "chr9:34229289-34982376") and parsed. 
 #' @param ... further arguments to be passed to other methods. 
 #' @param genome (character or BSgenome) The genome info to be attached to the created GRanges. If NULL no genome info will be attached. (defaults to NULL)
+#' @param comment.char (character) The character marking comment lines. Only used when reading some file formats. (Defaults to "#")
 #' 
 #' @return
 #' A \code{\link{GRanges}} object with the regions in A
@@ -111,6 +112,8 @@
 #' @import BSgenome
 #' @importFrom rtracklayer import
 #' @importFrom utils read.delim read.csv head
+#' @importFrom tools file_ext
+#' @importFrom IRanges tolower
 #' @import parallel
 #' @import GenomeInfoDb
 #' 
@@ -118,7 +121,7 @@
 #' 
 
 
-toGRanges <- function(A, ..., genome=NULL) {
+toGRanges <- function(A, ..., genome=NULL, comment.char="#") {
     
   if(!hasArg(A)) stop("A is missing")
   
@@ -195,23 +198,8 @@ toGRanges <- function(A, ..., genome=NULL) {
       }
     }
   } else { #It's not a data.frame
-
-    #If its something else, try with rtracklayer and see if it can read and import from it.
-    #If it fails and raises an error (usually because unknown format (txt)), try to open it with read.delim and if it fails, try with read.csv
-    gr <- tryCatch(
-      expr = {rtracklayer::import(con=A, ...)},
-      error = function(err) {
-        return(tryCatch(
-          expr = {toGRanges(utils::read.delim(A, ...))},
-          error = function(err) {
-            return(tryCatch(
-              expr = {toGRanges(utils::read.csv(A, ...))},
-              error = function(e) {stop("Error in toGRanges when trying to read the file \"", A, "\": ", e)}
-            ))
-          }
-        ))
-      }
-    )
+    #If we are here, assume it's a file
+    gr <- fileToGRanges(A, ..., genome=genome)
   }
   
   return(setGenomeToGRanges(gr, genome))
@@ -254,4 +242,52 @@ coverageToGRanges <- function(coverage) {
                           )
                           )})
   return(unlist(GenomicRanges::GRangesList(coverage.gr)))
+}
+
+#Read a file into a GRanges
+fileToGRanges <- function(A, ..., genome=NULL, comment.char="#") {
+  #BED 
+  if(IRanges::tolower(tools::file_ext(A))=="bed") {
+    #If it's a bed file, try to load it using rtracklayer::import
+    gr <- tryCatch(
+      expr = {rtracklayer::import(con=A, format = "BED")},
+      error = function(e) {
+        #If it has failed, it might be because it's a malformed bed file with a
+        #header. Raise an informtative error
+        
+        #read the first line of the file
+        ll <- readLines(A, n=1)
+        if(hasHeader(ll, sep="\t")) {
+          stop("Error in toGRanges when trying to read the BED file \"", A, "\". BED files do can NOT have headers.\n", e)
+        } else {
+          stop("Error in toGRanges when trying to read the BED file \"", A, "\". Is it a valid BED file?\n", e)
+        }
+      })
+    return(gr)
+  }
+  
+  #GFF
+  #TODO
+  
+  #VCF
+  #TODO
+  
+  #Other files with custom code?
+  #TODO
+  
+  #If we are here, we have a generic text file. 
+  num.skip <- firstNonCommentLine(A, comment.char = comment.char) - 1
+  ll <- readLines(A, n = num.skip + 5)
+  ll <- ll[num.skip:length(ll)]
+  sep <- getSeparator(ll)
+  has.head <- hasHeader(ll, sep=sep)
+  
+  #check if there are availabe lines in addition to any comment line
+  if(length(readLines(A, n=num.skip+1)==num.skip)) return(GRanges())
+  
+  return(tryCatch(
+    expr = {toGRanges(utils::read.table(file = A, header = has.head, sep = sep, skip = num.skip, comment.char = comment.char, ...))},
+    error = function(e) {stop("Error in toGRanges when trying to read the file \"", A, "\": ", e)}
+  ))
+  
 }
