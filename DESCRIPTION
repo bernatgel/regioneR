@@ -25,7 +25,8 @@ Imports:
     utils,
     methods,
     GenomeInfoDb,
-    S4Vectors
+    S4Vectors,
+    tools
 Suggests:
     BiocStyle,
     knitr,

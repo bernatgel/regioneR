@@ -4,7 +4,7 @@
 \alias{toGRanges}
 \title{toGRanges}
 \usage{
-toGRanges(A, ..., genome=NULL)
+toGRanges(A, ..., genome=NULL, comment.char="#")
 }
 \arguments{
 \item{A}{a \code{\link{data.frame}} containing a region set, a \code{\link{GRanges}} object, a BED file, any type of file supported by \code{rtracklayer::import} or a \code{"SimpleRleList"} returned by \code{GenomicRanges::coverage}. If there are more than 1 argument, it will build a dataframe out ouf them and process it as usual. If there's only a single argument and it's a character, if it's not an existing file name it will be treated as the definition of a genomic region in the UCSC/IGV format (i.e. "chr9:34229289-34982376") and parsed.}
@@ -12,6 +12,8 @@ toGRanges(A, ..., genome=NULL)
 \item{...}{further arguments to be passed to other methods.}
 
 \item{genome}{(character or BSgenome) The genome info to be attached to the created GRanges. If NULL no genome info will be attached. (defaults to NULL)}
+
+\item{comment.char}{(character) The character marking comment lines. Only used when reading some file formats. (Defaults to "#")}
 }
 \value{
 A \code{\link{GRanges}} object with the regions in A
