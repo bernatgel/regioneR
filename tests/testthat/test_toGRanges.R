@@ -41,9 +41,86 @@ test_that(" toGRanges works for a data.frame", {
 })
 
 
-     
+#from files
+test_that(" toGRanges works for a file", {
+  
+  #Bed files 
+  #using the rtracklayer example just check it does not error and the returned
+  #object class is valid
+  gr1 <- expect_silent(toGRanges(system.file("tests", "test.bed", package = "rtracklayer")))
+  expect_is(gr1, "GRanges")
+  
+  #using our own test file, check the specific content
+  gr1 <- expect_silent(toGRanges("test_data_files/regs.bed"))
+  expect_is(gr1, "GRanges")
+  expect_length(gr1, 3)
+  expect_equal(width(gr1), c(9999, 10000, 1))
+  expect_equal(ncol(mcols(gr1)), 0)
+  expect_equal(as.character(seqnames(gr1)), c("1","1","2"))
+  expect_equal(GenomicRanges::start(gr1), c(2, 20001, 2))
+  expect_equal(GenomicRanges::end(gr1), c(10000, 30000, 2))
+  
+  #using an out-of-spec bed file with header
+  expect_error(toGRanges("test_data_files/bed_with_header.bed"))
+  
+  
+  #Generic files
+  gr1 <- expect_silent(toGRanges("test_data_files/regs.txt"))
+  expect_is(gr1, "GRanges")
+  expect_length(gr1, 3)
+  expect_equal(width(gr1), c(10000, 10001, 2))
+  expect_equal(ncol(mcols(gr1)), 0)
+  expect_equal(as.character(seqnames(gr1)), c("1","1","2"))
+  expect_equal(GenomicRanges::start(gr1), c(1, 20000, 1))
+  expect_equal(GenomicRanges::end(gr1), c(10000, 30000, 2))
+  
+  expect_equal(toGRanges("test_data_files/comments_and_header.txt"), gr1)
+  
+  expect_equal(toGRanges("test_data_files/two_valid_seps.txt"), gr1)
+  
+  
+  #with an additional column
+  gr1 <- expect_silent(toGRanges("test_data_files/4columns.txt"))
+  expect_is(gr1, "GRanges")
+  expect_length(gr1, 3)
+  expect_equal(width(gr1), c(10000, 10001, 2))
+  expect_equal(ncol(mcols(gr1)), 1)
+  expect_equal(names(mcols(gr1)), "data")
+  expect_equal(as.character(seqnames(gr1)), c("1","1","2"))
+  expect_equal(GenomicRanges::start(gr1), c(1, 20000, 1))
+  expect_equal(GenomicRanges::end(gr1), c(10000, 30000, 2))
+  expect_equal(as.character(gr1$data), c("col", "nan", "col"))
+  
+  gr2 <- expect_silent(toGRanges("test_data_files/alt_sep1.txt"))
+  names(mcols(gr2)) <- "data"
+  expect_equal(gr2, gr1)
+  
+  gr2 <- expect_silent(toGRanges("test_data_files/alt_sep2.txt"))
+  names(mcols(gr2)) <- "data"
+  expect_equal(gr2, gr1)
+  
+  gr2 <- expect_silent(toGRanges("test_data_files/alt_sep2_with_other_seps.txt"))
+  expect_is(gr2, "GRanges")
+  expect_length(gr2, 3)
+  expect_equal(width(gr2), c(10000, 10001, 2))
+  expect_equal(ncol(mcols(gr2)), 1)
+  expect_equal(names(mcols(gr2)), "V4")
+  expect_equal(as.character(seqnames(gr2)), c("1","1","2"))
+  expect_equal(GenomicRanges::start(gr2), c(1, 20000, 1))
+  expect_equal(GenomicRanges::end(gr2), c(10000, 30000, 2))
+  expect_equal(as.character(gr2$V4), c("col", "n\tan", "c;ol"))
+  
+  
+  
+  gr1 <- expect_silent(toGRanges("test_data_files/only_comments_and_header.txt"))
+  expect_is(gr1, "GRanges") 
+  expect_length(gr1, 0)  
 
-
+  expect_equal(toGRanges("test_data_files/only_comments.txt"), gr1)
+  
+  expect_equal(toGRanges("test_data_files/empty_file.txt"), gr1)
+  
+})
 
 #' A <- data.frame(chr=1, start=c(1, 15, 24), end=c(10, 20, 30),  x=c(1,2,3), y=c("a", "b", "c"))
 #' gr1 <- toGRanges(A)
