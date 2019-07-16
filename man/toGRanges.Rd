@@ -4,7 +4,7 @@
 \alias{toGRanges}
 \title{toGRanges}
 \usage{
-toGRanges(A, ..., genome=NULL, comment.char="#")
+toGRanges(A, ..., genome=NULL, sep=NULL, comment.char="#")
 }
 \arguments{
 \item{A}{a \code{\link{data.frame}} containing a region set, a \code{\link{GRanges}} object, a BED file, any type of file supported by \code{rtracklayer::import} or a \code{"SimpleRleList"} returned by \code{GenomicRanges::coverage}. If there are more than 1 argument, it will build a dataframe out ouf them and process it as usual. If there's only a single argument and it's a character, if it's not an existing file name it will be treated as the definition of a genomic region in the UCSC/IGV format (i.e. "chr9:34229289-34982376") and parsed.}
@@ -12,6 +12,8 @@ toGRanges(A, ..., genome=NULL, comment.char="#")
 \item{...}{further arguments to be passed to other methods.}
 
 \item{genome}{(character or BSgenome) The genome info to be attached to the created GRanges. If NULL no genome info will be attached. (defaults to NULL)}
+
+\item{sep}{(character) The field separator in the text file. If NULL it will be automatically guessed. Only used when reading some file formats. (Defaults to NULL)}
 
 \item{comment.char}{(character) The character marking comment lines. Only used when reading some file formats. (Defaults to "#")}
 }
@@ -74,7 +76,7 @@ gr4 <- toGRanges("chr9", c(34229289, 40000000), c(34982376, 50000000), x="X", y=
 gr5 <- toGRanges("chr9", "34229289", "34982376") 
 
 #It can be a file from disk
-bed.file <- system.file("extdata", "my.special.genes.bed", package="regioneR")
+bed.file <- system.file("extdata", "my.special.genes.txt", package="regioneR")
 gr6 <- toGRanges(bed.file)
 
 #Or a URL to a valid file
@@ -86,7 +88,7 @@ gr8 <- toGRanges("chr9:34229289-34982376")
 #more than one
 gr9 <- toGRanges(c("chr9:34229289-34982376", "chr10:1000-2000"))
 
-#even with mixed strange and mixed syntaxes
+#even with strange and mixed syntaxes
 gr10 <- toGRanges(c("chr4:3873-92928", "chr4:3873,92928", "chr5:33,444-45,555"))
 
 #if the genome is given it is used to annotate the resulting GRanges

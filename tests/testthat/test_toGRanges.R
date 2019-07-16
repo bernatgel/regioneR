@@ -112,15 +112,6 @@ test_that(" toGRanges works for a file", {
   
   
   
-  gr2 <- expect_silent(toGRanges("test_data_files/two_valid_seps.txt"))
-  names(mcols(gr2)) <- "data"
-  expect_equal(gr2, gr1)
-  
-  gr2 <- expect_silent(toGRanges("test_data_files/alt_sep1.txt"))
-  names(mcols(gr2)) <- "data"
-  expect_equal(gr2, gr1)
-  
-  
   gr1 <- expect_silent(toGRanges("test_data_files/only_comments_and_header.txt"))
   expect_is(gr1, "GRanges") 
   expect_length(gr1, 0)  

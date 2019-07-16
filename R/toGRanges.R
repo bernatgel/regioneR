@@ -40,11 +40,12 @@
 #' 
 #' 
 #' 
-#' @usage toGRanges(A, ..., genome=NULL, comment.char="#")
+#' @usage toGRanges(A, ..., genome=NULL, sep=NULL, comment.char="#")
 #' 
 #' @param A  a \code{\link{data.frame}} containing a region set, a \code{\link{GRanges}} object, a BED file, any type of file supported by \code{rtracklayer::import} or a \code{"SimpleRleList"} returned by \code{GenomicRanges::coverage}. If there are more than 1 argument, it will build a dataframe out ouf them and process it as usual. If there's only a single argument and it's a character, if it's not an existing file name it will be treated as the definition of a genomic region in the UCSC/IGV format (i.e. "chr9:34229289-34982376") and parsed. 
 #' @param ... further arguments to be passed to other methods. 
 #' @param genome (character or BSgenome) The genome info to be attached to the created GRanges. If NULL no genome info will be attached. (defaults to NULL)
+#' @param sep (character) The field separator in the text file. If NULL it will be automatically guessed. Only used when reading some file formats. (Defaults to NULL)
 #' @param comment.char (character) The character marking comment lines. Only used when reading some file formats. (Defaults to "#")
 #' 
 #' @return
@@ -70,7 +71,7 @@
 #' gr5 <- toGRanges("chr9", "34229289", "34982376") 
 #' 
 #' #It can be a file from disk
-#' bed.file <- system.file("extdata", "my.special.genes.bed", package="regioneR")
+#' bed.file <- system.file("extdata", "my.special.genes.txt", package="regioneR")
 #' gr6 <- toGRanges(bed.file)
 #' 
 #' #Or a URL to a valid file
@@ -82,7 +83,7 @@
 #' #more than one
 #' gr9 <- toGRanges(c("chr9:34229289-34982376", "chr10:1000-2000"))
 #' 
-#' #even with mixed strange and mixed syntaxes
+#' #even with strange and mixed syntaxes
 #' gr10 <- toGRanges(c("chr4:3873-92928", "chr4:3873,92928", "chr5:33,444-45,555"))
 #' 
 #' #if the genome is given it is used to annotate the resulting GRanges
@@ -111,9 +112,9 @@
 #' @importFrom GenomicRanges GRanges elementMetadata GRangesList
 #' @import BSgenome
 #' @importFrom rtracklayer import
-#' @importFrom utils read.delim read.csv head
 #' @importFrom tools file_ext
 #' @importFrom IRanges tolower
+#' @importFrom utils head
 #' @import parallel
 #' @import GenomeInfoDb
 #' 
@@ -121,7 +122,7 @@
 #' 
 
 
-toGRanges <- function(A, ..., genome=NULL, comment.char="#") {
+toGRanges <- function(A, ..., genome=NULL, sep=NULL, comment.char="#") {
     
   if(!hasArg(A)) stop("A is missing")
   
@@ -199,7 +200,7 @@ toGRanges <- function(A, ..., genome=NULL, comment.char="#") {
     }
   } else { #It's not a data.frame
     #If we are here, assume it's a file
-    gr <- fileToGRanges(A, ..., genome=genome)
+    gr <- fileToGRanges(A, ..., sep=sep, genome=genome)
   }
   
   return(setGenomeToGRanges(gr, genome))
@@ -245,7 +246,7 @@ coverageToGRanges <- function(coverage) {
 }
 
 #Read a file into a GRanges
-fileToGRanges <- function(A, ..., genome=NULL, comment.char="#") {
+fileToGRanges <- function(A, ..., genome=NULL, sep=NULL, comment.char="#") {
   #BED 
   if(IRanges::tolower(tools::file_ext(A))=="bed") {
     #If it's a bed file, try to load it using rtracklayer::import
@@ -277,13 +278,17 @@ fileToGRanges <- function(A, ..., genome=NULL, comment.char="#") {
   
   #If we are here, we have a generic text file. 
   num.skip <- firstNonCommentLine(A, comment.char = comment.char) - 1
-  ll <- readLines(A, n = num.skip + 5)
-  ll <- ll[num.skip:length(ll)]
-  sep <- getSeparator(ll)
-  has.head <- hasHeader(ll, sep=sep)
   
   #check if there are availabe lines in addition to any comment line
-  if(length(readLines(A, n=num.skip+1)==num.skip)) return(GRanges())
+  skip.plus.one <- readLines(A, n=num.skip+1)
+  skip.plus.one <- skip.plus.one[skip.plus.one!=""] #Remove any empty lines
+  if(length(skip.plus.one)==num.skip) return(GRanges())
+  
+  ll <- readLines(A, n = num.skip + 5)
+  ll <- ll[(num.skip+1):length(ll)]
+  if(is.null(sep)) sep <- getSeparator(ll)
+  has.head <- hasHeader(ll, sep=sep)
+  
   
   return(tryCatch(
     expr = {toGRanges(utils::read.table(file = A, header = has.head, sep = sep, skip = num.skip, comment.char = comment.char, ...))},
