@@ -26,9 +26,6 @@ Transforms a file or an object containing a region set into a \code{\link{GRange
 \details{
 If A is already a \code{\link{GRanges}} object, it will be returned untouched. 
 
-If A is a file name or connection to a file in any of the formats supported by \code{rtracklayer}'s import function (BED, GFF...) 
-it will be imported using \code{rtracklayer}.
- 
 If A is a data frame, the function will assume the first three columns are chromosome, start and end and create a \code{\link{GRanges}} object. Any additional 
 column will be considered metadata and stored as such in the \code{\link{GRanges}} object. 
 
@@ -48,6 +45,16 @@ If A is a "SimpleRleList" it will be interpreted as the result from
 GenomicRanges::coverage and the function will return a GRanges with a
 single metadata column named "coverage".
 
+If A is a file name (local or remote) or a connection to a file, it will try
+to load it in different ways:
+  * BED files (identified by a "bed" extension): will be loaded using 
+  \code{\link{rtracklayer}}'s import function. Coordinates are 0 based as
+  described in the BED specification (https://genome.ucsc.edu/FAQ/FAQformat.html#format1).
+  * Any other file: It assumes the file is a "generic" tabular file. To load
+   it it will ignore any header line starting with \code{comment.char}, 
+   autodetect the field separator (if not provided by the user), 
+   autodetect if it has a header and read it accordingly.
+
 The \code{genome} parameter can be used to set the genome information of
 the created GRanges. It can be either a \code{\link{BSgenome}} object or a 
 character string defining a genome (e.g. "hg19", "mm10"...) as accepted 
@@ -57,6 +64,16 @@ information will be attached to the GRanges. If the chromosome naming style
 from the GRanges and the genome object are different, it will try to change 
 the GRanges styles to match those of the genome using 
 \code{GenomeInfoDb::seqlevelsStyle}.
+}
+\note{
+**IMPORTANT:** Regarding the coordinates, BED files are 0 based 
+while \code{data.frames} and generic files are treated as 1 based. Therefore
+reading a line "chr9  100   200" from a BED file will create a 99 bases wide
+interval starting at base 101 and ending at 200 but reading it from a txt 
+file or from a \code{data.frame} will create a 100 bases wide interval 
+starting at 100 and ending at 200. This is specially relevant in 1bp
+intervals. For example, the 10th base of chromosome 1 would be 
+"chr1  9  10" in a BED file and "chr1  10  10" in a txt file.
 }
 \examples{
 A <- data.frame(chr=1, start=c(1, 15, 24), end=c(10, 20, 30),  x=c(1,2,3), y=c("a", "b", "c"))
