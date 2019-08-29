@@ -140,7 +140,7 @@ permTest <- function(A, ntimes=100, randomize.function, evaluate.function, alter
       setTxtProgressBar(pb, foo)
     }
     
-    #compute the evaluation function(s) using the RANSOMIZED region set randomA
+    #compute the evaluation function(s) using the RANDOMIZED region set randomA
     rand.evaluate <- sapply(seq_len(length(evaluate.function)), function(i, ...) {return(evaluate.function[[i]](randomA,...))}, ...)
     
     return(rand.evaluate)
