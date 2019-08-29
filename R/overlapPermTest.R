@@ -35,7 +35,7 @@
 #'  
 #' @export overlapPermTest
 
-#Convenience function to performa a permutation test to assess the relation between two different sets of regions: A and B
+#Convenience function to perform a a permutation test to assess the relation between two different sets of regions: A and B
 
 overlapPermTest <- function(A, B, alternative="auto", ...) {
   
@@ -47,6 +47,6 @@ overlapPermTest <- function(A, B, alternative="auto", ...) {
   B <- toGRanges(B)
   A <- toGRanges(A)
   
-  return(permTest(A, B=B, randomize.function=randomizeRegions, evaluate.function=numOverlaps, alternative=alternative, ...))
+  return(permTest(A=A, B=B, randomize.function=randomizeRegions, evaluate.function=numOverlaps, alternative=alternative, ...))
   
 }
