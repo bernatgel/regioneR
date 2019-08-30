@@ -62,7 +62,7 @@ createFunctionsList <- function(FUN, param.name, values, func.names=NULL) {
   }
   
   curried.funcs <- list()
-  for(i in c(1:length(values))) {
+  for(i in seq_len(length(values))) {
     curry.args <- list(FUN=FUN)
     curry.args[[param.name]] <- values[[i]]
     curried.funcs[[func.names[i]]] <- do.call("Curry", curry.args)    
