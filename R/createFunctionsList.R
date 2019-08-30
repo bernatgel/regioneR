@@ -57,7 +57,7 @@ createFunctionsList <- function(FUN, param.name, values, func.names=NULL) {
       if(any(duplicated(names(values)))) stop("the names of the values list must be unique")
       func.names <- names(values)
     } else {
-      func.names <- paste0("Function", c(1:length(values)))
+      func.names <- paste0("Function", seq_len(length(values)))
     }
   }
   
