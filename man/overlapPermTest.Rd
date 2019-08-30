@@ -27,7 +27,22 @@ A list of class \code{permTestResults} containing the following components:
 }
 }
 \description{
-Performs a permutation test to see if there is an association in overlap between a region set A and a region set B creating random regions through the genome.
+Performs a permutation test to see if the overlap between two sets of regions
+A and B is higher (or lower) than expected by chance. It will internally
+call \code{\link{permTest}} with the appropiate parameters to perform the 
+permutation test. If B is a list or a GRangesList, it will perform one
+permutation test per element of the list, testing the overlap between
+A and each element of B independently.
+}
+\note{
+\bold{IMPORTANT:} Since it uses \code{link{permTest}} internally, it
+is possible to use most of the parameters of that function in 
+\code{overlapPermTest}, including: \code{ntimes}, \code{force.parallel},
+\code{min.parallel} and \code{verbose}. In addition, this function
+accepts most parameters of the \code{\link{randomizeRegions}} function 
+including \code{genome}, \code{mask}, \code{allow.overlaps} and 
+\code{per.chromosome} and the parameters of \code{\link{numOverlaps}} such
+as \code{count.once}.
 }
 \examples{
 genome <- filterChromosomes(getGenome("hg19"), keep.chr="chr1")
@@ -38,6 +53,12 @@ pt <- overlapPermTest(A=A, B=B, ntimes=10, genome=genome, non.overlapping=FALSE,
 summary(pt)
 plot(pt)
 plot(pt, plotType="Tailed")  
+ 
+ 
+C <- c(B, createRandomRegions(nregions=10, length.mean=10000, length.sd=20000, genome=genome, non.overlapping=FALSE))
+pt <- overlapPermTest(A=A, B=list(B=B, C=C), ntimes=10, genome=genome, non.overlapping=FALSE, verbose=TRUE)
+summary(pt)
+plot(pt)
  
 }
 \seealso{

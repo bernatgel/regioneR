@@ -1,7 +1,22 @@
 #' Permutation Test for Overlap
 #' 
 #' @description
-#' Performs a permutation test to see if there is an association in overlap between a region set A and a region set B creating random regions through the genome.
+#' Performs a permutation test to see if the overlap between two sets of regions
+#' A and B is higher (or lower) than expected by chance. It will internally
+#' call \code{\link{permTest}} with the appropiate parameters to perform the 
+#' permutation test. If B is a list or a GRangesList, it will perform one
+#' permutation test per element of the list, testing the overlap between
+#' A and each element of B independently.
+#' 
+#' @note \bold{IMPORTANT:} Since it uses \code{link{permTest}} internally, it
+#' is possible to use most of the parameters of that function in 
+#' \code{overlapPermTest}, including: \code{ntimes}, \code{force.parallel},
+#' \code{min.parallel} and \code{verbose}. In addition, this function
+#' accepts most parameters of the \code{\link{randomizeRegions}} function 
+#' including \code{genome}, \code{mask}, \code{allow.overlaps} and 
+#' \code{per.chromosome} and the parameters of \code{\link{numOverlaps}} such
+#' as \code{count.once}.
+#' 
 #' 
 #' @usage overlapPermTest (A, B, alternative="auto", ...)
 #' 
@@ -33,20 +48,47 @@
 #' plot(pt)
 #' plot(pt, plotType="Tailed")  
 #'  
+#'  
+#' C <- c(B, createRandomRegions(nregions=10, length.mean=10000, length.sd=20000, genome=genome, non.overlapping=FALSE))
+#' pt <- overlapPermTest(A=A, B=list(B=B, C=C), ntimes=10, genome=genome, non.overlapping=FALSE, verbose=TRUE)
+#' summary(pt)
+#' plot(pt)
+#'  
 #' @export overlapPermTest
 
-#Convenience function to perform a a permutation test to assess the relation between two different sets of regions: A and B
+#Convenience function to perform a a permutation test to assess the overlap between two different sets of regions A and B
 
 overlapPermTest <- function(A, B, alternative="auto", ...) {
   
   if(!hasArg(A)) stop("A is missing")
   if(!hasArg(B)) stop("B is missing")
-  alternative<-match.arg(alternative,c("less","greater", "auto"))
+  alternative <- match.arg(alternative,c("less","greater", "auto"))
   
-  
-  B <- toGRanges(B)
   A <- toGRanges(A)
   
-  return(permTest(A=A, B=B, randomize.function=randomizeRegions, evaluate.function=numOverlaps, alternative=alternative, ...))
+  if(methods::is(B, "GRangesList")) {
+    B <- as.list(B)
+  }
   
+  #If there are multiple B's, create a list of curried functions 
+  #(with parameter B pre-applied) and use that as the evaluation functions
+  if(is.list(B) || is.vector(B)) {
+    func.names <- NULL
+    if(is.null(names(B))) {
+      #if it's a vector of characters use them
+      if(is.vector(B) && all(is.character(B))) {
+        func.names <- B
+      }
+      #if it's a list of characters, use them
+      if(is.list(B) && all(unlist(lapply(B, is.character)))) {
+        func.names <- unlist(B)
+      }
+    }
+    functs <- createFunctionsList(numOverlaps, param.name = "B", values = B, func.names = func.names)
+    
+    return(permTest(A=A, randomize.function=randomizeRegions, evaluate.function=functs, alternative=alternative, ...))
+  } else {
+    B <- toGRanges(B)  
+    return(permTest(A=A, B=B, randomize.function=randomizeRegions, evaluate.function=numOverlaps, alternative=alternative, ...))    
+  }
 }
