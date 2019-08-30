@@ -48,7 +48,7 @@ single metadata column named "coverage".
 If A is a file name (local or remote) or a connection to a file, it will try
 to load it in different ways:
   * BED files (identified by a "bed" extension): will be loaded using 
-  \code{\link{rtracklayer}}'s import function. Coordinates are 0 based as
+  \code{rtracklayer::import} function. Coordinates are 0 based as
   described in the BED specification (https://genome.ucsc.edu/FAQ/FAQformat.html#format1).
   * Any other file: It assumes the file is a "generic" tabular file. To load
    it it will ignore any header line starting with \code{comment.char}, 
