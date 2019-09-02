@@ -211,7 +211,7 @@ setGenomeToGRanges <- function(gr, genome) {
   }
   if(!is.null(genome)) {
     GenomeInfoDb::seqlevelsStyle(gr) <- GenomeInfoDb::seqlevelsStyle(genome)
-    GenomeInfoDb::seqlevels(gr) <- GenomeInfoDb::seqlevels(genome)
+    GenomeInfoDb::seqlevels(gr, pruning.mode="coarse") <- GenomeInfoDb::seqlevels(genome)
     GenomeInfoDb::seqinfo(gr) <- GenomeInfoDb::seqinfo(genome)
   }
   return(gr)
