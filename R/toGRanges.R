@@ -223,18 +223,20 @@ toGRanges <- function(A, ..., genome=NULL, sep=NULL, comment.char="#") {
   
 
 setGenomeToGRanges <- function(gr, genome) {
+  if(!is.null(genome) && is.character(genome)) genome <- characterToBSGenome(genome[1])
+  
   if(!is.null(genome)) {
-    if(is.character(genome)) genome <- characterToBSGenome(genome)
-    if(!methods::is(genome, "BSgenome")) {
-      warning("Invalid 'genome' argument. Ignoring.")
-      genome <- NULL
+    if(methods::is(genome, "BSgenome")) {
+      #Seems weird, but at least the  "BSgenome.Hsapiens.1000genomes.hs37d5" returns two styles. Use only the first one
+      GenomeInfoDb::seqlevelsStyle(gr) <- GenomeInfoDb::seqlevelsStyle(genome)[1] 
+      GenomeInfoDb::seqlevels(gr, pruning.mode="coarse") <- GenomeInfoDb::seqlevels(genome)
+      GenomeInfoDb::seqinfo(gr) <- GenomeInfoDb::seqinfo(genome)  
     }
-  }
-  if(!is.null(genome)) {
-    #Seems weird, but at least the  "BSgenome.Hsapiens.1000genomes.hs37d5" returns two styles. Use only the first one
-    GenomeInfoDb::seqlevelsStyle(gr) <- GenomeInfoDb::seqlevelsStyle(genome)[1] 
-    GenomeInfoDb::seqlevels(gr, pruning.mode="coarse") <- GenomeInfoDb::seqlevels(genome)
-    GenomeInfoDb::seqinfo(gr) <- GenomeInfoDb::seqinfo(genome)
+    if(methods::is(genome, "SeqInfo")) {
+      GenomeInfoDb::seqlevelsStyle(gr) <- GenomeInfoDb::seqlevelsStyle(genome)[1] 
+      GenomeInfoDb::seqlevels(gr, pruning.mode="coarse") <- GenomeInfoDb::seqlevels(genome)
+      GenomeInfoDb::seqinfo(gr) <- genome
+    }
   }
   return(gr)
 }
