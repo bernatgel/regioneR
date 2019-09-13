@@ -231,7 +231,8 @@ setGenomeToGRanges <- function(gr, genome) {
     }
   }
   if(!is.null(genome)) {
-    GenomeInfoDb::seqlevelsStyle(gr) <- GenomeInfoDb::seqlevelsStyle(genome)
+    #Seems weird, but at least the  "BSgenome.Hsapiens.1000genomes.hs37d5" returns two styles. Use only the first one
+    GenomeInfoDb::seqlevelsStyle(gr) <- GenomeInfoDb::seqlevelsStyle(genome)[1] 
     GenomeInfoDb::seqlevels(gr, pruning.mode="coarse") <- GenomeInfoDb::seqlevels(genome)
     GenomeInfoDb::seqinfo(gr) <- GenomeInfoDb::seqinfo(genome)
   }
