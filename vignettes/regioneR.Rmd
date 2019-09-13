@@ -202,7 +202,7 @@ And we can get a graphic representing the results of the permutation test using 
 To compare, imagine we have a second subset of genes, my regular genes, that are not associated with the altered regions. We can run the same test with them and we will get a negative result. In this case we get a non-significant p-value and we can see in the plot that the original evaluation is close to the mean of the randomized ones.
 
 ```{r, fig.height=6,fig.width=8}
-  regular <- toGRanges("http://gattaca.imppc.org/regioner/data/my.regular.genes.bed")
+  regular <- toGRanges(system.file("extdata", "my.regular.genes.bed", package="regioneR"))
   length(regular)
   numOverlaps(regular, altered)
   pt.reg <- permTest(A=regular, ntimes=50, randomize.function=resampleRegions, universe=all.genes,
