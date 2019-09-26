@@ -8,6 +8,11 @@
 #' 
 #' In addition, they can be made explicitly non overlapping and a mask can be provided so no regions fall in an undesirable part of the genome.
 #' 
+#' @note randomizeRegions assumes that chromosomes start at base 1. If a 
+#' chromosome starts at another base number, for example at base 1000, random
+#' regions might appear in the [1:1000] interval. This should not affect most
+#' uses of randomizeRegions, but might be important in some advanced analysis 
+#' involving artificially contructed genomes.
 #' 
 #' @usage 
 #' randomizeRegions(A, genome="hg19", mask=NULL, allow.overlaps=TRUE, per.chromosome=FALSE, ...)
