@@ -1,17 +1,26 @@
 #' toGRanges
 #' 
 #' @description
-#' Transforms a file or an object containing a region set into a \code{\link{GRanges}} object. 
+#' Transforms a file or an object containing a region set into a 
+#' \code{\link{GRanges}} object. 
 #' 
 #' @details
 #' If A is already a \code{\link{GRanges}} object, it will be returned untouched. 
 #' 
-#' If A is a data frame, the function will assume the first three columns are chromosome, start and end and create a \code{\link{GRanges}} object. Any additional 
-#' column will be considered metadata and stored as such in the \code{\link{GRanges}} object. 
+#' If A is a data frame, the function will assume the first three columns are 
+#' chromosome, start and end and create a \code{\link{GRanges}} object. Any 
+#' additional column will be considered metadata and stored as such in the 
+#' \code{\link{GRanges}} object. There are 2 special cases: 1) if A is a 
+#' data.frame with only 2 columns, it will assume the first one is the
+#' chromosome and the second one the position and it will create a GRanges with 
+#' single base regions and 2) if the data.frame has the first 3 columns named
+#' "SNP", "CHR" and "BP" it will shuffle the columns and repeat "BP" to build
+#' a GRanges of single base regions (this is the standard ouput format of plink).
 #' 
-#' If A is not a data.frame and there are more parameters, it will try to build a data.frame with all 
-#' parameters and use that data.frame to build the GRanges. This allows the user to call it like
-#'  \code{toGRanges("chr1", 10, 20)}.
+#' If A is not a data.frame and there are more parameters, it will try to build 
+#' a data.frame with all parameters and use that data.frame to build the 
+#' GRanges. This allows the user to call it like 
+#' \code{toGRanges("chr1", 10, 20)}. 
 #'  
 #' If A is a character or a character vector and it's not a file or a URL, it 
 #' assumes it's a genomic position description in the form used by UCSC or 
@@ -30,6 +39,10 @@
 #'   * BED files (identified by a "bed" extension): will be loaded using 
 #'   \code{rtracklayer::import} function. Coordinates are 0 based as
 #'   described in the BED specification (https://genome.ucsc.edu/FAQ/FAQformat.html#format1).
+#'   * PLINK assoc files (identified by ".assoc", ".assoc.fisher", 
+#'   ".assoc.dosage", ".assoc.linear", ".assoc.logistic"): will be loaded 
+#'   as single-base ranges with all original columns present and the SNPs ids
+#'   as the ranges names
 #'   * Any other file: It assumes the file is a "generic" tabular file. To load
 #'    it it will ignore any header line starting with \code{comment.char}, 
 #'    autodetect the field separator (if not provided by the user), 
@@ -184,13 +197,25 @@ toGRanges <- function(A, ..., genome=NULL, sep=NULL, comment.char="#") {
   if(methods::is(A, "data.frame")) {
     if(length(A)==0) stop("In GRanges: A cannot be a data.frame with 0 columns.")
       
-    if(length(A)==1) { #If the data.frame has inly one column, treat it as a character vector
+    if(length(A)==1) { #If the data.frame has only one column, treat it as a character vector
       return(toGRanges(A[,1]), genome=genome)
     }
     
     #If the data.frame has only two columns, repeat the second column to create "one-base-wide" regions
     if(length(A)==2) {
       A <- cbind(A, A[,2], stringsAsFactors=FALSE)
+    }
+    
+    #Assoc files fom plink and the like: they have specific column names
+    if(ncol(A)>=3 && all(names(A)[1:3] %in% c("CHR", "BP", "SNP"))) {
+      if(ncol(A)>3) {
+        A <- A[, c("CHR", "BP", "BP", "SNP", names(A)[4:ncol(A)])]
+      } else {
+        A <- A[, c("CHR", "BP", "BP", "SNP")]        
+      }
+      if(!any(duplicated(A[,4]))) {
+        row.names(A) <- A[,4]
+      }
     }
     
     chrs <- as.character(A[,1]) #Transform the first column into a character. It does not work with factors.
@@ -201,6 +226,10 @@ toGRanges <- function(A, ..., genome=NULL, sep=NULL, comment.char="#") {
     end <- as.numeric(A[,3])
     
     gr <- GenomicRanges::GRanges(seqnames=chrs, ranges=IRanges::IRanges(start=start, end=end))
+    
+    #assign the rownames of A to the GRanges too
+    names(gr) <- rownames(A)
+    
     #We cannot assign the metadata in a single line because when only one metadata column was requested, 
     #it was automatically transformed into a vector and it lost its name. 
     if(ncol(A)>3) { #if there's metadata or strand information
@@ -284,6 +313,18 @@ fileToGRanges <- function(A, ..., genome=NULL, sep=NULL, comment.char="#") {
     return(gr)
   }
   
+  # #PLINK files
+  # NO special treatment is needed. They will be read as data.frame and the 
+  # data.frame processing code will identify them.
+  #
+  # if(IRanges::tolower(tools::file_ext(A)) %in% 
+  #    c(".assoc", ".assoc.fisher", ".assoc.dosage",
+  #      ".assoc.linear", ".assoc.logistic")) {
+  #   
+  # } 
+  #
+  
+  
   #GFF
   #TODO
   
@@ -301,15 +342,22 @@ fileToGRanges <- function(A, ..., genome=NULL, sep=NULL, comment.char="#") {
   skip.plus.one <- skip.plus.one[skip.plus.one!=""] #Remove any empty lines
   if(length(skip.plus.one)==num.skip) return(GRanges())
   
+  #Detect header and separator (if needed)
   ll <- readLines(A, n = num.skip + 5)
   ll <- ll[(num.skip+1):length(ll)]
   if(is.null(sep)) sep <- getSeparator(ll)
   has.head <- hasHeader(ll, sep=sep)
   
-  
-  return(tryCatch(
-    expr = {toGRanges(utils::read.table(file = A, header = has.head, sep = sep, skip = num.skip, comment.char = comment.char, ...))},
+  #Read the file into a data.frame
+  file.cont <- tryCatch(
+    expr = {utils::read.table(file = A, header = has.head, sep = sep, skip = num.skip, comment.char = comment.char, ...)},
     error = function(e) {stop("Error in toGRanges when trying to read the file \"", A, "\": ", e)}
+  )
+  
+  #and convert the data.frame into a GRanges using toGRanges itself
+  return(tryCatch(
+    expr = {toGRanges(file.cont)},
+    error = function(e) {stop("Error in toGRanges when building a GRanges with the content of file \"", A, "\": ", e)}
   ))
   
 }

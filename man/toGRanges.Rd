@@ -21,17 +21,26 @@ toGRanges(A, ..., genome=NULL, sep=NULL, comment.char="#")
 A \code{\link{GRanges}} object with the regions in A
 }
 \description{
-Transforms a file or an object containing a region set into a \code{\link{GRanges}} object.
+Transforms a file or an object containing a region set into a 
+\code{\link{GRanges}} object.
 }
 \details{
 If A is already a \code{\link{GRanges}} object, it will be returned untouched. 
 
-If A is a data frame, the function will assume the first three columns are chromosome, start and end and create a \code{\link{GRanges}} object. Any additional 
-column will be considered metadata and stored as such in the \code{\link{GRanges}} object. 
+If A is a data frame, the function will assume the first three columns are 
+chromosome, start and end and create a \code{\link{GRanges}} object. Any 
+additional column will be considered metadata and stored as such in the 
+\code{\link{GRanges}} object. There are 2 special cases: 1) if A is a 
+data.frame with only 2 columns, it will assume the first one is the
+chromosome and the second one the position and it will create a GRanges with 
+single base regions and 2) if the data.frame has the first 3 columns named
+"SNP", "CHR" and "BP" it will shuffle the columns and repeat "BP" to build
+a GRanges of single base regions (this is the standard ouput format of plink).
 
-If A is not a data.frame and there are more parameters, it will try to build a data.frame with all 
-parameters and use that data.frame to build the GRanges. This allows the user to call it like
- \code{toGRanges("chr1", 10, 20)}.
+If A is not a data.frame and there are more parameters, it will try to build 
+a data.frame with all parameters and use that data.frame to build the 
+GRanges. This allows the user to call it like 
+\code{toGRanges("chr1", 10, 20)}. 
  
 If A is a character or a character vector and it's not a file or a URL, it 
 assumes it's a genomic position description in the form used by UCSC or 
@@ -50,6 +59,10 @@ to load it in different ways:
   * BED files (identified by a "bed" extension): will be loaded using 
   \code{rtracklayer::import} function. Coordinates are 0 based as
   described in the BED specification (https://genome.ucsc.edu/FAQ/FAQformat.html#format1).
+  * PLINK assoc files (identified by ".assoc", ".assoc.fisher", 
+  ".assoc.dosage", ".assoc.linear", ".assoc.logistic"): will be loaded 
+  as single-base ranges with all original columns present and the SNPs ids
+  as the ranges names
   * Any other file: It assumes the file is a "generic" tabular file. To load
    it it will ignore any header line starting with \code{comment.char}, 
    autodetect the field separator (if not provided by the user), 
