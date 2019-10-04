@@ -1,3 +1,20 @@
+CHANGES IN VERSION 1.18.0
+-----------------------
+
+NEW FEATURES
+
+    o Expanded toGRanges support. It is now possible to transform coverage 
+    objects (i.e. toGRanges(coverage(A))) into GRanges. It also supports 
+    ".assoc" files produced by PLINK.
+    o overlapPermTest now supports multiple region sets in B and will perform
+    a multi- permutation test against each one much faster than testing them 
+    independently.
+    
+BUG FIXES
+
+    o Multiple bug fixes
+
+
 CHANGES IN VERSION 1.13.2
 -----------------------
 
