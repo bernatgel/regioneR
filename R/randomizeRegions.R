@@ -44,6 +44,7 @@
 #' @export randomizeRegions
 #' 
 #' @importFrom IRanges IRanges
+#' @importFrom stats setNames
 
 
 
@@ -110,7 +111,10 @@ randomizeRegions <- function(A, genome="hg19",  mask=NULL, allow.overlaps=TRUE, 
   
   ntimes <- 0
   
-  random.regions <- A[0]
+  random.regions <- setNames(A[0], NULL) 
+  #NOTE: setNames is important. When later c'ing this GR with random.regs 
+  # (which has names(random.regs)==NULL), all names will be ""
+  
   pending <- A
   #TODO: Adjust these parameters
   while(ntimes < 10) {

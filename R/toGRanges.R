@@ -227,9 +227,10 @@ toGRanges <- function(A, ..., genome=NULL, sep=NULL, comment.char="#") {
     
     gr <- GenomicRanges::GRanges(seqnames=chrs, ranges=IRanges::IRanges(start=start, end=end))
     
-    #assign the rownames of A to the GRanges too
-    if(length(gr)>0) {
-      names(gr) <- rownames(A)
+    
+    #assign the rownames of A to the GRanges too (if not duplicated!)
+    if(length(gr)>0 && !any(duplicated(row.names(A)))) {
+      tryCatch(names(gr) <- rownames(A), error=function(e){})
     }
     
     #We cannot assign the metadata in a single line because when only one metadata column was requested, 
