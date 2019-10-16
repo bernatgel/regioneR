@@ -1,7 +1,7 @@
 
 
 
-getSeparator <- function(l, seps=c("\t", ",", ";", "|")) {
+getSeparator <- function(l, seps=c("\t", ",", ";")) {
   #Check all seps and find the one where all rows are split into the same 
   #number of elements and said number is bigger than 1 and it's the largest
   num.fields <- unlist(lapply(seps, function(sep) {
