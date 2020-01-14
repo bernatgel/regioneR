@@ -53,8 +53,8 @@ getChromosomesByOrganism <-function() {
               canonical=paste0("chr",c(1:20,"X","Y")),
               org.name=("Rattus norvegicus")),
     
-    sacCer = list(autosomal=paste0("chr",c(1:16)),
-                  canonical=paste0("chr",c(1:16)),
+    sacCer = list(autosomal=paste0("chr",c(as.character(as.roman(1:16)), "M")),
+                  canonical=paste0("chr",c(as.character(as.roman(1:16)), "M")),
                   org.name=("Saccharomyces cerevisiae")),
     
     dm = list(autosomal=paste0("chr",c("2L","2R","3L","3R","4")),
