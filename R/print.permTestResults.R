@@ -10,7 +10,7 @@
 #' print(pt)
 #' 
 #' @keywords internal
-#' @export print.permTestResults
+#' @export 
 
 
 print.permTestResults <- function(x, ...) {

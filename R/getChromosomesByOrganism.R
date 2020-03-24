@@ -20,7 +20,7 @@
 #' chrsByOrg[["hg"]][["autosomal"]]
 #' 
 #' @export getChromosomesByOrganism
-
+#' @importFrom utils as.roman
 
 
 getChromosomesByOrganism <-function() {
