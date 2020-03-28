@@ -17,7 +17,7 @@ test_that(" toGRanges works for a data.frame", {
   expect_length(gr1, 3)
   expect_equal(names(mcols(gr1)), c("x", "y"))
   expect_is(gr1$x, "numeric")
-  expect_is(gr1$y, "factor")  
+  expect_is(gr1$y, "character")  
   expect_equal(GenomicRanges::start(gr1), starts)
   expect_equal(GenomicRanges::end(gr1), ends)
   expect_equal(as.character(seqnames(gr1)), chrs)
