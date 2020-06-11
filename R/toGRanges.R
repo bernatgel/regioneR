@@ -102,7 +102,7 @@
 #' gr6 <- toGRanges(bed.file)
 #' 
 #' #Or a URL to a valid file
-#' gr7 <- toGRanges("http://molb7621.github.io/workshop/_downloads/lamina.bed")
+#' #gr7 <- toGRanges("http://path.to/my.bed")
 #' 
 #' #It can also parse genomic location strings
 #' gr8 <- toGRanges("chr9:34229289-34982376")
