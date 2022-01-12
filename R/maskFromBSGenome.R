@@ -65,7 +65,7 @@ maskFromBSGenome <- memoise::memoise(function(bsgenome) {
                                   if(is.null(chr.masks[[chr]])) {
                                     return(NULL)
                                   } else {
-                                    return(GenomicRanges::GRanges(seqnames=S4Vectors::Rle(rep(chr, length(chr.masks[[chr]]))), ranges=chr.masks[[chr]]))
+                                    return(GenomicRanges::GRanges(seqnames=S4Vectors::Rle(rep(chr, length(chr.masks[[chr]]))), ranges=chr.masks[[chr]], seqinfo = seqinfo(bsgenome)))
                                   }
                                 })
   
