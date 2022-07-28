@@ -19,7 +19,7 @@ resampleRegions(A, universe, per.chromosome=FALSE, ...)
 a \code{\link{GenomicRanges}} object. A sample from the \code{univers} with the same length as A.
 }
 \description{
-Function for sampling a region set from a univers of region sets.
+Function for sampling a region set from a universe of region sets.
 }
 \examples{
 universe <- data.frame(chr=1, start=c(1,15,24,40,50), end=c(10,20,30,45,55))
