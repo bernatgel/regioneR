@@ -4,8 +4,16 @@
 \alias{plot.permTestResultsList}
 \title{Function for plotting the results from a \code{permTestResultsList} object when more than one evaluation function was used.}
 \usage{
-\method{plot}{permTestResultsList}(x, ncol = NA, pvalthres = 0.05,
-  plotType = "Tailed", main = "", xlab = NULL, ylab = "", ...)
+\method{plot}{permTestResultsList}(
+  x,
+  ncol = NA,
+  pvalthres = 0.05,
+  plotType = "Tailed",
+  main = "",
+  xlab = NULL,
+  ylab = "",
+  ...
+)
 }
 \arguments{
 \item{x}{an object of class \code{permTestResultsList}.}

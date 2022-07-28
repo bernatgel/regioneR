@@ -4,9 +4,17 @@
 \alias{plot.permTestResults}
 \title{Function for plotting the results from a \code{permTestResults} object.}
 \usage{
-\method{plot}{permTestResults}(x, pvalthres = 0.05,
-  plotType = "Tailed", main = "", xlab = NULL, ylab = "",
-  ylim = NULL, xlim = NULL, ...)
+\method{plot}{permTestResults}(
+  x,
+  pvalthres = 0.05,
+  plotType = "Tailed",
+  main = "",
+  xlab = NULL,
+  ylab = "",
+  ylim = NULL,
+  xlim = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{an object of class \code{permTestResults}.}

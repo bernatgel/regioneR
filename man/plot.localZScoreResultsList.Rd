@@ -4,8 +4,7 @@
 \alias{plot.localZScoreResultsList}
 \title{Plot a list of localZscore results}
 \usage{
-\method{plot}{localZScoreResultsList}(x, ncol = NA, main = "",
-  num.x.labels = 5, ...)
+\method{plot}{localZScoreResultsList}(x, ncol = NA, main = "", num.x.labels = 5, ...)
 }
 \arguments{
 \item{x}{an object of class \code{localZScoreResultsList}.}
