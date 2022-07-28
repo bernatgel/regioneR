@@ -1,7 +1,7 @@
 #' Resample Regions
 #' 
 #' @description 
-#' Function for sampling a region set from a univers of region sets.
+#' Function for sampling a region set from a universe of region sets.
 #' 
 #' @usage 
 #' resampleRegions(A, universe, per.chromosome=FALSE, ...)
