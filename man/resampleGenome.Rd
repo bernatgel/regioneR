@@ -15,9 +15,9 @@ resampleGenome(A, simple = FALSE, per.chromosome = FALSE, genome="hg19", min.til
 
 \item{genome}{character or GenomicRanges, genome using for the randomization}
 
-\item{...}{further arguments to be passed to other methods.}
+\item{min.tile.width}{integer, the minimum size of the genome tiles. If they are too small, the functions gets very slow and may even fail to work. (default = 1000, 1kb tiles)}
 
-\item{integer, }{the minimum size of the genome tiles. If they are too small, the functions gets very slow and may even fail to work. (default = 1000, 1kb tiles)}
+\item{...}{further arguments to be passed to other methods.}
 }
 \value{
 a \code{\link{GenomicRanges}} object. A sample from the \code{universe} with the same length as A.
