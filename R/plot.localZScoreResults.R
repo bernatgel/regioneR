@@ -39,8 +39,8 @@ plot.localZScoreResults <- function(x, main="", num.x.labels=5, ...) {
 
   if(nchar(main)==0) main <- "Local z-score"
 
-  old.scipen <- options("scipen")
-  options(scipen=999)
+  #old.scipen <- options("scipen")
+  #options(scipen=99)
   
   #Set the positions for the x labels
   if(num.x.labels < 1) {
@@ -60,6 +60,6 @@ plot.localZScoreResults <- function(x, main="", num.x.labels=5, ...) {
   }
   box(lwd=1.2)
   
-  options(scipen=old.scipen)
+  #options(scipen=old.scipen)
   
 }
