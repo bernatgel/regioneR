@@ -27,24 +27,35 @@
 
 
 #TODO: CHANGE STRANDED TO TRUE OR TO "AUTO", returning a strand column only if there's strand info?
-
 toDataframe <- function(A, stranded=FALSE) {
-  
+
   if(!hasArg(A)) stop("A is missing")
-  
-  if(is(A, "data.frame")) {
+
+  if(methods::is(A, "data.frame")) {
     return(A)
   }
-  
-  if(is(A, "GRanges")) {
-    A <- suppressWarnings(as.data.frame(A)[,-4]) #Return the data in the GRanges removing the strand and width
-    names(A)[1] <- "chr"
-    if(!stranded) {
-      A <- A[,-4]
+
+  if(methods::is(A, "GRanges")) {
+    result <- data.frame(
+      chr=as.factor(GenomicRanges::seqnames(A)),
+      start=GenomicRanges::start(A),
+      end=GenomicRanges::end(A),
+      row.names=names(A),
+      check.names=FALSE
+    )
+
+    if(stranded) {
+      result$strand <- as.factor(GenomicRanges::strand(A))
     }
-    return(A)
+
+    result <- cbind(
+      result,
+      as.data.frame(S4Vectors::mcols(A, use.names=FALSE))
+    )
+
+    return(result)
   }
-  
+
   warning("Unidentified class in toDataFrame. Returning without modifications")
   return(A)
   

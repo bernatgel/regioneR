@@ -28,6 +28,10 @@ test_that(" toGRanges works for a data.frame", {
   expect_equal(toGRanges(1, starts, ends), gr1.2)
     
   expect_equal(toGRanges(toDataframe(gr1)), gr1)
+
+  #check the column names explicitly
+  expect_identical(colnames(toDataframe(gr1)), c("chr", "start", "end", "x", "y"))
+  expect_identical(colnames(toDataframe(gr1, stranded=TRUE)), c("chr", "start", "end", "strand", "x", "y"))
   
   
   #check the genome
