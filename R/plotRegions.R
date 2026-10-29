@@ -46,7 +46,7 @@ plotRegions <- function(x, chromosome, start=NULL, end=NULL, regions.labels=NULL
   
   #transforming to GRanges and calculating the axes limits for the plot
   maxx <- minx <- rep(0,length(x))
-  for(i in 1:length(x)) {
+  for(i in seq_along(x)) {
     x[[i]] <- toGRanges(x[[i]])
     x[[i]] <- x[[i]][seqnames(x[[i]])==chromosome,]
     if(!is.null(start)) x[[i]] <- x[[i]][start(x[[i]])>=start,]
@@ -63,7 +63,7 @@ plotRegions <- function(x, chromosome, start=NULL, end=NULL, regions.labels=NULL
   axis(1, at=round(seq(minstart,maxend,(maxend-minstart)/10),0), labels=round(seq(minstart,maxend,(maxend-minstart)/10),0))
   axis(2, at=c(length(x):1), las=1, labels=regions.labels)
   
-  for(reg in 1:length(x)){
+  for(reg in seq_along(x)){
     
     reads <- toDataframe(x[[reg]])
     # sort the reads by their start positions
@@ -75,7 +75,7 @@ plotRegions <- function(x, chromosome, start=NULL, end=NULL, regions.labels=NULL
     
     
     # iterate over segments
-    for (r in 1:nrow(reads)){
+    for (r in seq_len(nrow(reads))){
       read <- reads[r,];
       start <- read$start;
       placed <- FALSE;

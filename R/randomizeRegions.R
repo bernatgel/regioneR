@@ -286,7 +286,7 @@ private_randomizeRegions <- function(A, genome, mask, allow.overlaps=TRUE, max.r
   #TODO: Should we really retry? or just giveup immediately?
   #Set up a retry system in case the region set does not fit into the genome with a given configuration
   original.valid.regions <- valid.regions
-  for(ntry in 1:max.retries) {
+  for(ntry in seq_len(max.retries)) {
     
     #reset the valid.regions
     valid.regions <- original.valid.regions
@@ -297,7 +297,7 @@ private_randomizeRegions <- function(A, genome, mask, allow.overlaps=TRUE, max.r
     first <- TRUE
     #Bernat
     new.chr <- new.start <- new.end <- c()
-    for(i in 1:length(A)) {
+    for(i in seq_along(A)) {
       
       len <- width(A)[i] - 1
       #CHECK: a -1 is not necessary when using the dataframe fr valid.regions

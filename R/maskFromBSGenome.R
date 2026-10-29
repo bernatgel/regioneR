@@ -46,7 +46,7 @@ maskFromBSGenome <- memoise::memoise(function(bsgenome) {
   chrs <- as.character(GenomicRanges::seqnames(getGenome(bsgenome)))
   
   
-  chr.masks <- sapply(chrs, function(chr) {
+  chr.masks <- lapply(stats::setNames(chrs, chrs), function(chr) {
                                       mm <- Biostrings::masks(bsgenome[[chr]])
                                       if(is.null(mm)) {
                                         return(NULL)
@@ -61,7 +61,7 @@ maskFromBSGenome <- memoise::memoise(function(bsgenome) {
   }
   
   
-  chr.masks <- sapply(chrs, function(chr) {
+  chr.masks <- lapply(stats::setNames(chrs, chrs), function(chr) {
                                   if(is.null(chr.masks[[chr]])) {
                                     return(NULL)
                                   } else {

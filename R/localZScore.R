@@ -67,7 +67,7 @@ localZScore <- function(A, pt, window, step, ...) {
     
     num.steps <- floor(window/step)
     
-    shifts <- (1:num.steps)*step
+    shifts <- seq_len(num.steps)*step
     shifts <- c(rev(-1*shifts), 0, shifts)
     
     shifted.z.score <- function(shift) {

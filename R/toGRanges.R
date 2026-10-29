@@ -207,7 +207,7 @@ toGRanges <- function(A, ..., genome=NULL, sep=NULL, comment.char="#") {
     }
     
     #Assoc files fom plink and the like: they have specific column names
-    if(ncol(A)>=3 && all(names(A)[1:3] %in% c("CHR", "BP", "SNP"))) {
+    if(ncol(A)>=3 && all(names(A)[seq_len(3)] %in% c("CHR", "BP", "SNP"))) {
       if(ncol(A)>3) {
         A <- A[, c("CHR", "BP", "BP", "SNP", names(A)[4:ncol(A)])]
       } else {

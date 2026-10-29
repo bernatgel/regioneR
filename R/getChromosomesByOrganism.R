@@ -26,35 +26,35 @@
 getChromosomesByOrganism <-function() {
   
   chromosomesByOrganism <- list(
-    hg = list(autosomal=paste0("chr", c(1:22)),
-              canonical=paste0("chr",c(1:22,"X","Y")),
+    hg = list(autosomal=paste0("chr", c(seq_len(22))),
+              canonical=paste0("chr",c(seq_len(22),"X","Y")),
               org.name=("Homo sapiens")),
     
-    mm = list(autosomal=paste0("chr",c(1:19)),
-              canonical=paste0("chr",c(1:19,"X","Y")),
+    mm = list(autosomal=paste0("chr",c(seq_len(19))),
+              canonical=paste0("chr",c(seq_len(19),"X","Y")),
               org.name=("Mus musculus")),
     
-    bosTau = list(autosomal=paste0("chr",c(1:29)),
-             canonical=paste0("chr",c(1:29,"X","Y")),
+    bosTau = list(autosomal=paste0("chr",c(seq_len(29))),
+             canonical=paste0("chr",c(seq_len(29),"X","Y")),
              org.name=("Bos taurus")),
     
-    ce = list(autosomal=paste0("chr",c(1:5)),
-              canonical=paste0("chr",c(1:5,"X","Y")),
+    ce = list(autosomal=paste0("chr",c(seq_len(5))),
+              canonical=paste0("chr",c(seq_len(5),"X","Y")),
               org.name=("Caenorhabditis elegans")),
     
-    danRer = list(canonical=paste0("chr",c(1:25)),
+    danRer = list(canonical=paste0("chr",c(seq_len(25))),
                   org.name=("Danio rerio")),
     
-    rheMac = list(autosomal=paste0("chr",c(1:20)),
-                  canonical=paste0("chr",c(1:20,"X","Y")),
+    rheMac = list(autosomal=paste0("chr",c(seq_len(20))),
+                  canonical=paste0("chr",c(seq_len(20),"X","Y")),
                   org.name=("Macaca mulata")),
     
-    rn = list(autosomal=paste0("chr",c(1:20)),
-              canonical=paste0("chr",c(1:20,"X","Y")),
+    rn = list(autosomal=paste0("chr",c(seq_len(20))),
+              canonical=paste0("chr",c(seq_len(20),"X","Y")),
               org.name=("Rattus norvegicus")),
     
-    sacCer = list(autosomal=paste0("chr",c(as.character(as.roman(1:16)), "M")),
-                  canonical=paste0("chr",c(as.character(as.roman(1:16)), "M")),
+    sacCer = list(autosomal=paste0("chr",c(as.character(as.roman(seq_len(16))), "M")),
+                  canonical=paste0("chr",c(as.character(as.roman(seq_len(16))), "M")),
                   org.name=("Saccharomyces cerevisiae")),
     
     dm = list(autosomal=paste0("chr",c("2L","2R","3L","3R","4")),

@@ -48,10 +48,10 @@ plot.localZScoreResults <- function(x, main="", num.x.labels=5, ...) {
     x.lab.pos <- 0
   } else {
     x.lab.dist <- floor(x$window/num.x.labels)
-    x.lab.pos <- (1:num.x.labels)*x.lab.dist
+    x.lab.pos <- seq_len(num.x.labels)*x.lab.dist
     x.lab.pos <- c(rev(-1*x.lab.pos), 0, x.lab.pos)
   }
-  x.labs <- sapply(x.lab.pos, toLabel)
+  x.labs <- vapply(x.lab.pos, toLabel, character(1))
   
   y.max <- max(x$shifted.z.scores, 2)
   y.min <- min(x$shifted.z.scores, -2)

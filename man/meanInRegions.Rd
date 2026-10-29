@@ -26,7 +26,7 @@ Returns the mean of a value defined by a region set over another set of regions.
 
  A <- data.frame("chr1", c(1, 10, 20, 30), c(12, 13, 28, 40))
  
- positions <- sample(1:40,30)
+ positions <- sample(seq_len(40),30)
  
  x <- data.frame("chr1", positions, positions, rnorm(30,4,1))
  

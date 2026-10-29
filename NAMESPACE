@@ -46,42 +46,60 @@ import(GenomeInfoDb)
 import(Seqinfo)
 import(graphics)
 import(parallel)
-importFrom(Biostrings,collapse)
-importFrom(Biostrings,masks)
-importFrom(GenomicRanges,GRanges)
-importFrom(GenomicRanges,GRangesList)
-importFrom(GenomicRanges,countOverlaps)
-importFrom(GenomicRanges,distanceToNearest)
-importFrom(GenomicRanges,elementMetadata)
-importFrom(GenomicRanges,end)
-importFrom(GenomicRanges,findOverlaps)
-importFrom(GenomicRanges,mcols)
-importFrom(GenomicRanges,reduce)
-importFrom(GenomicRanges,resize)
-importFrom(GenomicRanges,shift)
-importFrom(GenomicRanges,start)
-importFrom(GenomicRanges,tile)
-importFrom(GenomicRanges,width)
-importFrom(IRanges,IRanges)
-importFrom(IRanges,tolower)
-importFrom(S4Vectors,Rle)
-importFrom(S4Vectors,queryHits)
-importFrom(S4Vectors,subjectHits)
-importFrom(Seqinfo,seqlevels)
-importFrom(Seqinfo,seqnames)
-importFrom(memoise,forget)
-importFrom(memoise,memoise)
-importFrom(methods,hasArg)
-importFrom(methods,is)
+importFrom(Biostrings,
+  collapse,
+  masks
+)
+importFrom(GenomicRanges,
+  GRanges,
+  GRangesList,
+  countOverlaps,
+  distanceToNearest,
+  elementMetadata,
+  end,
+  findOverlaps,
+  mcols,
+  reduce,
+  resize,
+  shift,
+  start,
+  tile,
+  width
+)
+importFrom(IRanges,
+  IRanges,
+  tolower
+)
+importFrom(S4Vectors,
+  Rle,
+  queryHits,
+  subjectHits
+)
+importFrom(Seqinfo,
+  seqlevels,
+  seqnames
+)
+importFrom(memoise,
+  forget,
+  memoise
+)
+importFrom(methods,
+  hasArg,
+  is
+)
 importFrom(rtracklayer,import)
-importFrom(stats,dnorm)
-importFrom(stats,qnorm)
-importFrom(stats,rnorm)
-importFrom(stats,runif)
-importFrom(stats,sd)
-importFrom(stats,setNames)
+importFrom(stats,
+  dnorm,
+  qnorm,
+  rnorm,
+  runif,
+  sd,
+  setNames
+)
 importFrom(tools,file_ext)
-importFrom(utils,as.roman)
-importFrom(utils,head)
-importFrom(utils,setTxtProgressBar)
-importFrom(utils,txtProgressBar)
+importFrom(utils,
+  as.roman,
+  head,
+  setTxtProgressBar,
+  txtProgressBar
+)

@@ -114,7 +114,7 @@ permTest <- function(A, ntimes=100, randomize.function, evaluate.function, alter
       
   #Start the permutation test
   #compute the evaluation function(s) using the original region set A
-  original.evaluate <- sapply(seq_len(length(evaluate.function)), function(i,...) {return(evaluate.function[[i]](A,...))}, ...)
+  original.evaluate <- vapply(seq_along(evaluate.function), function(i,...) {return(evaluate.function[[i]](A,...))}, numeric(1), ...)
  
   if(!is.numeric(original.evaluate)) {
     stop(paste0("The evaluation function must return a numeric value but it returned an object of class ", class(original.evaluate)))
@@ -141,7 +141,7 @@ permTest <- function(A, ntimes=100, randomize.function, evaluate.function, alter
     }
     
     #compute the evaluation function(s) using the RANDOMIZED region set randomA
-    rand.evaluate <- sapply(seq_len(length(evaluate.function)), function(i, ...) {return(evaluate.function[[i]](randomA,...))}, ...)
+    rand.evaluate <- vapply(seq_along(evaluate.function), function(i, ...) {return(evaluate.function[[i]](randomA,...))}, numeric(1), ...)
     
     return(rand.evaluate)
   }

@@ -44,7 +44,7 @@ splitRegions <- function(A, B, min.size=1, track.original=TRUE) {
   
 #for each chromosome
   chr<-unique(c(as.character(as.vector(A[,1])), as.character(as.vector(B[,1]))))
-  for(i in 1:length(chr)) {
+  for(i in seq_along(chr)) {
     Achr <- A[A[,1]==chr[i],]
     Bchr <- B[B[,1]==chr[i],]
     
@@ -60,7 +60,7 @@ splitRegions <- function(A, B, min.size=1, track.original=TRUE) {
     
     #once we have the splits we want to find the regions
     start <- end <- 0
-    for(j in 1:(dim(splits)[1]-1)) {
+    for(j in seq_len(nrow(splits)-1L)) {
       #if the split is start, the start point of the region will be the split but the end point of the region will be th split minus 1
       #if the split is end,the start point of the region will be the split plus 1 and the end point of the region will be the next split
       if(splits[j,2]=="s") {
@@ -83,7 +83,7 @@ splitRegions <- function(A, B, min.size=1, track.original=TRUE) {
     newregions <- newregions[long>0,]
     
     #constructing the output files and adding the original info if track.original==TRUE
-    for(j in 1:dim(newregions)[1]) {
+    for(j in seq_len(nrow(newregions))) {
       auxA <- which(Achr[,2]<=newregions[j,1] & Achr[,3]>=newregions[j,2])
       if(length(auxA)>0) {
         if(track.original==TRUE){

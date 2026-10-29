@@ -42,7 +42,7 @@ resampleRegions <- function(A, universe, per.chromosome=FALSE, ...) {
     chrResample <- function(chr) {
       Achr <- A[seqnames(A) == chr]
       universe.chr <- universe[seqnames(universe) == chr]
-      resample.chr <- universe.chr[sample(1:length(universe.chr), length(Achr))]
+      resample.chr <- universe.chr[sample.int(length(universe.chr), length(Achr))]
       return(resample.chr)
     }
     
@@ -50,7 +50,7 @@ resampleRegions <- function(A, universe, per.chromosome=FALSE, ...) {
     resampled <- do.call(c, chr.resampled)
     
   }else{
-    resampled <- universe[sample(1:length(universe), length(A))]
+    resampled <- universe[sample.int(length(universe), length(A))]
   }
   
   return(resampled)
