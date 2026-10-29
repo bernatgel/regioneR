@@ -10,7 +10,6 @@ Authors@R: c(
         role = c("aut", "cre")),
     person("Bernat", "Gel", email = "bgel@igtp.cat", role = c("aut", "cre"))
     )
-Maintainer: Bernat Gel <bgel@igtp.cat>
 Description: regioneR offers a statistical framework based on
     customizable permutation tests to assess the association
     between genomic region sets and other genomic features.
