@@ -18,9 +18,7 @@ overlapGraphicalSummary(A, B, regions.labels=c("A","B"), regions.colors=c("black
 \item{...}{Arguments to be passed to methods, such as graphical parameters (see \code{\link{par}}).}
 }
 \value{
-Invisibly returns a named list containing the \code{scipen} option
-  value in effect immediately before restoring the original option, as returned
-  by \code{options(scipen=old.scipen)}. A plot is created on the current graphics device.
+A plot is created on the current graphics device.
 }
 \description{
 Graphical summary of the overlap between two set of regions.
