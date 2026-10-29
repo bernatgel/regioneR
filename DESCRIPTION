@@ -4,11 +4,12 @@ Title: Association analysis of genomic regions based on permutation tests
 Version: 1.45.0
 Date: 2026-10-29
 Authors@R: c(
-    person("Anna", "Diez-Villanueva", email = "adiez@iconcologia.net",
-        role = c("aut", "cre")),
-    person("Roberto", "Malinverni", email = "roberto.malinverni@gmail.com",
-        role = c("aut", "cre")),
-    person("Bernat", "Gel", email = "bgel@igtp.cat", role = c("aut", "cre"))
+    person(given = "Anna", family = "Diez-Villanueva", email = "adiez@iconcologia.net",
+        role = c("aut")),
+    person(given = "Roberto", family = "Malinverni", email = "roberto.malinverni@gmail.com",
+        role = c("aut")),
+    person(given = "Bernat", family = "Gel", role = c("aut", "cre"), email = "bgel@igtp.cat",
+             comment = c(ORCID = "0000-0001-8878-349X"))
     )
 Description: regioneR offers a statistical framework based on
     customizable permutation tests to assess the association
@@ -18,7 +19,6 @@ Depends:
     GenomicRanges
 Imports:
     memoise,
-    GenomicRanges,
     IRanges,
     BSgenome,
     Biostrings,
