@@ -5,11 +5,13 @@ Version: 1.45.1
 Date: 2026-10-29
 Authors@R: c(
     person(given = "Anna", family = "Diez-Villanueva", email = "adiez@iconcologia.net",
-        role = c("aut")),
+        role = c("aut"),
+        comment = c(ORCID= "0000-0002-1696-5523")),
     person(given = "Roberto", family = "Malinverni", email = "roberto.malinverni@gmail.com",
-        role = c("aut")),
+        role = c("aut"),
+        comment = c(ORCID = "0000-0002-0113-3417")),
     person(given = "Bernat", family = "Gel", role = c("aut", "cre"), email = "bgel@igtp.cat",
-             comment = c(ORCID = "0000-0001-8878-349X"))
+        comment = c(ORCID = "0000-0001-8878-349X"))
     )
 Description: regioneR offers a statistical framework based on
     customizable permutation tests to assess the association
