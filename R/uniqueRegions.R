@@ -10,11 +10,11 @@
 #' @usage 
 #' uniqueRegions(A, B)
 #' 
-#' @param A   a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
-#' @param B   a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param A   a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param B   a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
 #' 
 #' @return
-#' It returns a \code{\link{GenomicRanges}} object with the regions unique to one of the region sets.
+#' It returns a \code{\link[GenomicRanges]{GenomicRanges}} object with the regions unique to one of the region sets.
 #' 
 #' @seealso \code{\link{toGRanges}}, \code{\link{subtractRegions}}, \code{\link{commonRegions}}, \code{\link{mergeRegions}}
 #' 

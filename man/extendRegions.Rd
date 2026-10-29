@@ -7,14 +7,14 @@
 extendRegions(A, extend.start=0, extend.end=0)
 }
 \arguments{
-\item{A}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
+\item{A}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
 
 \item{extend.start}{an integer. The number of bases to be subtracted from the start of the region.}
 
 \item{extend.end}{an integer. The number of bases to be added at the end of the region.}
 }
 \value{
-a \code{\link{GenomicRanges}} object with the extended regions.
+a \code{\link[GenomicRanges]{GenomicRanges}} object with the extended regions.
 }
 \description{
 Extends the regions a number of bases at each end. Negative numbers will reduce the region instead of enlarging it.

@@ -5,13 +5,13 @@
 #' 
 #' @usage overlapGraphicalSummary(A, B, regions.labels=c("A","B"), regions.colors=c("black","forestgreen","darkred"), ...)
 #' 
-#' @param A a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
-#' @param B a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param A a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param B a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
 #' @param regions.labels vector indicating the labels for the y axes.
 #' @param regions.colors character vector indicating the colors for the regions.
 #' @param ... Arguments to be passed to methods, such as graphical parameters (see \code{\link{par}}). 
 #'
-#'  @return A plot is created on the current graphics device.
+#' @return A plot is created on the current graphics device.
 #'   
 #' @seealso \code{\link{overlapPermTest}}, \code{\link{overlapRegions}}
 #' 
@@ -81,6 +81,7 @@ overlapGraphicalSummary <- function(A, B, regions.labels=c("A","B"), regions.col
   
   par(mfrow=c(1,1))
   options(scipen=old.scipen)
+  return()
   
 }
 

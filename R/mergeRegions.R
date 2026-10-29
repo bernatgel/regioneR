@@ -6,16 +6,16 @@
 #' @note 
 #' All metadata (additional columns in the region set in addition to chromosome, start and end) will be ignored and not present in the returned region set.
 #'
-#' The implementation relies completely in the \code{\link{reduce}} function from \code{IRanges} package.
+#' The implementation relies completely in the \code{\link[IRanges]{reduce}} function from \code{IRanges} package.
 #'  
 #' @usage 
 #' mergeRegions(A, B)
 #' 
-#' @param A   a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
-#' @param B   a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param A   a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param B   a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
 #' 
 #' @return
-#' It returns a \code{\link{GenomicRanges}} object with the regions resulting from the merging process. Any two overlapping regions from any of the two sets will be fused into one.
+#' It returns a \code{\link[GenomicRanges]{GenomicRanges}} object with the regions resulting from the merging process. Any two overlapping regions from any of the two sets will be fused into one.
 #' 
 #' @seealso \code{\link{plotRegions}}, \code{\link{toDataframe}}, \code{\link{toGRanges}}, \code{\link{subtractRegions}}, \code{\link{splitRegions}}, \code{\link{extendRegions}}, \code{\link{joinRegions}}, \code{\link{commonRegions}}, \code{\link{overlapRegions}}
 #' 

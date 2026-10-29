@@ -6,12 +6,12 @@
 #' @usage 
 #' resampleRegions(A, universe, per.chromosome=FALSE, ...)
 #' 
-#' @param A a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
-#' @param universe a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param A a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param universe a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
 #' @param per.chromosome boolean indicating if sample must be by chromosome. 
 #' @param ... further arguments to be passed to or from methods.
 #' 
-#' @return  a \code{\link{GenomicRanges}} object. A sample from the \code{univers} with the same length as A.
+#' @return  a \code{\link[GenomicRanges]{GenomicRanges}} object. A sample from the \code{univers} with the same length as A.
 #' 
 #' @seealso  \code{\link{toDataframe}}, \code{\link{toGRanges}}, \code{\link{randomizeRegions}}, \code{\link{createRandomRegions}}
 #' 

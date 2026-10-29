@@ -7,9 +7,9 @@
 meanDistance(A, B, ...)
 }
 \arguments{
-\item{A}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
+\item{A}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
 
-\item{B}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
+\item{B}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
 
 \item{...}{any additional parameter needed}
 }

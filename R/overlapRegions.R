@@ -4,13 +4,13 @@
 #' return overlap between 2 regios set A and B 
 #' 
 #' @note 
-#' The implementation uses when possible the \code{\link{countOverlaps}} function from \code{IRanges} package.
+#' The implementation uses when possible the \code{\link[IRanges]{countOverlaps}} function from \code{IRanges} package.
 #'  
 #' @usage
 #' overlapRegions(A, B, colA=NULL, colB=NULL, type="any", min.bases=1, min.pctA=NULL, min.pctB=NULL, get.pctA=FALSE, get.pctB=FALSE, get.bases=FALSE, only.boolean=FALSE, only.count=FALSE, ...)
 #' 
-#' @param A a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
-#' @param B a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param A a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param B a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
 #' @param type
 #'\itemize{
 #'\item{\code{AinB}: the region in A is contained in a region in B}

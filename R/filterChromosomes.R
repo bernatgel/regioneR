@@ -6,13 +6,13 @@
 #'
 #' @usage filterChromosomes(A, organism="hg", chr.type="canonical", keep.chr=NULL)
 #' 
-#' @param A a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
-#' @param organism a character indicating the organism from which to get the predefined chromosome sets. It can be the organism code as used in \code{\link{BSgenome}} (e.g. hg for human, mm for mouse...) or the full genome assembly identifier, since any digit will be removed to get the organism code.
+#' @param A a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param organism a character indicating the organism from which to get the predefined chromosome sets. It can be the organism code as used in \code{\link[BSgenome]{BSgenome}} (e.g. hg for human, mm for mouse...) or the full genome assembly identifier, since any digit will be removed to get the organism code.
 #' @param chr.type a character indicating the specific chromosome set to be used. Usually "autosomal" or "canonical", althought other values could be available for certain organisms.
 #' @param keep.chr is a character vector stating the names of the chromosomes to keep. Any chromosome not in the vector will be filtered out. If keep.chr is supplied, organism and chr.type are ignored.
 #'   
 #' @return
-#' A \code{\link{GRanges}} object containing only the regions in the original region set belonging to the selected chromosomes. All regions in non selected chromosomes are removed.
+#' A \code{\link[GenomicRanges]{GRanges}} object containing only the regions in the original region set belonging to the selected chromosomes. All regions in non selected chromosomes are removed.
 #' 
 #' @seealso \code{\link{getGenomeAndMask}}, \code{\link{listChrTypes}} \code{\link{getChromosomesByOrganism}}
 #' 

@@ -7,12 +7,12 @@
 uniqueRegions(A, B)
 }
 \arguments{
-\item{A}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
+\item{A}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
 
-\item{B}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
+\item{B}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
 }
 \value{
-It returns a \code{\link{GenomicRanges}} object with the regions unique to one of the region sets.
+It returns a \code{\link[GenomicRanges]{GenomicRanges}} object with the regions unique to one of the region sets.
 }
 \description{
 Returns the regions unique to only one of the two region sets, that is, all parts of the genome covered by only one of the two region sets.

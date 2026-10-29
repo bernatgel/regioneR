@@ -9,12 +9,12 @@
 #' @usage 
 #' extendRegions(A, extend.start=0, extend.end=0)
 #' 
-#' @param A a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param A a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
 #' @param extend.start an integer. The number of bases to be subtracted from the start of the region.
 #' @param extend.end an integer. The number of bases to be added at the end of the region.
 #' 
 #' @return
-#' a \code{\link{GenomicRanges}} object with the extended regions.
+#' a \code{\link[GenomicRanges]{GenomicRanges}} object with the extended regions.
 #' 
 #' @seealso \code{\link{plotRegions}}, \code{\link{toDataframe}}, \code{\link{toGRanges}}, \code{\link{subtractRegions}}, \code{\link{splitRegions}}, \code{\link{overlapRegions}}, \code{\link{commonRegions}}, \code{\link{mergeRegions}}, \code{\link{joinRegions}}
 #' 

@@ -5,8 +5,8 @@
 #' 
 #' @usage splitRegions(A, B, min.size=1, track.original=TRUE)
 #' 
-#' @param A a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
-#' @param B a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param A a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param B a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
 #' @param min.size numeric value, minimal size of the new regions
 #' @param track.original logical indicating if you want to keep the original regions and additional information in the output
 #' 

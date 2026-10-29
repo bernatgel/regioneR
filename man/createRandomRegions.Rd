@@ -13,14 +13,14 @@ createRandomRegions(nregions=100, length.mean=250, length.sd=20, genome="hg19", 
 
 \item{length.sd}{The standard deviation of the region size. This is not guaranteed to be the standard deviation of the final region set. See note.}
 
-\item{genome}{The reference genome to use. A valid genome object. Either a \code{\link{GenomicRanges}} or \code{\link{data.frame}} containing one region per whole chromosome or a character uniquely identifying a genome in \code{\link{BSgenome}} (e.g. "hg19", "mm10" but not "hg"). Internally it uses \code{\link{getGenomeAndMask}}.}
+\item{genome}{The reference genome to use. A valid genome object. Either a \code{\link[GenomicRanges]{GenomicRanges}} or \code{\link{data.frame}} containing one region per whole chromosome or a character uniquely identifying a genome in \code{\link[BSgenome]{BSgenome}} (e.g. "hg19", "mm10" but not "hg"). Internally it uses \code{\link{getGenomeAndMask}}.}
 
-\item{mask}{The set of regions specifying where a random region can not be (centromeres, repetitive regions, unmappable regions...). A region set in any of the accepted formats (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, ...). \code{\link{NULL}} will try to derive a mask from the genome (currently only works is the genome is a character string) and \code{\link{NA}} explicitly gives an empty mask.}
+\item{mask}{The set of regions specifying where a random region can not be (centromeres, repetitive regions, unmappable regions...). A region set in any of the accepted formats (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, ...). \code{\link{NULL}} will try to derive a mask from the genome (currently only works is the genome is a character string) and \code{\link{NA}} explicitly gives an empty mask.}
 
 \item{non.overlapping}{A boolean stating whether the random regions can overlap (FALSE) or not (TRUE).}
 }
 \value{
-It returns a \code{\link{GenomicRanges}} object with the regions resulting from the randomization process.
+It returns a \code{\link[GenomicRanges]{GenomicRanges}} object with the regions resulting from the randomization process.
 }
 \description{
 Creates a set of random regions with a given mean size and standard deviation.

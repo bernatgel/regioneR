@@ -7,7 +7,7 @@
 toGRanges(A, ..., genome=NULL, sep=NULL, comment.char="#")
 }
 \arguments{
-\item{A}{a \code{\link{data.frame}} containing a region set, a \code{\link{GRanges}} object, a BED file, any type of file supported by \code{rtracklayer::import} or a \code{"SimpleRleList"} returned by \code{GenomicRanges::coverage}. If there are more than 1 argument, it will build a dataframe out ouf them and process it as usual. If there's only a single argument and it's a character, if it's not an existing file name it will be treated as the definition of a genomic region in the UCSC/IGV format (i.e. "chr9:34229289-34982376") and parsed.}
+\item{A}{a \code{\link{data.frame}} containing a region set, a \code{\link[GenomicRanges]{GRanges}} object, a BED file, any type of file supported by \code{rtracklayer::import} or a \code{"SimpleRleList"} returned by \code{GenomicRanges::coverage}. If there are more than 1 argument, it will build a dataframe out ouf them and process it as usual. If there's only a single argument and it's a character, if it's not an existing file name it will be treated as the definition of a genomic region in the UCSC/IGV format (i.e. "chr9:34229289-34982376") and parsed.}
 
 \item{...}{further arguments to be passed to other methods.}
 
@@ -18,19 +18,19 @@ toGRanges(A, ..., genome=NULL, sep=NULL, comment.char="#")
 \item{comment.char}{(character) The character marking comment lines. Only used when reading some file formats. (Defaults to "#")}
 }
 \value{
-A \code{\link{GRanges}} object with the regions in A
+A \code{\link[GenomicRanges]{GRanges}} object with the regions in A
 }
 \description{
 Transforms a file or an object containing a region set into a 
-\code{\link{GRanges}} object.
+\code{\link[GenomicRanges]{GRanges}} object.
 }
 \details{
-If A is already a \code{\link{GRanges}} object, it will be returned untouched. 
+If A is already a \code{\link[GenomicRanges]{GRanges}} object, it will be returned untouched. 
 
 If A is a data frame, the function will assume the first three columns are 
-chromosome, start and end and create a \code{\link{GRanges}} object. Any 
+chromosome, start and end and create a \code{\link[GenomicRanges]{GRanges}} object. Any 
 additional column will be considered metadata and stored as such in the 
-\code{\link{GRanges}} object. There are 2 special cases: 1) if A is a 
+\code{\link[GenomicRanges]{GRanges}} object. There are 2 special cases: 1) if A is a 
 data.frame with only 2 columns, it will assume the first one is the
 chromosome and the second one the position and it will create a GRanges with 
 single base regions and 2) if the data.frame has the first 3 columns named
@@ -69,7 +69,7 @@ to load it in different ways:
    autodetect if it has a header and read it accordingly.
 
 The \code{genome} parameter can be used to set the genome information of
-the created GRanges. It can be either a \code{\link{BSgenome}} object or a 
+the created GRanges. It can be either a \code{\link[BSgenome]{BSgenome}} object or a 
 character string defining a genome (e.g. "hg19", "mm10"...) as accepted 
 by the \code{BSgenome::getBSgenome} function. If a valid genome is
 given and the corresponding BSgenome package is installed, the genome

@@ -43,15 +43,16 @@
 
 plot.permTestResults<-function(x, pvalthres=0.05, plotType="Tailed", main="", xlab=NULL, ylab="", ylim=NULL, xlim=NULL, ...){
   
-  old.scipen <- options()$scipen
+
   
-  options(scipen=999)
-  
-  if(class(x)!="permTestResults")  stop("x must be a permTestResults object")
+  if(!inherits(x, "permTestResults"))  stop("x must be a permTestResults object")
   if(!is.numeric(pvalthres)) stop("pvalthres must be numeric")
   plotType<-match.arg(plotType,c("Area","Tailed"))
   
-  
+  old.scipen <- options()$scipen
+  options(scipen=999)
+
+
   if(is.null(xlab)) xlab <- paste0(x$evaluate.function.name)
   if(nchar(main)>0) main <- paste0(main, "\n")
   
@@ -148,5 +149,6 @@ plot.permTestResults<-function(x, pvalthres=0.05, plotType="Tailed", main="", xl
   }
   
   options(scipen=old.scipen)
+  return()
   
 }

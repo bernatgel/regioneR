@@ -7,12 +7,12 @@
 mergeRegions(A, B)
 }
 \arguments{
-\item{A}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
+\item{A}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
 
-\item{B}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
+\item{B}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
 }
 \value{
-It returns a \code{\link{GenomicRanges}} object with the regions resulting from the merging process. Any two overlapping regions from any of the two sets will be fused into one.
+It returns a \code{\link[GenomicRanges]{GenomicRanges}} object with the regions resulting from the merging process. Any two overlapping regions from any of the two sets will be fused into one.
 }
 \description{
 Merges the overlapping regions from two region sets. The two region sets are first merged into one and then overlapping regions are fused.
@@ -20,7 +20,7 @@ Merges the overlapping regions from two region sets. The two region sets are fir
 \note{
 All metadata (additional columns in the region set in addition to chromosome, start and end) will be ignored and not present in the returned region set.
 
-The implementation relies completely in the \code{\link{reduce}} function from \code{IRanges} package.
+The implementation relies completely in the \code{\link[IRanges]{reduce}} function from \code{IRanges} package.
 }
 \examples{
 A <- data.frame("chr1", c(1, 5, 20, 30), c(8, 13, 28, 40), x=c(1,2,3,4), y=c("a", "b", "c", "d"))

@@ -1,17 +1,17 @@
 #' characterToBSGenome
 #' 
 #' @description 
-#' Given a character string with the "name" of a genome, it returns a \code{\link{BSgenome}} object if available.
+#' Given a character string with the "name" of a genome, it returns a \code{\link[BSgenome]{BSgenome}} object if available.
 #' 
 #' @note
 #' This function is memoised (cached) using the \code{memoise} package. To empty the cache, use \code{forget(charecterToBSGenome)}
 #' 
 #' @usage characterToBSGenome(genome.name)
 #' 
-#' @param genome.name a character string uniquely identifying a \code{\link{BSgenome}} (e.g. "hg19", "mm10" are ok, but "hg" is not)
+#' @param genome.name a character string uniquely identifying a \code{\link[BSgenome]{BSgenome}} (e.g. "hg19", "mm10" are ok, but "hg" is not)
 #' 
 #' @return
-#' A \code{\link{BSgenome}} object
+#' A \code{\link[BSgenome]{BSgenome}} object
 #' 
 #' @examples
 #' g <- characterToBSGenome("hg19")

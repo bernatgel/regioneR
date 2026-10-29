@@ -7,9 +7,9 @@
 overlapRegions(A, B, colA=NULL, colB=NULL, type="any", min.bases=1, min.pctA=NULL, min.pctB=NULL, get.pctA=FALSE, get.pctB=FALSE, get.bases=FALSE, only.boolean=FALSE, only.count=FALSE, ...)
 }
 \arguments{
-\item{A}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
+\item{A}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
 
-\item{B}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
+\item{B}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
 
 \item{colA}{numeric vector indicating which columns of A the results will contain (default NULL)}
 
@@ -51,7 +51,7 @@ the default results is a \code{\link{data.frame}} with at least 5 columns "chr" 
 return overlap between 2 regios set A and B
 }
 \note{
-The implementation uses when possible the \code{\link{countOverlaps}} function from \code{IRanges} package.
+The implementation uses when possible the \code{\link[IRanges]{countOverlaps}} function from \code{IRanges} package.
 }
 \examples{
 A <- data.frame("chr1", c(1, 5, 20, 30), c(8, 13, 28, 40), x=c(1,2,3,4), y=c("a", "b", "c", "d"))

@@ -20,7 +20,7 @@ resampleGenome(A, simple = FALSE, per.chromosome = FALSE, genome="hg19", min.til
 \item{...}{further arguments to be passed to other methods.}
 }
 \value{
-a \code{\link{GenomicRanges}} object. A sample from the \code{universe} with the same length as A.
+a \code{\link[GenomicRanges]{GenomicRanges}} object. A sample from the \code{universe} with the same length as A.
 }
 \description{
 Fast alternative to randomizeRegions. It creates a tiling (binning) of the whole genome 

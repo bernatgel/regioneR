@@ -1,18 +1,18 @@
 #' maskFromBSGenome
 #' 
 #' @description 
-#' Extracts the merge of all the active masks from a \code{\link{BSgenome}}
+#' Extracts the merge of all the active masks from a \code{\link[BSgenome]{BSgenome}}
 #'
 #' @note
-#' This function is memoised (cached) using the \code{\link{memoise}} package. To empty the cache, use \code{\link{forget}(maskFromBSGenome)}
+#' This function is memoised (cached) using the \code{\link[memoise]{memoise}} package. To empty the cache, use \code{\link[memoise]{forget}(maskFromBSGenome)}
 #' 
 #' @usage maskFromBSGenome(bsgenome)
 # @usage maskFromBSGenome(...) 
 #' 
-#' @param bsgenome a \code{\link{BSgenome}} object
+#' @param bsgenome a \code{\link[BSgenome]{BSgenome}} object
 #' 
 #' @return
-#' A \code{\link{GRanges}} object with the active mask in the \code{\link{BSgenome}}
+#' A \code{\link[GenomicRanges]{GRanges}} object with the active mask in the \code{\link[BSgenome]{BSgenome}}
 #' 
 #' @seealso \code{\link{getGenomeAndMask}}, \code{\link{characterToBSGenome}}, \code{\link{emptyCacheRegioneR}}
 #' 

@@ -6,7 +6,7 @@
 #' @usage 
 #' meanInRegions(A, x, col.name=NULL, ...)
 #'  
-#' @param A   a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param A   a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
 #' @param x   a region set in any of the accepted formats with an additional column with a value associated to every region. Regions in \code{x} can be points (single base regions).
 #' @param col.name  character indicating the name of the column. If NULL and if a column with the name "value" exist, it will be used. The 4th column will be used otherwise (or the 5th if 4th is the strand). 
 #' @param ... any additional parameter needed

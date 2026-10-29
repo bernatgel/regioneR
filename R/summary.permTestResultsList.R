@@ -12,7 +12,7 @@
 summary.permTestResultsList <- function(object, ...) {
   
   
-  if(class(object)!="permTestResultsList")  stop("object must be a permTestResultsList object")
+  if(!inherits(object, "permTestResultsList"))  stop("object must be a permTestResultsList object")
   
   if(length(object) > 0) {
     
@@ -27,8 +27,10 @@ summary.permTestResultsList <- function(object, ...) {
     cat(paste0("Randomization Function: ", object[[1]]$randomize.function.name, "\n"))
     cat("Tests Results:\n")
     print(res)
+    return(invisible(res))
   } else {
     cat(paste0("permTestResultList object of length 0\n"))
+    return(invisible(NULL))
   }
      
   

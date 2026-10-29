@@ -1,20 +1,20 @@
 #' getMask
 #' 
 #' @description 
-#' Function to obtain a mask given a genome available as a \code{\link{BSgenome}}. The mask returned is the merge of all the active masks in the \code{\link{BSgenome}}.
+#' Function to obtain a mask given a genome available as a \code{\link[BSgenome]{BSgenome}}. The mask returned is the merge of all the active masks in the \code{\link[BSgenome]{BSgenome}}.
 #' 
-#' Since it uses \code{\link{characterToBSGenome}}, the genome can be either a \code{\link{BSgenome}} object or a character string uniquely identifying the a \code{\link{BSgenome}} object installed.
+#' Since it uses \code{\link{characterToBSGenome}}, the genome can be either a \code{\link[BSgenome]{BSgenome}} object or a character string uniquely identifying the a \code{\link[BSgenome]{BSgenome}} object installed.
 #' 
 #' @note
-#' This function is memoised (cached) using the \code{\link{memoise}} package. To empty the cache, use \code{\link{forget}(getMask)}
+#' This function is memoised (cached) using the \code{\link[memoise]{memoise}} package. To empty the cache, use \code{\link[memoise]{forget}(getMask)}
 #' 
 #' @usage getMask(genome)
 # @usage getMask(...)
 #' 
-#' @param genome the genome from where the mask will be extracted. It can be either a \code{\link{BSgenome}} object or a character string uniquely identifying a \code{\link{BSgenome}} object installed (e.g. "hg19", "mm10", ...)
+#' @param genome the genome from where the mask will be extracted. It can be either a \code{\link[BSgenome]{BSgenome}} object or a character string uniquely identifying a \code{\link[BSgenome]{BSgenome}} object installed (e.g. "hg19", "mm10", ...)
 #' 
 #' @return
-#' A \code{\link{GRanges}} object with the genomic regions to be masked out
+#' A \code{\link[GenomicRanges]{GRanges}} object with the genomic regions to be masked out
 #' 
 #' @seealso \code{\link{getGenome}}, \code{\link{getGenomeAndMask}}, \code{\link{characterToBSGenome}}, \code{\link{maskFromBSGenome}}, \code{\link{emptyCacheRegioneR}}
 #' 

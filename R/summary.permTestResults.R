@@ -12,7 +12,7 @@
 summary.permTestResults <- function(object, ...) {
   
   
-  if(class(object)!="permTestResults")  stop("object must be a permTestResults object")
+  if(!inherits(object, "permTestResults"))  stop("object must be a permTestResults object")
       
   cat(paste0("Number of permutations: ", object$ntimes, "\n"))
   if(object$ntimes<20) cat("Note: less than 20 permutations might produce unreliable results\n")
@@ -30,5 +30,6 @@ summary.permTestResults <- function(object, ...) {
   if(object$pval <= 1 & object$pval >= 0.1) code <- " "
   cat(paste0("P-value: ", object$pval, " ", code, "\n"))
   cat(paste0("--- \n Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1"))
+  return(invisible(NULL))
     
 }

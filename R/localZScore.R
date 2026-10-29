@@ -6,7 +6,7 @@
 #' @usage 
 #' localZScore(A, pt, window, step, ...)
 #'  
-#' @param A a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param A a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
 #' @param pt a permTestResult object
 #' @param window a window in wich the local Z-score will be calculated (bp)
 #' @param step the number of bp that divide each Z-score evaluation  
@@ -61,7 +61,7 @@ localZScore <- function(A, pt, window, step, ...) {
   }
   
   #if pt is a permTestResults object, compute the localZCScore and return it
-  if(class(pt) == "permTestResults") {
+  if(inherits(pt, "permTestResults")) {
     mean.permuted <- mean(pt$permuted)
     sd.permuted <- stats::sd(pt$permuted)
     
@@ -90,7 +90,7 @@ localZScore <- function(A, pt, window, step, ...) {
     return(rZ)
     
   } else { #else, if it's a list, run localZscore for each element in the list
-    if(class(pt) == "permTestResultsList") {
+    if(inherits(pt, "permTestResultsList")) {
       lz <- mclapply(pt, function(ptt) {return(localZScore(A=A, pt=ptt, window=window, step=step, ...))})
       class(lz) <- "localZScoreResultsList"
       return(lz)

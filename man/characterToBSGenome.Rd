@@ -7,13 +7,13 @@
 characterToBSGenome(genome.name)
 }
 \arguments{
-\item{genome.name}{a character string uniquely identifying a \code{\link{BSgenome}} (e.g. "hg19", "mm10" are ok, but "hg" is not)}
+\item{genome.name}{a character string uniquely identifying a \code{\link[BSgenome]{BSgenome}} (e.g. "hg19", "mm10" are ok, but "hg" is not)}
 }
 \value{
-A \code{\link{BSgenome}} object
+A \code{\link[BSgenome]{BSgenome}} object
 }
 \description{
-Given a character string with the "name" of a genome, it returns a \code{\link{BSgenome}} object if available.
+Given a character string with the "name" of a genome, it returns a \code{\link[BSgenome]{BSgenome}} object if available.
 }
 \note{
 This function is memoised (cached) using the \code{memoise} package. To empty the cache, use \code{forget(charecterToBSGenome)}

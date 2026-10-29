@@ -7,11 +7,11 @@
 randomizeRegions(A, genome="hg19", mask=NULL, allow.overlaps=TRUE, per.chromosome=FALSE, ...)
 }
 \arguments{
-\item{A}{The set of regions to randomize. A region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
+\item{A}{The set of regions to randomize. A region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
 
-\item{genome}{The reference genome to use. A valid genome object. Either a \code{\link{GenomicRanges}} or \code{\link{data.frame}} containing one region per whole chromosome or a character uniquely identifying a genome in \code{\link{BSgenome}} (e.g. "hg19", "mm10",... but not "hg"). Internally it uses \code{\link{getGenomeAndMask}}.}
+\item{genome}{The reference genome to use. A valid genome object. Either a \code{\link[GenomicRanges]{GenomicRanges}} or \code{\link{data.frame}} containing one region per whole chromosome or a character uniquely identifying a genome in \code{\link[BSgenome]{BSgenome}} (e.g. "hg19", "mm10",... but not "hg"). Internally it uses \code{\link{getGenomeAndMask}}.}
 
-\item{mask}{The set of regions specifying where a random region can not be (centromeres, repetitive regions, unmappable regions...). A region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}},\code{\link{data.frame}}, ...). If \code{\link{NULL}} it will try to derive a mask from the genome (currently only works if the genome is a character string). If \code{\link{NA}} it gives, explicitly, an empty mask.}
+\item{mask}{The set of regions specifying where a random region can not be (centromeres, repetitive regions, unmappable regions...). A region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}},\code{\link{data.frame}}, ...). If \code{\link{NULL}} it will try to derive a mask from the genome (currently only works if the genome is a character string). If \code{\link{NA}} it gives, explicitly, an empty mask.}
 
 \item{allow.overlaps}{A boolean stating whether the random regions can overlap (FALSE) or not (TRUE).}
 
@@ -20,7 +20,7 @@ randomizeRegions(A, genome="hg19", mask=NULL, allow.overlaps=TRUE, per.chromosom
 \item{...}{further arguments to be passed to or from methods.}
 }
 \value{
-It returns a \code{\link{GenomicRanges}} object with the regions resulting from the randomization process.
+It returns a \code{\link[GenomicRanges]{GenomicRanges}} object with the regions resulting from the randomization process.
 }
 \description{
 Given a set of regions A and a genome, this function returns a new set of regions randomly distributted in the genome.

@@ -10,9 +10,9 @@
 #' @usage 
 #' circularRandomizeRegions(A, genome="hg19", mask=NULL, max.mask.overlap=NULL, max.retries=10, verbose=TRUE, ...)
 #' 
-#' @param A The set of regions to randomize. A region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
-#' @param genome The reference genome to use. A valid genome object. Either a \code{\link{GenomicRanges}} or \code{\link{data.frame}} containing one region per whole chromosome or a character uniquely identifying a genome in \code{\link{BSgenome}} (e.g. "hg19", "mm10" but not "hg"). Internally it uses \code{\link{getGenomeAndMask}}.
-#' @param mask The set of regions specifying where a random region can not be (centromeres, repetitive regions, unmappable regions...). A region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}},\code{\link{data.frame}}, ...). If \code{\link{NULL}} it will try to derive a mask from the genome (currently only works is the genome is a character string) and if \code{\link{NA}} it will explicitly give an empty mask.
+#' @param A The set of regions to randomize. A region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param genome The reference genome to use. A valid genome object. Either a \code{\link[GenomicRanges]{GenomicRanges}} or \code{\link{data.frame}} containing one region per whole chromosome or a character uniquely identifying a genome in \code{\link[BSgenome]{BSgenome}} (e.g. "hg19", "mm10" but not "hg"). Internally it uses \code{\link{getGenomeAndMask}}.
+#' @param mask The set of regions specifying where a random region can not be (centromeres, repetitive regions, unmappable regions...). A region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}},\code{\link{data.frame}}, ...). If \code{\link{NULL}} it will try to derive a mask from the genome (currently only works is the genome is a character string) and if \code{\link{NA}} it will explicitly give an empty mask.
 #' @param max.mask.overlap numeric value
 #' @param max.retries numeric value
 #' @param verbose a boolean.
@@ -20,7 +20,7 @@
 #' 
 #' 
 #' @return
-#' It returns a \code{\link{GenomicRanges}} object with the regions resulting from the randomization process.
+#' It returns a \code{\link[GenomicRanges]{GenomicRanges}} object with the regions resulting from the randomization process.
 #' 
 #' @seealso  \code{\link{randomizeRegions}}, \code{\link{toDataframe}}, \code{\link{toGRanges}}, \code{\link{getGenome}}, \code{\link{getMask}}, \code{\link{getGenomeAndMask}}, \code{\link{characterToBSGenome}}, \code{\link{maskFromBSGenome}}, \code{\link{resampleRegions}}, \code{\link{createRandomRegions}}
 #' 

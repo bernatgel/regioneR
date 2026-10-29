@@ -3,10 +3,10 @@
 #' @description 
 #' Function to obtain a valid genome and mask pair given a valid genome identifier and optionally a mask. 
 #' 
-#' If the genome is not a \code{\link{BSgenome}} object or a character string uniquely identifying a \code{\link{BSgenome}} package installed, it will return the genome "as is". If a mask is provided, it will simply return it. Otherwise it will return the mask returned by \code{\link{getMask}(genome)} or an empty mask if genome is not a valid \code{\link{BSgenome}} or \code{\link{BSgenome}} identifier.
+#' If the genome is not a \code{\link[BSgenome]{BSgenome}} object or a character string uniquely identifying a \code{\link[BSgenome]{BSgenome}} package installed, it will return the genome "as is". If a mask is provided, it will simply return it. Otherwise it will return the mask returned by \code{\link{getMask}(genome)} or an empty mask if genome is not a valid \code{\link[BSgenome]{BSgenome}} or \code{\link[BSgenome]{BSgenome}} identifier.
 #' 
 #' @note
-#' This function is memoised (cached) using the \code{\link{memoise}} package. To empty the cache, use \code{\link{forget}(getGenomeAndMask)}
+#' This function is memoised (cached) using the \code{\link[memoise]{memoise}} package. To empty the cache, use \code{\link[memoise]{forget}(getGenomeAndMask)}
 #' 
 #' 
 #' @usage getGenomeAndMask(genome, mask=NULL)

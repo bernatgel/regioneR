@@ -7,16 +7,16 @@
 resampleRegions(A, universe, per.chromosome=FALSE, ...)
 }
 \arguments{
-\item{A}{a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
+\item{A}{a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
 
-\item{universe}{a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
+\item{universe}{a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
 
 \item{per.chromosome}{boolean indicating if sample must be by chromosome.}
 
 \item{...}{further arguments to be passed to or from methods.}
 }
 \value{
-a \code{\link{GenomicRanges}} object. A sample from the \code{univers} with the same length as A.
+a \code{\link[GenomicRanges]{GenomicRanges}} object. A sample from the \code{univers} with the same length as A.
 }
 \description{
 Function for sampling a region set from a universe of region sets.

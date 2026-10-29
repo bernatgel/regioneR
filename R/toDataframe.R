@@ -1,18 +1,18 @@
 #' toDataframe
 #' 
 #' @description
-#' Transforms a \code{\link{GRanges}} object or a \code{\link{data.frame}}containing a region set into a \code{\link{data.frame}}.
+#' Transforms a \code{\link[GenomicRanges]{GRanges}} object or a \code{\link{data.frame}}containing a region set into a \code{\link{data.frame}}.
 #' 
 #' @details
 #' If the oject is of class \code{\link{data.frame}}, it will be returned untouched.
 #' 
 #' @usage toDataframe(A, stranded=FALSE)
 #' 
-#' @param A a \code{\link{GRanges}} object.
-#' @param stranded    (only used when A is a \code{\link{GRanges}} object) a logical indicating whether a column with the strand information have to be added to the result (Defaults to FALSE)
+#' @param A a \code{\link[GenomicRanges]{GRanges}} object.
+#' @param stranded    (only used when A is a \code{\link[GenomicRanges]{GRanges}} object) a logical indicating whether a column with the strand information have to be added to the result (Defaults to FALSE)
 #' 
 #' @return
-#' A \code{data.frame} with the regions in A. If A was a \code{\link{GRanges}} object, the output will include any metadata present in A.
+#' A \code{data.frame} with the regions in A. If A was a \code{\link[GenomicRanges]{GRanges}} object, the output will include any metadata present in A.
 #' 
 #' @seealso \code{\link{toGRanges}}
 #' 

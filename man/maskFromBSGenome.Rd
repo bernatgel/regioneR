@@ -7,16 +7,16 @@
 maskFromBSGenome(bsgenome)
 }
 \arguments{
-\item{bsgenome}{a \code{\link{BSgenome}} object}
+\item{bsgenome}{a \code{\link[BSgenome]{BSgenome}} object}
 }
 \value{
-A \code{\link{GRanges}} object with the active mask in the \code{\link{BSgenome}}
+A \code{\link[GenomicRanges]{GRanges}} object with the active mask in the \code{\link[BSgenome]{BSgenome}}
 }
 \description{
-Extracts the merge of all the active masks from a \code{\link{BSgenome}}
+Extracts the merge of all the active masks from a \code{\link[BSgenome]{BSgenome}}
 }
 \note{
-This function is memoised (cached) using the \code{\link{memoise}} package. To empty the cache, use \code{\link{forget}(maskFromBSGenome)}
+This function is memoised (cached) using the \code{\link[memoise]{memoise}} package. To empty the cache, use \code{\link[memoise]{forget}(maskFromBSGenome)}
 }
 \examples{
 g <- characterToBSGenome("hg19")

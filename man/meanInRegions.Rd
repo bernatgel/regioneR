@@ -7,7 +7,7 @@
 meanInRegions(A, x, col.name=NULL, ...)
 }
 \arguments{
-\item{A}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
+\item{A}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
 
 \item{x}{a region set in any of the accepted formats with an additional column with a value associated to every region. Regions in \code{x} can be points (single base regions).}
 

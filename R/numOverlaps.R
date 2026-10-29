@@ -6,8 +6,8 @@
 #' @usage 
 #' numOverlaps(A, B, count.once=FALSE, ...)
 #'  
-#' @param A   a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
-#' @param B   a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param A   a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
+#' @param B   a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)
 #' @param count.once boolean indicating whether the overlap of multiple B regions with a single A region should be counted once or multiple times
 #' @param ... any additional parameters needed
 #' 

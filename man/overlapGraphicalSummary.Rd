@@ -7,17 +7,20 @@
 overlapGraphicalSummary(A, B, regions.labels=c("A","B"), regions.colors=c("black","forestgreen","darkred"), ...)
 }
 \arguments{
-\item{A}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
+\item{A}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
 
-\item{B}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
+\item{B}{a region set in any of the accepted formats by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
 
 \item{regions.labels}{vector indicating the labels for the y axes.}
 
 \item{regions.colors}{character vector indicating the colors for the regions.}
 
-\item{...}{Arguments to be passed to methods, such as graphical parameters (see \code{\link{par}}). 
-
- @return A plot is created on the current graphics device.}
+\item{...}{Arguments to be passed to methods, such as graphical parameters (see \code{\link{par}}).}
+}
+\value{
+Invisibly returns a named list containing the \code{scipen} option
+  value in effect immediately before restoring the original option, as returned
+  by \code{options(scipen=old.scipen)}. A plot is created on the current graphics device.
 }
 \description{
 Graphical summary of the overlap between two set of regions.

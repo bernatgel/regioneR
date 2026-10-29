@@ -7,7 +7,7 @@
 localZScore(A, pt, window, step, ...)
 }
 \arguments{
-\item{A}{a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
+\item{A}{a region set in any of the formats accepted by \code{\link{toGRanges}} (\code{\link[GenomicRanges]{GenomicRanges}}, \code{\link{data.frame}}, etc...)}
 
 \item{pt}{a permTestResult object}
 

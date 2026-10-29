@@ -33,7 +33,7 @@
 
 recomputePermTest<-function(ptr){
   
-  if(class(ptr)!="permTestResults")  stop("x must be a permTestResults object")
+  if(!inherits(ptr, "permTestResults"))  stop("x must be a permTestResults object")
   
   ptr2<-ptr
   if(ptr$alternative == "less"){
