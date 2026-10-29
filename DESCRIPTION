@@ -2,10 +2,15 @@ Package: regioneR
 Type: Package
 Title: Association analysis of genomic regions based on permutation tests
 Version: 1.45.0
-Date: 2025-06-20
-Author: Anna Diez-Villanueva <adiez@iconcologia.net>, Roberto Malinverni
-    <roberto.malinverni@gmail.com> and Bernat Gel <bgel@igtp.cat>
-Maintainer: Bernat Gel <bgel@imppc.org>
+Date: 2026-10-29
+Authors@R: c(
+    person("Anna", "Diez-Villanueva", email = "adiez@iconcologia.net",
+        role = c("aut", "cre")),
+    person("Roberto", "Malinverni", email = "roberto.malinverni@gmail.com",
+        role = c("aut", "cre")),
+    person("Bernat", "Gel", email = "bgel@igtp.cat", role = c("aut", "cre"))
+    )
+Maintainer: Bernat Gel <bgel@igtp.cat>
 Description: regioneR offers a statistical framework based on
     customizable permutation tests to assess the association
     between genomic region sets and other genomic features.
