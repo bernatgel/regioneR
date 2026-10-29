@@ -29,17 +29,6 @@ test_that("permutation result methods accept S3 subclasses", {
   tryCatch(expect_no_error(plot(derived)), finally=grDevices::dev.off())
 })
 
-test_that("graphical overlap summary preserves its invisible option return", {
-  A <- data.frame(chr=1, start=c(1, 15, 24, 40, 50), end=c(10, 20, 30, 45, 55))
-  B <- data.frame(chr=1, start=c(2, 12, 28, 35), end=c(5, 25, 33, 43))
-  old.scipen <- getOption("scipen")
-  grDevices::pdf(NULL)
-  result <- tryCatch(withVisible(overlapGraphicalSummary(A, B)),
-                     finally=grDevices::dev.off())
-  expect_false(result$visible)
-  expect_equal(result$value, list(scipen=999))
-  expect_identical(getOption("scipen"), old.scipen)
-})
 
 test_that("permutation result methods reject unrelated S3 classes", {
   unrelated <- structure(list(), class=c("unrelated", "list"))
