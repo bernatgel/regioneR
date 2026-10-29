@@ -40,6 +40,8 @@ Suggests:
     testthat
 VignetteBuilder: knitr
 Encoding: UTF-8
+URL: https://github.com/bernatgel/regioneR
+BugReports: https://github.com/bernatgel/regioneR/issues
 biocViews: Genetics, ChIPSeq, DNASeq, MethylSeq, CopyNumberVariation
 NeedsCompilation: no
 RoxygenNote: 7.3.2
